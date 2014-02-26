@@ -181,7 +181,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
             </Button.Style>
         </Button>
         <TextBlock Height="44" HorizontalAlignment="Left" Margin="589,235,0,0" Name="MoveFirst" Text="Move First?" VerticalAlignment="Top" Width="196" FontFamily="Old English Text MT" FontSize="28" Visibility="Hidden" />
-        <TextBlock FontFamily="Old English Text MT" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="580,372,0,0" Name="Player1Name" Text="Player 1 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" />
+        <TextBlock FontFamily="Old English Text MT" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="580,372,0,0" Name="Player1Name" Text="Player 1 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" Focusable="False" ForceCursor="False" />
         <TextBlock FontFamily="Old English Text MT" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="589,465,0,0" Name="Player2Name" Text="Player 2 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" />
         <TextBox Background="{x:Null}" FontFamily="Old English Text MT" FontSize="28" Height="41" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="580,503,0,0" Name="Player2NameTextBox" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="223" Visibility="Hidden" />
         <GroupBox Name="PlayerVsGroupBox" Visibility="Visible" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}" Margin="560,152,0,0" Height="83" VerticalAlignment="Top" HorizontalAlignment="Left" Width="271"></GroupBox>
