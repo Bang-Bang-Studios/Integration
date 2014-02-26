@@ -76,7 +76,6 @@ namespace Pentago.GUI
             else if (MenuName == "Quick")
             {
                 StoryModeMenuScroll.Visibility = Visibility.Visible;
-                NewProfileTextBox.Visibility = Visibility.Visible;
             }
         }
 
@@ -87,8 +86,8 @@ namespace Pentago.GUI
 
         private void PlayerVsComputer_Checked(object sender, RoutedEventArgs e)
         {
-            Player2Name.Visibility = Visibility.Visible;
-            Player2NameTextBox.Visibility = Visibility.Visible;
+            Player2Name.Visibility = Visibility.Hidden;
+            Player2NameTextBox.Visibility = Visibility.Hidden;
             Player2.Content = "Computer";
             ComputerLevel.Visibility = Visibility.Visible;
             ComputerHardLevel.Visibility = Visibility.Visible;
@@ -100,9 +99,9 @@ namespace Pentago.GUI
             Player2Name.Visibility = Visibility.Visible;
             Player2NameTextBox.Visibility = Visibility.Visible;
             Player2.Content = "Player 2";
-            ComputerLevel.Visibility = Visibility.Visible;
-            ComputerHardLevel.Visibility = Visibility.Visible;
-            ComputerEasyLevel.Visibility = Visibility.Visible;
+            ComputerLevel.Visibility = Visibility.Hidden;
+            ComputerHardLevel.Visibility = Visibility.Hidden;
+            ComputerEasyLevel.Visibility = Visibility.Hidden;
         }
 
         private void Battle_Click(object sender, RoutedEventArgs e)

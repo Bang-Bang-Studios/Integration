@@ -189,7 +189,6 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
             <RadioButton Content="Player Vs Player" Name="PlayerVsPlayer" BorderThickness="0" FontFamily="Old English Text MT" FontSize="28" IsChecked="True" Width="251" Visibility="Hidden"/>
             <RadioButton Content="Player Vs Computer" Name="PlayerVsComputer" FontFamily="Old English Text MT" FontSize="28" Width="254" Visibility="Hidden" Checked="PlayerVsComputer_Checked" Unchecked="PlayerVsComputer_Unchecked" />
         </StackPanel>
-        <TextBox Background="{x:Null}" FontFamily="Old English Text MT" FontSize="28" Height="41" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="576,501,0,0" Name="NewProfileTextBox" VerticalAlignment="Top" VerticalContentAlignment="Center" Visibility="Hidden" Width="223" />
         <Image Height="662" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="341" />
         <TextBlock Height="44" HorizontalAlignment="Left" Margin="592,465,0,0" Name="ComputerLevel" Text="Computer Level" VerticalAlignment="Top" Width="191" FontFamily="Old English Text MT" FontSize="28" TextAlignment="Center" Visibility="Hidden" />
         <RadioButton Content="Easy" Height="44" HorizontalAlignment="Left" Margin="599,506,0,0" Name="ComputerEasyLevel" VerticalAlignment="Top" FontFamily="Old English Text MT" FontSize="28" IsChecked="True" Visibility="Hidden" />
