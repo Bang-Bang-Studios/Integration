@@ -18,6 +18,7 @@ namespace Pentago.AI
         private string _Name;
         private bool _ActivePlayer;
         private ImageBrush _Image;
+        private ImageBrush _ImageHover;
         public enum Difficulty { Easy, Hard };
         public Difficulty _DifficultyLevel;
         private int _MaxTreeDepth;
@@ -34,11 +35,12 @@ namespace Pentago.AI
         private string _Active_Turn = "COMPUTER";
         private int[] _TempBoard = new int[BOARDSIZE];
 
-        public computerAI(string name, bool isActive, ImageBrush computerImage, Difficulty difficulty)
+        public computerAI(string name, bool isActive, ImageBrush computerImage, ImageBrush computerImageHover, Difficulty difficulty)
         {
             this._Name = name;
             this._ActivePlayer = isActive;
             this._Image = computerImage;
+            this._ImageHover = computerImageHover;
             if (difficulty == Difficulty.Easy)
                 this._MaxTreeDepth = 3;
             else
@@ -57,13 +59,16 @@ namespace Pentago.AI
                 this._TempBoard[i] = board.GetPlayer(i); 
 
             Hashtable hashTable = new Hashtable();
-            Stopwatch sw = Stopwatch.StartNew();
+            //Stopwatch sw = Stopwatch.StartNew();
             alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
-            sw.Stop();
+            //sw.Stop();
+            /*
             Console.WriteLine("Time taken: " + sw.Elapsed.TotalSeconds + " seconds.");
-            //Console.WriteLine("_Choice: " + _Choice);
-            //Console.WriteLine("_IsClockWise: " + _IsClockWise);
-            //Console.WriteLine("_Quad: " + _Quad);
+            Console.WriteLine("_Choice: " + _Choice);
+            Console.WriteLine("_IsClockWise: " + _IsClockWise);
+            Console.WriteLine("_Quad: " + _Quad);
+            Console.WriteLine(" ");
+             */
         }
 
         private double alphaBeta(int[] board, int treeDepth, double alpha, double beta, Hashtable hashTable)
@@ -491,6 +496,11 @@ namespace Pentago.AI
         public Brush Image
         {
             get { return this._Image; }
+        }
+
+        public Brush ImageHover
+        {
+            get { return this._ImageHover; }
         }
 
         public int GetMoveChoice()

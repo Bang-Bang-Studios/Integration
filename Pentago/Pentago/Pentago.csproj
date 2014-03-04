@@ -38,6 +38,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -58,10 +61,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="GUI\GameWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Compile Include="AI\computerAI.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -69,17 +68,22 @@
     </Compile>
     <Compile Include="GameCore\Board.cs" />
     <Compile Include="GameCore\Player.cs" />
-    <Compile Include="GUI\GameWindow.xaml.cs">
-      <DependentUpon>GameWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="GUI\Classes\SoundManager.cs" />
     <Compile Include="GameCore\GameBrain.cs" />
     <Compile Include="GUI\Classes\GameOptions.cs" />
+    <Page Include="GUI\GameWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="GUI\MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\GameWindow.xaml.cs">
+      <DependentUpon>GameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
@@ -107,30 +111,69 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\CounterClockWise3.jpg" />
+    <Resource Include="GUI\Images\BlueCrystal.png" />
+    <Resource Include="GUI\Images\Old_Scroll.png" />
+    <Resource Include="GUI\Images\viking1.png" />
+    <Resource Include="GUI\Images\viking2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\ClockWise1.jpg" />
-    <Resource Include="GUI\Images\ClockWise2.jpg" />
-    <Resource Include="GUI\Images\ClockWise3.jpg" />
-    <Resource Include="GUI\Images\CounterClockWise1.jpg" />
-    <Resource Include="GUI\Images\CounterClockWise2.jpg" />
+    <Resource Include="GUI\Images\GreyCrystal.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\ClockWise4.jpg" />
+    <Resource Include="GUI\Images\TitleWork.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\CounterClockWise4.jpg" />
+    <Resource Include="GUI\Images\MainBack.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\MainMenuBackground.jpg" />
+    <Resource Include="GUI\Images\BluePup.png" />
+    <Resource Include="GUI\Images\RedPup.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\Dragon1.jpg" />
-    <Resource Include="GUI\Images\Dragon2.jpg" />
+    <Resource Include="GUI\Images\ExitScroll.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\OldScroll.png" />
+    <Resource Include="GUI\Images\gameboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Images\ClockWise2.png" />
+    <Resource Include="GUI\Images\ClockWise3.png" />
+    <Resource Include="GUI\Images\ClockWise4.png" />
+    <Resource Include="GUI\Images\CounterClockWise1.png" />
+    <Resource Include="GUI\Images\CounterClockWise2.png" />
+    <Resource Include="GUI\Images\CounterClockWise3.png" />
+    <Resource Include="GUI\Images\CounterClockWise4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Images\IceGiant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Images\ClockWise1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Images\BluePupHover.png" />
+    <Resource Include="GUI\Images\RedPupHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GUI\Sounds\click.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\Sounds\crash.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\Sounds\Gameplay.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\Sounds\Intro.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\Sounds\swish.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\Sounds\typewriter.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

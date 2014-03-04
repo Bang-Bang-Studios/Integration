@@ -1,200 +1,298 @@
 ﻿<Window x:Class="Pentago.GUI.MainMenu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="none" WindowState="Maximized"  AllowsTransparency="True" AllowDrop="True" Background="{x:Null}" Closing="Window_Closing">
-<Grid AllowDrop="False">
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="QuickMatch" Click="QuickMatch_Click" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content="Quick Match" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,164,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
+Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" WindowState="Maximized"  AllowsTransparency="True" AllowDrop="True" Background="{x:Null}" Closing="Window_Closing" Name="Menu">
+ <Grid AllowDrop="False">
+        <Grid.Resources>
+            <DropShadowEffect x:Key="ShadowEffect" Color="#CEF6F5" Direction="325" Opacity="0.5" ShadowDepth="5" />
+            
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="TextElement.Foreground" Value="#A9F5F2"/>
+                        <Setter Property="Effect" Value="{StaticResource ShadowEffect}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <Style x:Key="ScrollFade" TargetType="{x:Type Image}">
+                <Style.Triggers>
+                        <EventTrigger RoutedEvent="Window.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                            <DiscreteObjectKeyFrame.Value>
+                                                <Visibility>Hidden</Visibility>
+                                            </DiscreteObjectKeyFrame.Value>
+                                        </DiscreteObjectKeyFrame>
+                                    </ObjectAnimationUsingKeyFrames>
+                                    <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" SpeedRatio="0.25"/>
+                                    <DoubleAnimation BeginTime="0:0:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" SpeedRatio="0.25"/>
+                                    <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.5" Storyboard.TargetProperty="Visibility">
+                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                            <DiscreteObjectKeyFrame.Value>
+                                                <Visibility>Visible</Visibility>
+                                            </DiscreteObjectKeyFrame.Value>
+                                        </DiscreteObjectKeyFrame>
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
+
+            <Storyboard x:Name="QuickMatchScroll" x:Key="QuickMatchScrollAnimation">
+                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0">
+                        <DiscreteObjectKeyFrame.Value>
+                            <Visibility>Hidden</Visibility>
+                        </DiscreteObjectKeyFrame.Value>
+                    </DiscreteObjectKeyFrame>
+                </ObjectAnimationUsingKeyFrames>
+                <DoubleAnimation BeginTime="0:0:2.9" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                <DoubleAnimation BeginTime="0:0:3.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                <ObjectAnimationUsingKeyFrames BeginTime="0:0:3.1" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0">
+                        <DiscreteObjectKeyFrame.Value>
+                            <Visibility>Visible</Visibility>
+                        </DiscreteObjectKeyFrame.Value>
+                    </DiscreteObjectKeyFrame>
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+        </Grid.Resources>
+
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="QuickMatch" Click="QuickMatch_Click" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content="Quick Match" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,243,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="QuickMatch_MouseEnter">
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:1.8" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:1.9" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:2.0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="OnlineGame" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Online Game" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,232,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="OnlineGame" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Online Game" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,304,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="OnlineGame_MouseEnter" >
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:2.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:2.1" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:2.2" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="StoryMode" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Story Mode" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,295,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" >
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="StoryMode" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Story Mode" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,183,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" >
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:1.6" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:1.7" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.8" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="PlayerProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Player Profile" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="155,357,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="315" BorderThickness="0" >
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="PlayerProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Player Profile" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="155,357,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="315" BorderThickness="0" MouseEnter="PlayerProfile_MouseEnter" >
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:2.2" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:2.3" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:2.4" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Highscores" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Highscores" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="128,418,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Highscores" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Highscores" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="128,418,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="Highscores_MouseEnter" >
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:2.4" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:2.5" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:2.6" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="GameOptionsButton" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Game Options" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,482,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="GameOptionsButton" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Game Options" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,482,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="GameOptionsButton_MouseEnter" >
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:2.7" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:2.8" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:2.9" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Quit" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Quit" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,536,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" Click="Quit_Click">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Quit" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Quit" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,536,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" Click="Quit_Click" MouseEnter="Quit_MouseEnter" >
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:2.9" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <DoubleAnimation BeginTime="0:0:3.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.1" SpeedRatio="0.2"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:3.1" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
-        <Image Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" Stretch="Fill" VerticalAlignment="Top" Width="341"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/OldScroll.png" />
+        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" Stretch="Fill" VerticalAlignment="Top" Width="341"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
         <Image Height="662" HorizontalAlignment="Left" Margin="519,50,0,0" Name="QuickMatchMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="341" Visibility="Hidden" Source="/Pentago;component/GUI/Images/OldScroll.png" />
-        <GroupBox Name="MoveGroupBox" Margin="550,271,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="174" Visibility="Visible" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}">
-            <StackPanel Name="MoveStackPanel" Orientation="Vertical" Width="155" Height="80" Visibility="Visible">
-                <RadioButton Content="Player 1" Height="41" Name="Player1" BorderThickness="0" FontFamily="Old English Text MT" FontSize="28" Width="137" IsChecked="True" Visibility="Hidden" />
-                <RadioButton Content="Player 2" Height="38" Name="Player2" Width="137" FontFamily="Old English Text MT" FontSize="28" Visibility="Hidden" />
+        <GroupBox Name="MoveGroupBox" Margin="589,260,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="119" Visibility="Hidden" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}">
+            <StackPanel Name="MoveStackPanel" Orientation="Vertical" Width="114" Height="80" Visibility="Hidden">
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 1" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player1" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="101" HorizontalAlignment="Left" Click="Player1_Click" Visibility="Hidden" MouseEnter="Player1_MouseEnter" />
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 2" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player2" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="101" HorizontalAlignment="Left" Click="Player2_Click" Visibility="Hidden" MouseEnter="Player2_MouseEnter" />
             </StackPanel>
         </GroupBox>
-        <TextBox Height="41" HorizontalAlignment="Left" Margin="580,418,0,0" Name="Player1NameTextBox" VerticalAlignment="Top" Width="223" FontFamily="Old English Text MT" FontSize="28" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden"></TextBox>
-        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Battle!" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Height="47" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="631,550,0,0" Name="Battle" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" VerticalAlignment="Top" Width="119" Visibility="Hidden" Click="Battle_Click">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Style.Triggers>
-                        <Trigger Property="UIElement.IsMouseOver" Value="True">
-                            <Setter Property="TextElement.Foreground" Value="#FFFFFF" />
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Control.Foreground" Value="Black" />
-                    <Setter Property="Control.Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Control.Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
-        <TextBlock Height="44" HorizontalAlignment="Left" Margin="589,235,0,0" Name="MoveFirst" Text="Move First?" VerticalAlignment="Top" Width="196" FontFamily="Old English Text MT" FontSize="28" Visibility="Hidden" />
-        <TextBlock FontFamily="Old English Text MT" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="580,372,0,0" Name="Player1Name" Text="Player 1 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" Focusable="False" ForceCursor="False" />
+        <TextBox Height="41" HorizontalAlignment="Left" Margin="580,418,0,0" Name="Player1NameTextBox" VerticalAlignment="Top" Width="223" FontFamily="Old English Text MT" FontSize="28" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" KeyDown="Player1NameTextBox_KeyDown"></TextBox>
+        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Battle!" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Height="47" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="631,550,0,0" Name="Battle" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" VerticalAlignment="Top" Width="119" Visibility="Hidden" Click="Battle_Click" MouseEnter="Battle_MouseEnter" />
+        <TextBlock Height="44" HorizontalAlignment="Left" Margin="607,235,0,0" Name="MoveFirst" Text="Move First?" VerticalAlignment="Top" Width="196" FontFamily="Old English Text MT" FontSize="28" Visibility="Hidden" />
+        <TextBlock FontFamily="Old English Text MT" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="580,372,0,0" Name="Player1Name" Text="Player 1 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" />
         <TextBlock FontFamily="Old English Text MT" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="589,465,0,0" Name="Player2Name" Text="Player 2 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" />
-        <TextBox Background="{x:Null}" FontFamily="Old English Text MT" FontSize="28" Height="41" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="580,503,0,0" Name="Player2NameTextBox" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="223" Visibility="Hidden" />
-        <GroupBox Name="PlayerVsGroupBox" Visibility="Visible" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}" Margin="560,152,0,0" Height="83" VerticalAlignment="Top" HorizontalAlignment="Left" Width="271"></GroupBox>
-        <StackPanel Name="PlayerVsStackPanel" Orientation="Vertical" Height="80" Margin="564,155,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="263" Visibility="Hidden">
-            <RadioButton Content="Player Vs Player" Name="PlayerVsPlayer" BorderThickness="0" FontFamily="Old English Text MT" FontSize="28" IsChecked="True" Width="251" Visibility="Hidden"/>
-            <RadioButton Content="Player Vs Computer" Name="PlayerVsComputer" FontFamily="Old English Text MT" FontSize="28" Width="254" Visibility="Hidden" Checked="PlayerVsComputer_Checked" Unchecked="PlayerVsComputer_Unchecked" />
+        <TextBox Background="{x:Null}" FontFamily="Old English Text MT" FontSize="28" Height="41" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="580,503,0,0" Name="Player2NameTextBox" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="223" Visibility="Hidden" KeyDown="Player2NameTextBox_KeyDown" />
+        <GroupBox Name="PlayerVsGroupBox" Visibility="Hidden" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}" Margin="592,152,0,0" Height="83" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"></GroupBox>
+        <StackPanel Name="PlayerVsStackPanel" Orientation="Vertical" Height="80" Margin="589,155,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241" Visibility="Hidden">
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Player" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="PlayerVsPlayer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="208" HorizontalAlignment="Left" Click="PlayerVsPlayer_Click" MouseEnter="PlayerVsPlayer_MouseEnter" Visibility="Hidden" />
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Computer" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="40" HorizontalContentAlignment="Center" Name="PlayerVsComputer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="231" Click="PlayerVsComputer_Click" Visibility="Hidden" MouseEnter="PlayerVsComputer_MouseEnter" />
         </StackPanel>
-        <Image Height="662" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="341" />
-        <TextBlock Height="44" HorizontalAlignment="Left" Margin="592,465,0,0" Name="ComputerLevel" Text="Computer Level" VerticalAlignment="Top" Width="191" FontFamily="Old English Text MT" FontSize="28" TextAlignment="Center" Visibility="Hidden" />
-        <RadioButton Content="Easy" Height="44" HorizontalAlignment="Left" Margin="599,506,0,0" Name="ComputerEasyLevel" VerticalAlignment="Top" FontFamily="Old English Text MT" FontSize="28" IsChecked="True" Visibility="Hidden" />
-        <RadioButton Content="Hard" Height="41" HorizontalAlignment="Left" Margin="699,508,0,0" Name="ComputerHardLevel" VerticalAlignment="Top" FontSize="28" FontFamily="Old English Text MT" Width="90" Visibility="Hidden" />
+        <Image Height="662" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="341" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
+        <TextBlock Height="44" HorizontalAlignment="Left" Margin="585,465,0,0" Name="ComputerLevel" Text="Computer Level" VerticalAlignment="Top" Width="191" FontFamily="Old English Text MT" FontSize="28" TextAlignment="Center" Visibility="Hidden" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,164,0,0" MouseDown="PlayerVsPlayer_Click" Name="PlayerVsPlayerOn" Stretch="Fill" VerticalAlignment="Top" Width="27" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Visibility="Hidden" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,199,0,0" MouseDown="PlayerVsComputer_Click" Name="PlayerVsComputerOn" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
+        <Image HorizontalAlignment="Left" Margin="568,284,0,0" Name="Player1MoveFirstOn" MouseDown="Player1_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" Width="27" Height="28" VerticalAlignment="Top" Visibility="Hidden" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,320,0,0" Name="Player2MoveFirstOn" MouseDown="Player2_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
+        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Easy" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" HorizontalContentAlignment="Left" Name="ComputerEasyLevel" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Margin="620,503,0,0" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Click="ComputerEasyLevel_Click" Visibility="Hidden" MouseEnter="ComputerEasyLevel_MouseEnter" />
+        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Hard" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" HorizontalContentAlignment="Left" Name="ComputerHardLevel" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Margin="729,503,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="38" Click="ComputerHardLevel_Click" Visibility="Hidden" MouseEnter="ComputerHardLevel_MouseEnter" />
+        <Image Height="41" HorizontalAlignment="Left" Margin="580,503,0,0" Name="GameDifficultyEasyOn" MouseDown="ComputerEasyLevel_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
+        <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOn" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,164,0,0" Name="PlayerVsPlayerOff" MouseDown="PlayerVsPlayer_Click" Stretch="Fill" VerticalAlignment="Top" Width="27" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Visibility="Hidden" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,199,0,0" Name="PlayerVsComputerOff" MouseDown="PlayerVsComputer_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" Panel.ZIndex="0" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,284,0,0" MouseDown="Player1_Click" Name="Player1MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,320,0,0" MouseDown="Player2_Click" Name="Player2MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" />
+        <Image Margin="0,152,82,0" Name="image1" Stretch="Fill" Source="/Pentago;component/GUI/Images/TitleWork.png" HorizontalAlignment="Right" Width="392" Height="302" VerticalAlignment="Top" />
+        <Image Height="41" HorizontalAlignment="Left" Margin="580,503,0,0" Name="GameDifficultyEasyOff" MouseDown="ComputerEasyLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
+        <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOff" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />   
         <Grid.Background>
-            <ImageBrush ImageSource="/Pentago;component/GUI/Images/MainMenuBackground.jpg" />
+            <ImageBrush ImageSource="/Pentago;component/GUI/Images/MainBack.png" />
         </Grid.Background>
     </Grid>
 </Window>

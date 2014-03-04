@@ -11,12 +11,14 @@ namespace Pentago.GameCore
         private string _Name;
         private bool _ActivePlayer;
         private ImageBrush _Image;
+        private ImageBrush _ImageHover;
 
-        public Player(string name, bool activeTurn, ImageBrush playerImage)
+        public Player(string name, bool activeTurn, ImageBrush playerImage, ImageBrush playerImageHover)
         {
             this._Name = name;
             this._ActivePlayer = activeTurn;
             this._Image = playerImage;
+            this._ImageHover = playerImageHover;
         }
 
         public string Name
@@ -33,6 +35,11 @@ namespace Pentago.GameCore
         public Brush Image
         {
             get { return this._Image; }
+        }
+
+        public Brush ImageHover
+        {
+            get { return this._ImageHover; }
         }
 
     }

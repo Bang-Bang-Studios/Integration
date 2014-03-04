@@ -1,18 +1,41 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pentago", "Pentago\Pentago.csproj", "{4AD8E318-6EA4-41AE-A790-799A9EF1D282}"
+EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "Setup\Setup.isproj", "{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|x86 = CD_ROM|x86
 		Debug|x86 = Debug|x86
+		DVD-5|x86 = DVD-5|x86
 		Release|x86 = Release|x86
+		SingleImage|x86 = SingleImage|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.CD_ROM|x86.ActiveCfg = Release|x86
+		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.CD_ROM|x86.Build.0 = Release|x86
 		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.Debug|x86.ActiveCfg = Debug|x86
 		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.Debug|x86.Build.0 = Debug|x86
+		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.DVD-5|x86.ActiveCfg = Debug|x86
+		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.DVD-5|x86.Build.0 = Debug|x86
 		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.Release|x86.ActiveCfg = Release|x86
 		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.Release|x86.Build.0 = Release|x86
+		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.SingleImage|x86.ActiveCfg = Release|x86
+		{4AD8E318-6EA4-41AE-A790-799A9EF1D282}.SingleImage|x86.Build.0 = Release|x86
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.CD_ROM|x86.ActiveCfg = CD_ROM
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.CD_ROM|x86.Build.0 = CD_ROM
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.Debug|x86.ActiveCfg = DVD-5
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.Debug|x86.Build.0 = DVD-5
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.DVD-5|x86.ActiveCfg = DVD-5
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.DVD-5|x86.Build.0 = DVD-5
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.Release|x86.ActiveCfg = SingleImage
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.Release|x86.Build.0 = SingleImage
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.SingleImage|x86.ActiveCfg = SingleImage
+		{D9D99DB9-E49A-4C6E-B32C-5E153E70989D}.SingleImage|x86.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
