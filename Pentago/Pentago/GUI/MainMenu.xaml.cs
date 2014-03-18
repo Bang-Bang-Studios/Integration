@@ -121,6 +121,11 @@ namespace Pentago.GUI
             else if (MenuName == "Quick")
             {
                 StoryModeMenuScroll.Visibility = Visibility.Visible;
+                OptionsPanel.Visibility = Visibility.Hidden;
+            }
+            else if(MenuName == "Options")
+            {
+
             }
         }
 
@@ -300,7 +305,7 @@ namespace Pentago.GUI
             computerPlayerImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePupHover.png", UriKind.Absolute));
 
             computerAI.Difficulty difficulty;
-            if (ComputerEasyLevel.Visibility == Visibility.Visible)
+            if (GameDifficultyEasyOn.Visibility == Visibility.Visible)
                 difficulty = computerAI.Difficulty.Easy;
             else
                 difficulty = computerAI.Difficulty.Hard;
@@ -373,6 +378,12 @@ namespace Pentago.GUI
         private void Player2NameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             SoundManager.playSFX(SoundManager.SoundType.KeyDown);
+        }
+
+        private void GameOptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            OptionsPanel.Visibility = Visibility.Visible;
+            ReHideMenues("Options");
         }
     }
 }

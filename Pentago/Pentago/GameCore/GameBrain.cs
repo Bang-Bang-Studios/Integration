@@ -74,6 +74,13 @@ namespace Pentago.GameCore
             return false;
         }
 
+        //public void MakeComputerRotation(int rotation)
+        //{
+        //    bool rotateClockWise = player2.GetRotationDirection();
+        //    short quad = player2.GetCuadrant();
+        //    RotateBoard(rotateClockWise, quad, rotation);
+        //}
+
         public void MakeComputerRotation()
         {
             bool rotateClockWise = player2.GetRotationDirection();
@@ -105,6 +112,15 @@ namespace Pentago.GameCore
                 return false;
             }
         }
+
+        //public void RotateBoard(bool rotateClockWise, short quad, int rotationNumber)
+        //{
+        //    board.RotateQuad(rotateClockWise, quad);
+        //    if(rotationNumber > 1)
+        //    {
+        //        ChangeTurn();
+        //    }
+        //}
 
         public void RotateBoard(bool rotateClockWise, short quad)
         {

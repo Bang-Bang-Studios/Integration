@@ -54,7 +54,75 @@ namespace Pentago.GameCore
         public void UpdateBoard(int slot, int player)
         {
             this._board[slot] = player;
-        }   
+        }
+
+        private int GetQuadStart(short quad)
+        {
+            int quadStart = 0;
+
+            switch (quad)
+            {
+                case 0:
+                    quadStart = 0;
+                    break;
+                case 1:
+                    quadStart = 3;
+                    break;
+                case 2:
+                    quadStart = 21;
+                    break;
+                case 3:
+                    quadStart = 18;
+                    break;
+            };
+
+            return quadStart;
+        }
+
+        private int[] CreatePath(int QuadStart)
+        {
+            int[] path = new int[8];
+
+            // Path follows clockwise starting from top left square
+            path[0] = QuadStart;
+            path[1] = path[0]++;
+            path[2] = path[1]++;
+            path[3] = path[2] + 6;
+            path[4] = path[3] + 6;
+            path[5] = path[4]--;
+            path[6] = path[5]--;
+            path[7] = path[6] - 6;
+
+            return path;
+        }
+
+        // rotates quad one space
+        public void RotateQuad(bool rotateClockwise, short quad)
+        {
+            int[] path = new int[8];
+            int placeHolder;
+            int pos;
+
+            path = CreatePath(GetQuadStart(quad));
+
+            if (rotateClockwise)
+            {
+                placeHolder = this._board[path[7]];
+                for (pos = 7; pos > 0; pos--)
+                {
+                    this._board[path[pos]] = this._board[path[pos - 1]]; 
+                }
+            }
+            else
+            {
+                placeHolder = this._board[path[0]];
+                for (pos = 0; pos < 7; pos++)
+                {
+                    this._board[path[pos]] = this._board[path[pos + 1]];
+                }
+            }
+            this._board[path[pos]] = placeHolder;
+        }
 
         public void RotateQuad1ClockWise() 
         {

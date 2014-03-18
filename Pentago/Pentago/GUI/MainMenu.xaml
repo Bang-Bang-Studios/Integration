@@ -2,10 +2,41 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" WindowState="Maximized"  AllowsTransparency="True" AllowDrop="True" Background="{x:Null}" Closing="Window_Closing" Name="Menu">
- <Grid AllowDrop="False">
+    <Window.Resources>
+
+        <Style x:Key="ScrollFade" TargetType="{x:Type Image}">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Hidden</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" SpeedRatio="0.25"/>
+                            <DoubleAnimation BeginTime="0:0:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" SpeedRatio="0.25"/>
+                            <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.5" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+    </Window.Resources>
+    <Grid AllowDrop="False">
         <Grid.Resources>
             <DropShadowEffect x:Key="ShadowEffect" Color="#CEF6F5" Direction="325" Opacity="0.5" ShadowDepth="5" />
-            
+
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Foreground" Value="Black" />
                 <Setter Property="Template">
@@ -15,8 +46,8 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                         </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
+                    </Setter.Value>
+                </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="TextElement.Foreground" Value="#A9F5F2"/>
@@ -24,31 +55,31 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            
+
             <Style x:Key="ScrollFade" TargetType="{x:Type Image}">
                 <Style.Triggers>
-                        <EventTrigger RoutedEvent="Window.Loaded">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
-                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                            <DiscreteObjectKeyFrame.Value>
-                                                <Visibility>Hidden</Visibility>
-                                            </DiscreteObjectKeyFrame.Value>
-                                        </DiscreteObjectKeyFrame>
-                                    </ObjectAnimationUsingKeyFrames>
-                                    <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" SpeedRatio="0.25"/>
-                                    <DoubleAnimation BeginTime="0:0:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" SpeedRatio="0.25"/>
-                                    <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.5" Storyboard.TargetProperty="Visibility">
-                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                            <DiscreteObjectKeyFrame.Value>
-                                                <Visibility>Visible</Visibility>
-                                            </DiscreteObjectKeyFrame.Value>
-                                        </DiscreteObjectKeyFrame>
-                                    </ObjectAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
+                    <EventTrigger RoutedEvent="Window.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Hidden</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" SpeedRatio="0.25"/>
+                                <DoubleAnimation BeginTime="0:0:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" SpeedRatio="0.25"/>
+                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.5" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Visible</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
                 </Style.Triggers>
             </Style>
 
@@ -203,7 +234,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="GameOptionsButton" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Game Options" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,482,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="GameOptionsButton_MouseEnter" >
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="GameOptionsButton" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Game Options" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,482,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="GameOptionsButton_MouseEnter" Click="GameOptionsButton_Click" >
             <Button.Triggers>
                 <EventTrigger RoutedEvent="Window.Loaded">
                     <BeginStoryboard>
@@ -288,9 +319,36 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
         <Image Height="28" HorizontalAlignment="Left" Margin="568,199,0,0" Name="PlayerVsComputerOff" MouseDown="PlayerVsComputer_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" Panel.ZIndex="0" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,284,0,0" MouseDown="Player1_Click" Name="Player1MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,320,0,0" MouseDown="Player2_Click" Name="Player2MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" />
-        <Image Margin="0,152,82,0" Name="image1" Stretch="Fill" Source="/Pentago;component/GUI/Images/TitleWork.png" HorizontalAlignment="Right" Width="392" Height="302" VerticalAlignment="Top" />
+        <Image Margin="0,152,64,0" Name="image1" Stretch="Fill" Source="/Pentago;component/GUI/Images/TitleWork.png" HorizontalAlignment="Right" Width="326" Height="302" VerticalAlignment="Top" />
         <Image Height="41" HorizontalAlignment="Left" Margin="580,503,0,0" Name="GameDifficultyEasyOff" MouseDown="ComputerEasyLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
-        <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOff" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />   
+        <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOff" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
+        <StackPanel x:Name="OptionsPanel" HorizontalAlignment="Left" Height="662" Margin="510,50,0,0" VerticalAlignment="Top" Width="350" Visibility="Hidden">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="Images/Old_Scroll.png"/>
+            </StackPanel.Background>
+            <Button Height="57" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="Music" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Music" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="340" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" Margin="0,115,0,0" IsTabStop="False" />
+            <Slider x:Name="MusicSlider" Height="46" RenderTransformOrigin="0.328,1.364" VerticalAlignment="Top" HorizontalAlignment="Left" Width="198" Margin="70,0,0,0">
+                <Slider.Effect>
+                    <DropShadowEffect/>
+                </Slider.Effect>
+            </Slider>
+            <Button Height="50" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="Sound" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Sound" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" RenderTransformOrigin="0.5,0.5" VerticalContentAlignment="Center" VerticalAlignment="Center" >
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="0.588"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+            </Button>
+            <Slider x:Name="SoundSlider" Height="46" RenderTransformOrigin="0.328,1.364" VerticalAlignment="Top" HorizontalAlignment="Left" Width="198" Margin="70,0,0,0">
+                <Slider.Effect>
+                    <DropShadowEffect/>
+                </Slider.Effect>
+            </Slider>
+        </StackPanel>
+
         <Grid.Background>
             <ImageBrush ImageSource="/Pentago;component/GUI/Images/MainBack.png" />
         </Grid.Background>

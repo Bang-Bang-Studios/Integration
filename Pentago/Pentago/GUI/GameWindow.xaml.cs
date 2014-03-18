@@ -286,7 +286,7 @@ namespace Pentago
             {
                 //Console.WriteLine("Started AI thread.");
                 int winner = gameBrain.CheckForWin();
-                if (!gameBrain.MakeComputerMove() || winner != 0)
+                if (winner != 0 || !gameBrain.MakeComputerMove())
                 {
                     //Console.WriteLine("Cancelled AI thread.");
                     bw.CancelAsync();
@@ -329,9 +329,8 @@ namespace Pentago
         private int LocateQuad(int movePosition)
         {
             int quad = 2;
-            bool located = false;
 
-            for ( int i = 3; !located && i == 33; i += 3 )
+            for ( int i = 3; i <= 36; i += 3 )
             {
                 if ( movePosition < i )
                 {
@@ -357,8 +356,6 @@ namespace Pentago
                             quad = 3;
                         }
                     }
-
-                    located = true;
                 }
             }
 
@@ -389,7 +386,7 @@ namespace Pentago
             return quadStart;
         }
 
-        private int[] CreatePath(int movePostion, int QuadStart)
+        private int[] CreatePath(int QuadStart)
         {
             int[] path = new int[8];
 
@@ -410,103 +407,107 @@ namespace Pentago
         {
             int[] path = new int[8];
 
-            path = CreatePath(movePosition, GetQuadStart(movePosition));
+            path = CreatePath(GetQuadStart(movePosition));
             int[] tempBoard = gameBrain.GetBoard;
+
+            int pos = 0;
+            // find position of object in path
+            while (path[pos] != movePosition)
+            {
+                pos++;
+            }
 
             if (clockwise)
             {
-                int count = 0;
                 // move clockwise through the path
-                while (count != movePosition)
-                {
-                    count++;
-                }
-
                 for (int i = 0; i < 2; i++)
                 {
-                    tempBoard[path[count + 1]] = tempBoard[path[count]];
+                    tempBoard[path[pos + 1]] = tempBoard[path[pos]];
                     RePaintBoard();
+                    pos++;
                 }
             }
             else
             {
                 // move counterclockwise through the path
-                for (int i = 0; ; i--)
-                { }
+                for (int i = 0; i < 2 ; i--)
+                {
+                    tempBoard[path[pos - 1]] = tempBoard[path[pos]];
+                    RePaintBoard();
+                    pos--;
+                    
+                }
             }
         }
 
         private void GetComputerRotation()
         {
-            /**********************SIMULATE ANIMATION***********************/
-            Thread.Sleep(1000);
-            gameBrain.MakeComputerRotation();
+                gameBrain.MakeComputerRotation();
+                RePaintBoard();
+
             MakeRotationsHidden();
+        }
+
+        //private void InitiateRotation(bool rotateClockwise, short quad)
+        //{
+        //    SoundManager.playSFX(SoundManager.SoundType.Rotate);
+
+        //    for (int i = 0; i < 2; i++)
+        //    {
+        //        gameBrain.RotateBoard(rotateClockwise, quad, i + 1);
+        //        RePaintBoard();
+        //    }
+
+        //    MakeRotationsHidden();
+        //}
+
+        private void InitiateRotation(bool rotateClockwise, short quad)
+        {
+
+            SoundManager.playSFX(SoundManager.SoundType.Rotate);
+            gameBrain.RotateBoard(rotateClockwise, quad);
             RePaintBoard();
+            MakeRotationsHidden();
         }
 
         private void btnCounterClockWise2_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(false, 2);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(false, 2);
         }
 
         private void btnClockWise1_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(true, 1);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(true, 1);
         }
 
         private void btnCounterClockWise1_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(false, 1);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(false, 1);
         }
 
         private void btnClockWise2_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(true, 2);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(true, 2);
         }
 
         private void btnClockWise3_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(true, 3);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(true, 3);
         }
 
         private void btnCounterClockWise3_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(false, 3);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(false, 3);
         }
 
         private void btnClockWise4_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(true, 4);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(true, 4);
         }
 
         private void btnCounterClockWise4_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(false, 4);
-            RePaintBoard();
-            MakeRotationsHidden();
+            InitiateRotation(false, 4);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
