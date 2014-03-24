@@ -63,9 +63,11 @@ namespace Pentago.AI
             alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
             sw.Stop();
             Console.WriteLine("Time taken: " + sw.Elapsed.TotalSeconds + " seconds.");
+            /*
             Console.WriteLine("_Choice: " + _Choice);
             Console.WriteLine("_IsClockWise: " + _IsClockWise);
             Console.WriteLine("_Quad: " + _Quad);
+            */ 
         }
 
         private double alphaBeta(int[] board, int treeDepth, double alpha, double beta, Hashtable hashTable)

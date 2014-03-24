@@ -280,21 +280,21 @@ namespace Pentago
 
         private void GetComputerMoveAsynchronously()
         {
-            var bw = new BackgroundWorker();
+            BackgroundWorker AIbackgroundWorker = new BackgroundWorker();
             // define the event handlers
-            bw.DoWork += (sender, args) =>
+            AIbackgroundWorker.DoWork += (sender, args) =>
             {
                 //Console.WriteLine("Started AI thread.");
                 int winner = gameBrain.CheckForWin();
                 if (winner != 0 || !gameBrain.MakeComputerMove())
                 {
                     //Console.WriteLine("Cancelled AI thread.");
-                    bw.CancelAsync();
+                    AIbackgroundWorker.CancelAsync();
                     if (winner != 0)
                         ShowWinner(winner);
                 }
             };
-            bw.RunWorkerCompleted += (sender, args) =>
+            AIbackgroundWorker.RunWorkerCompleted += (sender, args) =>
             {
                 if (args.Error != null)  // if an exception occurred during DoWork,
                 {
@@ -323,152 +323,52 @@ namespace Pentago
                 }
 
             };
-            bw.RunWorkerAsync();
-        }
-
-        private int LocateQuad(int movePosition)
-        {
-            int quad = 2;
-
-            for ( int i = 3; i <= 36; i += 3 )
-            {
-                if ( movePosition < i )
-                {
-                    if (i <= 18)
-                    {
-                        if (i % 2 == 0)
-                        {
-                            quad = 1;
-                        }
-                        else
-                        {
-                            quad = 0;
-                        }
-                    }
-                    else
-                    {
-                        if (i % 2 == 0)
-                        {
-                            quad = 2;
-                        }
-                        else
-                        {
-                            quad = 3;
-                        }
-                    }
-                }
-            }
-
-            return quad;
-        }
-
-        private int GetQuadStart(int movePosition)
-        {
-            int quad = LocateQuad(movePosition);
-            int quadStart = 0;
-
-            switch (quad)
-            {
-                case 0:
-                    quadStart = 0;
-                    break;
-                case 1:
-                    quadStart = 3;
-                    break;
-                case 2:
-                    quadStart = 21;
-                    break;
-                case 3:
-                    quadStart = 18;
-                    break;
-            };
-
-            return quadStart;
-        }
-
-        private int[] CreatePath(int QuadStart)
-        {
-            int[] path = new int[8];
-
-            // Path follows clockwise starting from top left square
-            path[0] = QuadStart;
-            path[1] = path[0]++;
-            path[2] = path[1]++;
-            path[3] = path[2] + 6;
-            path[4] = path[3] + 6;
-            path[5] = path[4]--;
-            path[6] = path[5]--;
-            path[7] = path[6] - 6;
-
-            return path;
-        }
-
-        private void PaintImagePath(int movePosition, bool clockwise)
-        {
-            int[] path = new int[8];
-
-            path = CreatePath(GetQuadStart(movePosition));
-            int[] tempBoard = gameBrain.GetBoard;
-
-            int pos = 0;
-            // find position of object in path
-            while (path[pos] != movePosition)
-            {
-                pos++;
-            }
-
-            if (clockwise)
-            {
-                // move clockwise through the path
-                for (int i = 0; i < 2; i++)
-                {
-                    tempBoard[path[pos + 1]] = tempBoard[path[pos]];
-                    RePaintBoard();
-                    pos++;
-                }
-            }
-            else
-            {
-                // move counterclockwise through the path
-                for (int i = 0; i < 2 ; i--)
-                {
-                    tempBoard[path[pos - 1]] = tempBoard[path[pos]];
-                    RePaintBoard();
-                    pos--;
-                    
-                }
-            }
+            AIbackgroundWorker.RunWorkerAsync();
         }
 
         private void GetComputerRotation()
         {
-                gameBrain.MakeComputerRotation();
+            for (int i = 1; i <= 2; i ++)
+            {
+                gameBrain.MakeComputerRotation(i);
                 RePaintBoard();
+            }
 
             MakeRotationsHidden();
+        }
+
+        private void InitiateRotation(bool rotateClockwise, short quad)
+        {
+            SoundManager.playSFX(SoundManager.SoundType.Rotate);
+
+                gameBrain.RotateBoard(rotateClockwise, quad, 1);
+                RotateAnimation(quad, rotateClockwise);
+                //RePaintBoard();
+                //Thread.Sleep(1000);
+                gameBrain.RotateBoard(rotateClockwise, quad, 2);
+                //RePaintBoard();
+
+            MakeRotationsHidden();
+        }
+
+        private void RotateAnimation(short quad, bool rotateClockwise) 
+        {
+            var da = new DoubleAnimation(360, 0, new Duration(TimeSpan.FromSeconds(1)));
+            var rt = new RotateTransform();
+            Rectangle rect0 = (Rectangle)Board.Children[0];
+            rect0.RenderTransform = rt;
+            rect0.RenderTransformOrigin = new Point(0.5, 0.5);
+            rt.BeginAnimation(RotateTransform.AngleProperty, da);
         }
 
         //private void InitiateRotation(bool rotateClockwise, short quad)
         //{
+
         //    SoundManager.playSFX(SoundManager.SoundType.Rotate);
-
-        //    for (int i = 0; i < 2; i++)
-        //    {
-        //        gameBrain.RotateBoard(rotateClockwise, quad, i + 1);
-        //        RePaintBoard();
-        //    }
-
+        //    gameBrain.RotateBoard(rotateClockwise, quad);
+        //    RePaintBoard();
         //    MakeRotationsHidden();
         //}
-
-        private void InitiateRotation(bool rotateClockwise, short quad)
-        {
-
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
-            gameBrain.RotateBoard(rotateClockwise, quad);
-            RePaintBoard();
-            MakeRotationsHidden();
-        }
 
         private void btnCounterClockWise2_MouseDown(object sender, MouseButtonEventArgs e)
         {

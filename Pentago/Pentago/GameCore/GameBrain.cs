@@ -74,19 +74,19 @@ namespace Pentago.GameCore
             return false;
         }
 
-        //public void MakeComputerRotation(int rotation)
-        //{
-        //    bool rotateClockWise = player2.GetRotationDirection();
-        //    short quad = player2.GetCuadrant();
-        //    RotateBoard(rotateClockWise, quad, rotation);
-        //}
-
-        public void MakeComputerRotation()
+        public void MakeComputerRotation(int rotation)
         {
             bool rotateClockWise = player2.GetRotationDirection();
             short quad = player2.GetCuadrant();
-            RotateBoard(rotateClockWise, quad);
+            RotateBoard(rotateClockWise, quad, rotation);
         }
+
+        //public void MakeComputerRotation()
+        //{
+        //    bool rotateClockWise = player2.GetRotationDirection();
+        //    short quad = player2.GetCuadrant();
+        //    RotateBoard(rotateClockWise, quad);
+        //}
 
         private void InitializeBoard()
         {
@@ -113,48 +113,48 @@ namespace Pentago.GameCore
             }
         }
 
-        //public void RotateBoard(bool rotateClockWise, short quad, int rotationNumber)
-        //{
-        //    board.RotateQuad(rotateClockWise, quad);
-        //    if(rotationNumber > 1)
-        //    {
-        //        ChangeTurn();
-        //    }
-        //}
-
-        public void RotateBoard(bool rotateClockWise, short quad)
+        public void RotateBoard(bool rotateClockWise, short quad, int rotationNumber)
         {
-            switch (quad)
+            board.RotateQuad(rotateClockWise, quad);
+            if (rotationNumber > 1)
             {
-                case 1:
-                    if (rotateClockWise)
-                        board.RotateQuad1ClockWise();
-                    else
-                        board.RotateQuad1CounterClockWise();
-                    break;
-                case 2:
-                    if (rotateClockWise)
-                        board.RotateQuad2ClockWise();
-                    else
-                        board.RotateQuad2CounterClockWise();
-                    break;
-                case 3:
-                    if (rotateClockWise)
-                        board.RotateQuad3ClockWise();
-                    else
-                        board.RotateQuad3CounterClockWise();
-                    break;
-                case 4:
-                    if (rotateClockWise)
-                        board.RotateQuad4ClockWise();
-                    else
-                        board.RotateQuad4CounterClockWise();
-                    break;
-                default:
-                    break;
+                ChangeTurn();
             }
-            ChangeTurn();
         }
+
+        //public void RotateBoard(bool rotateClockWise, short quad)
+        //{
+        //    switch (quad)
+        //    {
+        //        case 1:
+        //            if (rotateClockWise)
+        //                board.RotateQuad1ClockWise();
+        //            else
+        //                board.RotateQuad1CounterClockWise();
+        //            break;
+        //        case 2:
+        //            if (rotateClockWise)
+        //                board.RotateQuad2ClockWise();
+        //            else
+        //                board.RotateQuad2CounterClockWise();
+        //            break;
+        //        case 3:
+        //            if (rotateClockWise)
+        //                board.RotateQuad3ClockWise();
+        //            else
+        //                board.RotateQuad3CounterClockWise();
+        //            break;
+        //        case 4:
+        //            if (rotateClockWise)
+        //                board.RotateQuad4ClockWise();
+        //            else
+        //                board.RotateQuad4CounterClockWise();
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    ChangeTurn();
+        //}
 
         private bool ValidateMove(short row, short col)
         {

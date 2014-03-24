@@ -37,8 +37,8 @@ namespace Pentago.GUI
             SoundManager.playSFX(SoundManager.SoundType.Click);
             Player1NameTextBox.Focusable = true;
             Player1NameTextBox.Focus();
-            if (QuickMatchMenuScroll.Visibility != Visibility.Visible)
-            {
+            //if (QuickMatchMenuScroll.Visibility != Visibility.Visible)
+            //{
                 
                 //Button b = (Button)sender;
                // DoubleAnimation animation = new DoubleAnimation(1, new Duration(TimeSpan.FromSeconds(1000)));
@@ -89,7 +89,7 @@ namespace Pentago.GUI
                 Player1MoveFirstOn.Visibility = Visibility.Visible;
                 Player2MoveFirstOff.Visibility = Visibility.Visible;
                 ReHideMenues("Quick");
-            }
+           // }
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
@@ -100,7 +100,7 @@ namespace Pentago.GUI
 
         private void ReHideMenues(string MenuName)
         {
-            if (MenuName == "Story")
+            if (MenuName == "Quick")
             {
                 QuickMatchMenuScroll.Visibility = Visibility.Visible;
                 PlayerVsGroupBox.Visibility = Visibility.Visible;
@@ -117,15 +117,19 @@ namespace Pentago.GUI
                 Player2Name.Visibility = Visibility.Visible;
                 Player2NameTextBox.Visibility = Visibility.Visible;
                 Battle.Visibility = Visibility.Visible;
-            }
-            else if (MenuName == "Quick")
-            {
+           
                 StoryModeMenuScroll.Visibility = Visibility.Visible;
                 OptionsPanel.Visibility = Visibility.Hidden;
+                StoryModePanel.Visibility = Visibility.Hidden;
             }
-            else if(MenuName == "Options")
+            else if (MenuName == "Options")
             {
-
+                StoryModePanel.Visibility = Visibility.Hidden;
+                NewProfilePanel.Visibility = Visibility.Hidden;
+            }
+            else if (MenuName == "StoryMode")
+            {
+                OptionsPanel.Visibility = Visibility.Hidden;
             }
         }
 
@@ -384,6 +388,31 @@ namespace Pentago.GUI
         {
             OptionsPanel.Visibility = Visibility.Visible;
             ReHideMenues("Options");
+        }
+
+        private void StoryMode_Click(object sender, RoutedEventArgs e)
+        {
+            StoryModePanel.Visibility = Visibility.Visible;
+            NewProfilePanel.Visibility = Visibility.Hidden;
+            ProfileList.Visibility = Visibility.Visible;
+            ContineAdventure.Visibility = Visibility.Visible;
+            ReHideMenues("StoryMode");
+        }
+
+        private void NewProfile_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileList.Visibility = Visibility.Hidden;
+            ContineAdventure.Visibility = Visibility.Hidden;
+            NewProfilePanel.Visibility = Visibility.Visible;
+            
+        }
+
+        private void ExistingProfile_Click(object sender, RoutedEventArgs e)
+        {
+            NewProfilePanel.Visibility = Visibility.Hidden;
+            ProfileList.Visibility = Visibility.Visible;
+            ContineAdventure.Visibility = Visibility.Visible;
+            
         }
     }
 }

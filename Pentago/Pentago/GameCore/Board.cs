@@ -62,17 +62,17 @@ namespace Pentago.GameCore
 
             switch (quad)
             {
-                case 0:
+                case 1:
                     quadStart = 0;
                     break;
-                case 1:
-                    quadStart = 3;
-                    break;
                 case 2:
-                    quadStart = 21;
+                    quadStart = 3;
                     break;
                 case 3:
                     quadStart = 18;
+                    break;
+                case 4:
+                    quadStart = 21;
                     break;
             };
 
@@ -85,12 +85,12 @@ namespace Pentago.GameCore
 
             // Path follows clockwise starting from top left square
             path[0] = QuadStart;
-            path[1] = path[0]++;
-            path[2] = path[1]++;
+            path[1] = path[0] + 1;
+            path[2] = path[1] + 1;
             path[3] = path[2] + 6;
             path[4] = path[3] + 6;
-            path[5] = path[4]--;
-            path[6] = path[5]--;
+            path[5] = path[4] - 1;
+            path[6] = path[5] - 1;
             path[7] = path[6] - 6;
 
             return path;
