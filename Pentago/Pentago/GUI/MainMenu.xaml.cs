@@ -15,6 +15,7 @@ using Pentago.GameCore;
 using Pentago.AI;
 using Pentago;
 using Pentago.GUI.Classes;
+using Pentago_Networking;
 using System.Windows.Media.Animation;
 
 
@@ -25,53 +26,30 @@ namespace Pentago.GUI
     /// </summary>
     public partial class MainMenu : Window
     {
+        ProfileManager profileManager = null;
         public MainMenu()
         {
             InitializeComponent();
             SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Intro.mp3", UriKind.Relative));
             SoundManager.backgroundMusicPlayer.Play();
+            //Initialize profile manager
+            profileManager = ProfileManager.InstanceCreator();
         }
         
         private void QuickMatch_Click(object sender, RoutedEventArgs e)
         {
             SoundManager.playSFX(SoundManager.SoundType.Click);
-            Player1NameTextBox.Focusable = true;
-            Player1NameTextBox.Focus();
-            //if (QuickMatchMenuScroll.Visibility != Visibility.Visible)
-            //{
-                
-                //Button b = (Button)sender;
-               // DoubleAnimation animation = new DoubleAnimation(1, new Duration(TimeSpan.FromSeconds(1000)));
-                //DoubleAnimation reverseAnimation = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(100)));
-                //b.BeginAnimation(Image.OpacityProperty, animation);
-                //QuickMatchMenuScroll.BeginAnimation(Image.OpacityProperty, reverseAnimation);
+            if (QuickMatchMenuScroll.Visibility != Visibility.Visible)
+            {
+                Player1NameTextBox.Focusable = true;
+                Player1NameTextBox.Focus();
+
                 QuickMatchMenuScroll.Visibility = Visibility.Hidden;
                 QuickMatchMenuScroll.Visibility = Visibility.Visible;
-
-                //animation = new DoubleAnimation(1, new Duration(TimeSpan.FromSeconds(1000)));
-                //reverseAnimation = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(100)));
-               // b.BeginAnimation(GroupBox.OpacityProperty, animation);
-                //PlayerVsGroupBox.BeginAnimation(GroupBox.OpacityProperty, reverseAnimation);
                 PlayerVsGroupBox.Visibility = Visibility.Visible;
-
-                //animation = new DoubleAnimation(1, new Duration(TimeSpan.FromSeconds(1000)));
-                //reverseAnimation = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(100)));
-                //b.BeginAnimation(StackPanel.OpacityProperty, animation);
-                //PlayerVsStackPanel.BeginAnimation(StackPanel.OpacityProperty, reverseAnimation);
                 PlayerVsStackPanel.Visibility = Visibility.Visible;
-
-                //animation = new DoubleAnimation(1, new Duration(TimeSpan.FromSeconds(1000)));
-                //reverseAnimation = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(100)));
-                //b.BeginAnimation(Button.OpacityProperty, animation);
-                //PlayerVsPlayer.BeginAnimation(Button.OpacityProperty, reverseAnimation);
                 PlayerVsPlayer.Visibility = Visibility.Visible;
-
-                //animation = new DoubleAnimation(1, new Duration(TimeSpan.FromSeconds(1000)));
-                //reverseAnimation = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(100)));
-                //b.BeginAnimation(Button.OpacityProperty, animation);
-                //PlayerVsComputer.BeginAnimation(Button.OpacityProperty, reverseAnimation);
                 PlayerVsComputer.Visibility = Visibility.Visible;
-                
                 MoveFirst.Visibility = Visibility.Visible;
                 MoveGroupBox.Visibility = Visibility.Visible;
                 MoveStackPanel.Visibility = Visibility.Visible;
@@ -88,8 +66,9 @@ namespace Pentago.GUI
                 PlayerVsComputerOff.Visibility = Visibility.Visible;
                 Player1MoveFirstOn.Visibility = Visibility.Visible;
                 Player2MoveFirstOff.Visibility = Visibility.Visible;
+
                 ReHideMenues("Quick");
-           // }
+            }
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
@@ -121,15 +100,37 @@ namespace Pentago.GUI
                 StoryModeMenuScroll.Visibility = Visibility.Visible;
                 OptionsPanel.Visibility = Visibility.Hidden;
                 StoryModePanel.Visibility = Visibility.Hidden;
+                NewProfilePanel.Visibility = Visibility.Hidden;
             }
             else if (MenuName == "Options")
             {
+                QuickMatchMenuScroll.Visibility = Visibility.Hidden;
                 StoryModePanel.Visibility = Visibility.Hidden;
                 NewProfilePanel.Visibility = Visibility.Hidden;
-            }
+            } 
             else if (MenuName == "StoryMode")
             {
                 OptionsPanel.Visibility = Visibility.Hidden;
+                QuickMatchMenuScroll.Visibility = Visibility.Hidden;
+                PlayerVsGroupBox.Visibility = Visibility.Hidden;
+                PlayerVsStackPanel.Visibility = Visibility.Hidden;
+                PlayerVsPlayer.Visibility = Visibility.Hidden;
+                PlayerVsComputer.Visibility = Visibility.Hidden;
+                MoveFirst.Visibility = Visibility.Hidden;
+                MoveGroupBox.Visibility = Visibility.Hidden;
+                MoveStackPanel.Visibility = Visibility.Hidden;
+                Player1.Visibility = Visibility.Hidden;
+                Player2.Visibility = Visibility.Hidden;
+                Player1Name.Visibility = Visibility.Hidden;
+                Player1NameTextBox.Visibility = Visibility.Hidden;
+                Player2Name.Visibility = Visibility.Hidden;
+                Player2NameTextBox.Visibility = Visibility.Hidden;
+                Battle.Visibility = Visibility.Hidden;
+                PlayerVsPlayerOn.Visibility = Visibility.Hidden;
+                PlayerVsComputerOff.Visibility = Visibility.Hidden;
+                Player1MoveFirstOn.Visibility = Visibility.Hidden;
+                Player2MoveFirstOff.Visibility = Visibility.Hidden;
+                StoryModeMenuScroll.Visibility = Visibility.Hidden;
             }
         }
 
@@ -137,16 +138,38 @@ namespace Pentago.GUI
         {
             Application.Current.Shutdown();
         }
+
         private void Battle_Click(object sender, RoutedEventArgs e)
         {
-            /******************************DATA VALIDATION HERE BEFORE CALLING INITIALIZE******************************/
             SoundManager.playSFX(SoundManager.SoundType.Click);
+            if (ValidateNames()) {
+                if (PlayerVsPlayerOn.Visibility == Visibility.Visible)
+                    InitializePlayerVsPlayerGame();
+                else if (PlayerVsPlayerOff.Visibility == Visibility.Visible)
+                    InitializePlayerVsComputerGame();
+                else
+                    Console.WriteLine("There is something wrong!");
+            } else {
+                const string message = "Please, verify names are longer than 1 character and less than 15.";
+                const string caption = "Dragon Horde";
+                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);    
+            }
+
+        }
+
+        private bool ValidateNames()
+        {
+            string player1Name = Player1NameTextBox.Text;
+            string player2Name = Player2NameTextBox.Text;
+
+            if (player1Name.Trim() == "" || player1Name.Trim().Length < 1 || player1Name.Trim().Length > 15)
+                return false;
+
             if (PlayerVsPlayerOn.Visibility == Visibility.Visible)
-                InitializePlayerVsPlayerGame();
-            else if (PlayerVsPlayerOff.Visibility == Visibility.Visible)
-                InitializePlayerVsComputerGame();
-            else
-                Console.WriteLine("There is something wrong!");
+                if (player2Name.Trim() == "" || player2Name.Trim().Length < 1 || player2Name.Trim().Length > 15)
+                    return false;
+
+            return true;
         }
 
         private void PlayerVsPlayer_Click(object sender, RoutedEventArgs e)
@@ -268,14 +291,14 @@ namespace Pentago.GUI
             player1Image.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPup.png", UriKind.Absolute));
             ImageBrush player1ImageHover = new ImageBrush();
             player1ImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPupHover.png", UriKind.Absolute));
-            Player player1 = new Player(player1Name, isPlayer1Active, player1Image, player1ImageHover);
+            Player player1 = new Player(player1Name.Trim(), isPlayer1Active, player1Image, player1ImageHover);
 
             string player2Name = Player2NameTextBox.Text;
             ImageBrush player2Image = new ImageBrush();
             player2Image.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePup.png", UriKind.Absolute));
             ImageBrush player2ImageHover = new ImageBrush();
             player2ImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePupHover.png", UriKind.Absolute));
-            Player player2 = new Player(player2Name, !isPlayer1Active, player2Image, player2ImageHover);
+            Player player2 = new Player(player2Name.Trim(), !isPlayer1Active, player2Image, player2ImageHover);
 
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.QuickMatch, player1, player2);
             Window gameWindow = new GameWindow(gameOptions);
@@ -299,7 +322,7 @@ namespace Pentago.GUI
             player1Image.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPup.png", UriKind.Absolute));
             ImageBrush player1ImageHover = new ImageBrush();
             player1ImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPupHover.png", UriKind.Absolute));
-            Player player1 = new Player(player1Name, isPlayer1Active, player1Image, player1ImageHover);
+            Player player1 = new Player(player1Name.Trim(), isPlayer1Active, player1Image, player1ImageHover);
 
             string computerPlayerName = "Computer";
             ImageBrush computerPlayerImage = new ImageBrush();
@@ -314,7 +337,7 @@ namespace Pentago.GUI
             else
                 difficulty = computerAI.Difficulty.Hard;
 
-            computerAI computerPlayer = new computerAI(computerPlayerName, !isPlayer1Active, computerPlayerImage, computerPlayerImageHover, difficulty);
+            computerAI computerPlayer = new computerAI(computerPlayerName.Trim(), !isPlayer1Active, computerPlayerImage, computerPlayerImageHover, difficulty);
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.AI, player1, computerPlayer);
             Window gameWindow = new GameWindow(gameOptions);
             App.Current.MainWindow = gameWindow;
@@ -386,17 +409,36 @@ namespace Pentago.GUI
 
         private void GameOptionsButton_Click(object sender, RoutedEventArgs e)
         {
-            OptionsPanel.Visibility = Visibility.Visible;
-            ReHideMenues("Options");
+            if (OptionsPanel.Visibility != Visibility.Visible)
+            {
+                OptionsPanel.Visibility = Visibility.Visible;
+                ReHideMenues("Options");
+            }
         }
 
         private void StoryMode_Click(object sender, RoutedEventArgs e)
         {
-            StoryModePanel.Visibility = Visibility.Visible;
-            NewProfilePanel.Visibility = Visibility.Hidden;
-            ProfileList.Visibility = Visibility.Visible;
-            ContineAdventure.Visibility = Visibility.Visible;
-            ReHideMenues("StoryMode");
+            //if it is already visible, dont show it again!
+            if (StoryModePanel.Visibility != Visibility.Visible)
+            {
+                StoryModePanel.Visibility = Visibility.Visible;
+                NewProfilePanel.Visibility = Visibility.Hidden;
+                LoadProfilesList();
+                ProfileList.Visibility = Visibility.Visible;
+                ContineAdventure.Visibility = Visibility.Visible;
+                ReHideMenues("StoryMode");
+            }
+        }
+
+        private void LoadProfilesList()
+        {
+            ProfileList.Items.Clear();
+            List<ProfileManager.Profile> profiles = profileManager.GetAllProfiles();
+            foreach (ProfileManager.Profile profile in profiles)
+            {
+                string name = profile.ProfileName;
+                ProfileList.Items.Add(name);
+            }
         }
 
         private void NewProfile_Click(object sender, RoutedEventArgs e)
@@ -414,5 +456,40 @@ namespace Pentago.GUI
             ContineAdventure.Visibility = Visibility.Visible;
             
         }
+
+        private void QuitToMainMenu_Click(object sender, RoutedEventArgs e)
+        {
+            OnlineMenuPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void OnlineGame_Click(object sender, RoutedEventArgs e)
+        {
+            OnlineMenuPanel.Visibility = Visibility.Visible;
+        }
+
+        PentagoNetwork networkUtil;
+
+        private void FindOpponent_Click(object sender, RoutedEventArgs e)
+        {
+            OpponentsTag.Visibility = Visibility.Visible;
+            networkUtil = new PentagoNetwork(NameBox.Text);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AvailableLobbies.Items.Clear();
+            foreach (PentagoNetwork.peerType p in networkUtil.availablePeers)
+            {
+                ListBoxItem item = new ListBoxItem();
+                item.Content = p.name;
+                AvailableLobbies.Items.Add(item);
+            }
+        }
+
+        private void ChallengeOpponent_Click(object sender, RoutedEventArgs e)
+        {
+            networkUtil.ConnectUsingIndex(AvailableLobbies.SelectedIndex);
+        }
+
     }
 }

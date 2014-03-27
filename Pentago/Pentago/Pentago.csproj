@@ -42,6 +42,9 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lidgren.Network">
+      <HintPath>J:\Pentago Networking\Pentago Networking\bin\Debug\Lidgren.Network.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -68,6 +71,7 @@
     </Compile>
     <Compile Include="GameCore\Board.cs" />
     <Compile Include="GameCore\Player.cs" />
+    <Compile Include="GameCore\ProfileManager.cs" />
     <Compile Include="GUI\Classes\SoundManager.cs" />
     <Compile Include="GameCore\GameBrain.cs" />
     <Compile Include="GUI\Classes\GameOptions.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="GUI\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Networking\PentagoNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -156,6 +161,7 @@
     <Resource Include="GUI\Images\RedPupHover.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="GUI\Images\RosettaStone.png" />
     <Content Include="GUI\Sounds\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

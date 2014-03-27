@@ -130,7 +130,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="OnlineGame" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Online Game" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,304,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="OnlineGame_MouseEnter" >
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="OnlineGame" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Online Game" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="145,304,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="OnlineGame_MouseEnter" Click="OnlineGame_Click" >
             <Button.Triggers>
                 <EventTrigger RoutedEvent="Window.Loaded">
                     <BeginStoryboard>
@@ -286,8 +286,8 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" Stretch="Fill" VerticalAlignment="Top" Width="341"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
-        <Image Height="662" HorizontalAlignment="Left" Margin="519,50,0,0" Name="QuickMatchMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="341" Visibility="Hidden" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
+        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" Stretch="Fill" VerticalAlignment="Top" Width="340"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
+        <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="QuickMatchMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="375" Visibility="Hidden" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
         <GroupBox Name="MoveGroupBox" Margin="589,260,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="119" Visibility="Hidden" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}">
             <StackPanel Name="MoveStackPanel" Orientation="Vertical" Width="114" Height="80" Visibility="Hidden">
                 <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 1" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player1" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="101" HorizontalAlignment="Left" Click="Player1_Click" Visibility="Hidden" MouseEnter="Player1_MouseEnter" />
@@ -305,7 +305,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
             <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Player" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="PlayerVsPlayer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="208" HorizontalAlignment="Left" Click="PlayerVsPlayer_Click" MouseEnter="PlayerVsPlayer_MouseEnter" Visibility="Hidden" />
             <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Computer" ContentStringFormat="" FontFamily="Old English Text MT" FontSize="26" FontWeight="Normal" Height="40" HorizontalContentAlignment="Center" Name="PlayerVsComputer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="231" Click="PlayerVsComputer_Click" Visibility="Hidden" MouseEnter="PlayerVsComputer_MouseEnter" />
         </StackPanel>
-        <Image Height="662" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="341" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
+        <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="375" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
         <TextBlock Height="44" HorizontalAlignment="Left" Margin="585,465,0,0" Name="ComputerLevel" Text="Computer Level" VerticalAlignment="Top" Width="191" FontFamily="Old English Text MT" FontSize="28" TextAlignment="Center" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,164,0,0" MouseDown="PlayerVsPlayer_Click" Name="PlayerVsPlayerOn" Stretch="Fill" VerticalAlignment="Top" Width="27" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,199,0,0" MouseDown="PlayerVsComputer_Click" Name="PlayerVsComputerOn" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
@@ -322,7 +322,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
         <Image Margin="0,152,64,0" Name="image1" Stretch="Fill" Source="/Pentago;component/GUI/Images/TitleWork.png" HorizontalAlignment="Right" Width="326" Height="302" VerticalAlignment="Top" />
         <Image Height="41" HorizontalAlignment="Left" Margin="580,503,0,0" Name="GameDifficultyEasyOff" MouseDown="ComputerEasyLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
         <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOff" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
-        <StackPanel x:Name="OptionsPanel" HorizontalAlignment="Left" Height="662" Margin="510,50,0,0" VerticalAlignment="Top" Width="350" Visibility="Hidden">
+        <StackPanel x:Name="OptionsPanel" HorizontalAlignment="Left" Height="675" Margin="519,50,0,0" VerticalAlignment="Top" Width="375" Visibility="Hidden">
             <StackPanel.Background>
                 <ImageBrush ImageSource="Images/Old_Scroll.png"/>
             </StackPanel.Background>
@@ -340,7 +340,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </Slider.Effect>
             </Slider>
         </StackPanel>
-        <DockPanel x:Name="StoryModePanel" HorizontalAlignment="Left" Height="662" Margin="519,50,0,0" VerticalAlignment="Top" Width="350" Panel.ZIndex="-15" Visibility="Hidden">
+        <DockPanel x:Name="StoryModePanel" HorizontalAlignment="Left" Height="675" Margin="519,50,0,0" VerticalAlignment="Top" Width="375" Panel.ZIndex="-15" Visibility="Hidden">
             <DockPanel.Background>
                 <ImageBrush ImageSource="Images/Old_Scroll.png"/>
             </DockPanel.Background>
@@ -351,16 +351,8 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 <TextBlock Width="125" HorizontalAlignment="Center" FontSize="32" Height="87"><Run Text="Existing"/><LineBreak/><Run Text="Profile"/></TextBlock>
             </Button>
             <ListBox x:Name="ProfileList" Height="265" Width="236" HorizontalAlignment="Left" Margin="-250,212,0,185" VerticalAlignment="Center" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" Visibility="Hidden">
-                <ListBoxItem>Trogdor</ListBoxItem>
-                <ListBoxItem>Zac</ListBoxItem>
-                <ListBoxItem>Tyson</ListBoxItem>
-                <ListBoxItem>Michael</ListBoxItem>
-                <ListBoxItem>Diego</ListBoxItem>
-                <ListBoxItem>Kreston</ListBoxItem>
-                <ListBoxItem>Dora</ListBoxItem>
-                <ListBoxItem>Database</ListBoxItem>
             </ListBox>
-            <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="ContineAdventure" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Continue" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" HorizontalAlignment="Left" Width="190" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" Click="StoryMode_Click" Margin="-230,0,0,120" VerticalAlignment="Bottom" Visibility="Hidden" />
+            <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="ContineAdventure" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Continue" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" HorizontalAlignment="Left" Width="190" BorderThickness="0" MouseEnter="StoryMode_MouseEnter"  Margin="-230,0,0,120" VerticalAlignment="Bottom" Visibility="Hidden" />
         </DockPanel>
         <DockPanel x:Name="NewProfilePanel" HorizontalAlignment="Left" Height="337" LastChildFill="False" Margin="580,260,0,0" VerticalAlignment="Top" Width="235" Visibility="Hidden">
             <TextBox Height="43" HorizontalAlignment="Left" x:Name="NewProfileName" VerticalAlignment="Top" Width="225" FontFamily="Old English Text MT" FontSize="28" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Visible" KeyDown="Player1NameTextBox_KeyDown" DockPanel.Dock="Top" Margin="10,0,0,0"/>
@@ -376,6 +368,18 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                     <ImageBrush ImageSource="Images/CounterClockWise2.png"/>
                 </Button.Background>
             </Button>
+        </DockPanel>
+        <DockPanel x:Name="OnlineMenuPanel" LastChildFill="False" Margin="-57,10,64,-57" Visibility="Hidden">
+            <DockPanel.Background>
+                <ImageBrush ImageSource="Images/RosettaStone.png"/>
+            </DockPanel.Background>
+            <TextBlock x:Name="OpponentsTag" Margin="250,189,0,0" TextWrapping="Wrap" Text="Opponents" Width="180" Foreground="#FFF71D1D" FontSize="32" FontWeight="Bold" Height="49" VerticalAlignment="Top"/>
+            <ListBox x:Name="AvailableLobbies" Width="521" Height="409" VerticalAlignment="Top" Margin="-250,243,0,0" FontSize="32" Background="{x:Null}" Foreground="#FFF31D1D" FontWeight="Bold"/>
+            <Button Content="MainMenu" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Margin="-70,45,0,738" x:Name="QuitToMainMenu"  Width="192" Foreground="#FFEA2020" Click="QuitToMainMenu_Click" />
+            <Button Content="Find Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Margin="-1000,665,0,0" x:Name="FindOpponent"  Width="270" Foreground="#FFEA2020" Height="67" VerticalAlignment="Top" Click="FindOpponent_Click" />
+            <Button Content="Challenge Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Margin="-350,665,0,0" x:Name="ChallengeOpponent"  Width="358" Foreground="#FFEA2020" Height="67" VerticalAlignment="Top" Click="ChallengeOpponent_Click" />
+            <TextBox x:Name="NameBox" Height="49" TextWrapping="Wrap" Text="Enter Name" VerticalAlignment="Top" Width="272" Margin="-500,189,0,0" FontSize="32" FontFamily="Old English Text MT"/>
+            <Button Content="Button" Height="847" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         </DockPanel>
         <Grid.Background>
             <ImageBrush ImageSource="/Pentago;component/GUI/Images/MainBack.png" />

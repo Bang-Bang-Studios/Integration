@@ -433,10 +433,18 @@ namespace Pentago
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             SoundManager.playSFX(SoundManager.SoundType.Click);
-            Window mainWindow = new MainMenu();
-            App.Current.MainWindow = mainWindow;
-            mainWindow.Show();
-            this.Hide();
+
+            const string message ="Are you sure you want to exit the game?";
+            const string caption = "Dragon Horde";
+            MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Window mainWindow = new MainMenu();
+                App.Current.MainWindow = mainWindow;
+                mainWindow.Show();
+                this.Hide();
+            }
         }
 
         private void ExitButton_MouseEnter(object sender, MouseEventArgs e)
@@ -444,8 +452,11 @@ namespace Pentago
             SoundManager.playSFX(SoundManager.SoundType.MouseOver);
         }
 
-
-
+        private void VikingButton_Click(object sender, RoutedEventArgs e)
+        {
+            SpeechBubble.Visibility = Visibility.Visible;
+            BubbleText.Visibility = Visibility.Visible;
+        }
 
     }
 }
