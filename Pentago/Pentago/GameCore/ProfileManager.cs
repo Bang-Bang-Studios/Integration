@@ -30,7 +30,7 @@ namespace Pentago.GameCore
             else
             {
                 File.Create(pathToProfiles);
-                File.SetAttributes(pathToProfiles, FileAttributes.Hidden);
+                //File.SetAttributes(pathToProfiles, FileAttributes.Hidden);
             }
         }
 
@@ -45,14 +45,14 @@ namespace Pentago.GameCore
                     {
                         string name = line.Substring(0, line.IndexOf("[&]"));
                         int campaignProgress = Convert.ToInt32(line.Substring(name.Length + 3));
-                        AddProfile(new Profile(name, campaignProgress));
+                        AddProfileToList(new Profile(name, campaignProgress));
                     }
                     catch { }
                 }
             }
         }
 
-        private void AddProfile(Profile profile)
+        private void AddProfileToList(Profile profile)
         {
             _Profiles.Add(profile);
         }
@@ -71,6 +71,48 @@ namespace Pentago.GameCore
             return _Profiles;
         }
 
+        public bool IsProfileValid(string newProfileName)
+        {
+            foreach(Profile profile in _Profiles)
+            {
+                if (newProfileName == profile.ProfileName)
+                    return false;
+            }
+            return true;
+        }
+
+        public void CreateNewProfile(string newProfileName)
+        {
+            //Initialize everything to zero
+            Profile newProfile = new Profile(newProfileName, 0);
+            string[] profileParser = new string[_Profiles.Count + 1];
+
+            string profileLineConvention = newProfileName + "[&]";
+            profileLineConvention += 0;
+            profileParser[0] = profileLineConvention;
+            for (int i = 0; i < _Profiles.Count; i++)
+            {
+                profileLineConvention = _Profiles[i].ProfileName + "[&]";
+                profileLineConvention += _Profiles[i].CampaignProgress;
+                profileParser[i + 1] = profileLineConvention;
+            }
+
+            if (!System.IO.Directory.Exists(pathToDirectory))
+                System.IO.Directory.CreateDirectory(pathToDirectory);
+            try
+            {
+                System.IO.File.WriteAllLines(pathToProfiles, profileParser);
+                //Clear list
+                _Profiles.Clear();
+                //Load new list with new profiles
+                ParseProfile();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+        }
 
         /// <summary> Profile
         /// Private nested class to encapsulate 

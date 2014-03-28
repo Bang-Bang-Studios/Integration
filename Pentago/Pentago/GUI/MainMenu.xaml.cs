@@ -41,9 +41,6 @@ namespace Pentago.GUI
             SoundManager.playSFX(SoundManager.SoundType.Click);
             if (QuickMatchMenuScroll.Visibility != Visibility.Visible)
             {
-                Player1NameTextBox.Focusable = true;
-                Player1NameTextBox.Focus();
-
                 QuickMatchMenuScroll.Visibility = Visibility.Hidden;
                 QuickMatchMenuScroll.Visibility = Visibility.Visible;
                 PlayerVsGroupBox.Visibility = Visibility.Visible;
@@ -69,6 +66,8 @@ namespace Pentago.GUI
 
                 ReHideMenues("Quick");
             }
+            Player1NameTextBox.Focusable = true;
+            Player1NameTextBox.Focus();
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
@@ -157,20 +156,7 @@ namespace Pentago.GUI
 
         }
 
-        private bool ValidateNames()
-        {
-            string player1Name = Player1NameTextBox.Text;
-            string player2Name = Player2NameTextBox.Text;
 
-            if (player1Name.Trim() == "" || player1Name.Trim().Length < 1 || player1Name.Trim().Length > 15)
-                return false;
-
-            if (PlayerVsPlayerOn.Visibility == Visibility.Visible)
-                if (player2Name.Trim() == "" || player2Name.Trim().Length < 1 || player2Name.Trim().Length > 15)
-                    return false;
-
-            return true;
-        }
 
         private void PlayerVsPlayer_Click(object sender, RoutedEventArgs e)
         {
@@ -443,17 +429,24 @@ namespace Pentago.GUI
 
         private void NewProfile_Click(object sender, RoutedEventArgs e)
         {
-            ProfileList.Visibility = Visibility.Hidden;
-            ContineAdventure.Visibility = Visibility.Hidden;
-            NewProfilePanel.Visibility = Visibility.Visible;
-            
+            if (NewProfilePanel.Visibility != Visibility.Visible)
+            {
+                ProfileList.Visibility = Visibility.Hidden;
+                ContineAdventure.Visibility = Visibility.Hidden;
+                NewProfilePanel.Visibility = Visibility.Visible;
+                NewProfileName.Clear();
+            }
+            NewProfileName.Focusable = true;
+            NewProfileName.Focus();
         }
 
         private void ExistingProfile_Click(object sender, RoutedEventArgs e)
         {
+
             NewProfilePanel.Visibility = Visibility.Hidden;
             ProfileList.Visibility = Visibility.Visible;
             ContineAdventure.Visibility = Visibility.Visible;
+            LoadProfilesList();
             
         }
 
@@ -489,6 +482,47 @@ namespace Pentago.GUI
         private void ChallengeOpponent_Click(object sender, RoutedEventArgs e)
         {
             networkUtil.ConnectUsingIndex(AvailableLobbies.SelectedIndex);
+        }
+
+        private void CreateNewProfile_Click(object sender, RoutedEventArgs e)
+        {
+            string newProfileName = NewProfileName.Text;
+            if (IsProfileNameValid(newProfileName.Trim()))
+            {
+                if (profileManager.IsProfileValid(newProfileName.Trim()))
+                {
+                    //append to file 
+                    profileManager.CreateNewProfile(newProfileName.Trim());
+                }
+                else
+                {
+                    const string message = "This profile name already exists, please create a new one.";
+                    const string caption = "Dragon Horde";
+                    MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);    
+                }
+            }
+        }
+
+        private bool IsProfileNameValid(string profileName)
+        {
+            if (profileName.Trim() == "" || profileName.Trim().Length < 1 || profileName.Trim().Length > 15)
+                return false;
+            return true;
+        }
+
+        private bool ValidateNames()
+        {
+            string player1Name = Player1NameTextBox.Text;
+            string player2Name = Player2NameTextBox.Text;
+
+            if (player1Name.Trim() == "" || player1Name.Trim().Length < 1 || player1Name.Trim().Length > 15)
+                return false;
+
+            if (PlayerVsPlayerOn.Visibility == Visibility.Visible)
+                if (player2Name.Trim() == "" || player2Name.Trim().Length < 1 || player2Name.Trim().Length > 15)
+                    return false;
+
+            return true;
         }
 
     }

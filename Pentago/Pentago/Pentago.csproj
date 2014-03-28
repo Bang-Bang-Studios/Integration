@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Images\RosettaStone.png" />
+    <Resource Include="GUI\Images\RosettaStoneCartoony.png" />
     <Content Include="GUI\Sounds\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
