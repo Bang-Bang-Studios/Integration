@@ -42,12 +42,17 @@ namespace Pentago
         private Player player2 = null;
         private computerAI computerPlayer = null;
         GameOptions gameOptions = null;
+        private PentagoNetwork networkUtil;
+
+        private bool isNetwork = false;
+        private short movePos;
+
 
         public GameWindow(GameOptions options)
         {
             InitializeComponent();
-            SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Gameplay.mp3", UriKind.Relative));
-            SoundManager.backgroundMusicPlayer.Play();
+            //SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Gameplay.mp3", UriKind.Relative));
+            //SoundManager.backgroundMusicPlayer.Play();
             gameOptions = options;
             PaintBoard();
             switch (gameOptions._TypeOfGame)
@@ -58,6 +63,17 @@ namespace Pentago
                     gameBrain = new GameBrain(player1);
                     Player1NameText.Text = player1.Name;
                     Player2NameText.Text = player2.Name;
+                    isNetwork = false;
+                    break;
+                case GameOptions.TypeOfGame.Network:
+                    player1 = options._Player1;
+                    player2 = options._Player2;
+                    gameBrain = new GameBrain(player1);
+                    Player1NameText.Text = player1.Name;
+                    Player2NameText.Text = player2.Name;
+                    networkUtil = options._NetworkUtil;
+                    networkUtil.MoveReceived += new moveReceivedHandler(NetworkMoveReceived);
+                    isNetwork = true;
                     break;
                 case GameOptions.TypeOfGame.AI:
                     player1 = options._Player1;
@@ -67,6 +83,7 @@ namespace Pentago
                     Player2NameText.Text = computerPlayer.Name;
                     if (!player1.ActivePlayer)
                         GetComputerMoveAsynchronously();
+                    isNetwork = false;
                     break;
                 default:
                     break;
@@ -133,6 +150,9 @@ namespace Pentago
                 if (col == 6)
                     col--;
                 int winner = gameBrain.CheckForWin();
+                movePos = 0;
+                movePos += col;
+                movePos += (short)(row*6);
                 if (userMadeRotation && winner == 0 && gameBrain.PlacePiece(row, col))
                 {
                     SoundManager.playSFX(SoundManager.SoundType.Click);
@@ -145,7 +165,13 @@ namespace Pentago
                     RePaintBoard();
                     winner = gameBrain.CheckForWin();
                     if (winner != 0)
+                    {
                         ShowWinner(winner);
+                        if (isNetwork)
+                        {
+                            networkUtil.SendMove(-1, movePos, true);
+                        }
+                    }
                     else
                         MakeRotationsVisible();
                 }
@@ -168,6 +194,8 @@ namespace Pentago
                         winnerText = "Congratulations " + player2.Name + " you have won!";
                     else if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.AI)
                         winnerText = "The " + computerPlayer.Name + " has won!";
+                    else if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
+                        winnerText = player2.Name + " has defeated you!";
                     break;
                 case 3:
                     winnerText = "It is a tie.";
@@ -181,7 +209,7 @@ namespace Pentago
 
         private void ShowActivePlayer()
         {
-            if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch)
+            if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
             {
                 if (player1.ActivePlayer)
                     ActivePlayer.Fill = player1.Image;
@@ -203,7 +231,8 @@ namespace Pentago
             for (int i = 0; i < BOARDSIZE; i++)
             {
                 Rectangle rec = (Rectangle)Board.Children[i];
-                if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch)
+                if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || 
+                    gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
                 {
                     if (tempBoard[i] == 1)
                         rec.Fill = player1.Image;
@@ -337,9 +366,27 @@ namespace Pentago
             MakeRotationsHidden();
         }
 
+        private void NetworkMoveReceived(object move, EventArgs e)
+        {
+            PentagoNetwork.moveType mov = (PentagoNetwork.moveType)move;
+            gameBrain.PlacePieceByPos(mov.position);
+            this.Dispatcher.BeginInvoke(new Action(delegate() 
+                { InitiateRotation(mov.isClockwise, mov.quad); 
+                    RePaintBoard(); 
+                    int winner = gameBrain.CheckForWin(); 
+                    if (winner != 0) 
+                    { 
+                        ShowWinner(winner); 
+                    } 
+                }), null);
+            
+        }
+
         private void InitiateRotation(bool rotateClockwise, short quad)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Rotate);
+            if (quad != -1)
+            {
+                SoundManager.playSFX(SoundManager.SoundType.Rotate);
 
                 gameBrain.RotateBoard(rotateClockwise, quad, 1);
                 RotateAnimation(quad, rotateClockwise);
@@ -347,7 +394,7 @@ namespace Pentago
                 //Thread.Sleep(1000);
                 gameBrain.RotateBoard(rotateClockwise, quad, 2);
                 //RePaintBoard();
-
+            }
             MakeRotationsHidden();
         }
 
@@ -370,44 +417,82 @@ namespace Pentago
         //    MakeRotationsHidden();
         //}
 
+        private void sendNetworkMove(short pos, bool isClockwise, short quad)
+        {
+            networkUtil.SendMove(quad, pos, isClockwise);
+            RePaintBoard();
+        }
+
         private void btnCounterClockWise2_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(false, 2);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, false, 2);
+            }
         }
 
         private void btnClockWise1_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(true, 1);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, true, 1);
+            }
         }
 
         private void btnCounterClockWise1_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(false, 1);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, false, 1);
+            }
         }
 
         private void btnClockWise2_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(true, 2);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, true, 2);
+            }
         }
 
         private void btnClockWise3_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(true, 3);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, true, 3);
+            }
         }
 
         private void btnCounterClockWise3_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(false, 3);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, false, 3);
+            }
         }
 
         private void btnClockWise4_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(true, 4);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, true, 4);
+            }
         }
 
         private void btnCounterClockWise4_MouseDown(object sender, MouseButtonEventArgs e)
         {
             InitiateRotation(false, 4);
+            if (isNetwork)
+            {
+                sendNetworkMove(movePos, false, 4);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -416,6 +501,10 @@ namespace Pentago
             App.Current.MainWindow = mainWindow;
             mainWindow.Show();
             this.Hide();
+            if (networkUtil != null)
+            {
+                networkUtil.stop();
+            }
         }
 
         private void Test_Click(object sender, RoutedEventArgs e)
@@ -436,14 +525,20 @@ namespace Pentago
 
             const string message ="Are you sure you want to exit the game?";
             const string caption = "Dragon Horde";
-            MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.YesNo);
+            messageWindow.ShowDialog();
 
-            if (result == MessageBoxResult.Yes)
+            if (messageWindow.DialogResult == true)//result == MessageBoxResult.Yes)
             {
                 Window mainWindow = new MainMenu();
                 App.Current.MainWindow = mainWindow;
                 mainWindow.Show();
                 this.Hide();
+                if (networkUtil != null)
+                {
+                    networkUtil.stop();
+                }
             }
         }
 

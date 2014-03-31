@@ -6,22 +6,46 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Pentago_Networking
+namespace Pentago
 {
-    class PentagoNetwork
+    // Handle new peer discovered.
+    public delegate void peerDiscoveredHandler(object msg, EventArgs e);
+
+    // Handle Connection Request
+    public delegate void peerConnectionRequestHandler(object msg, EventArgs e);
+
+    public delegate void peerConnectedHandler(object sender, EventArgs e);
+
+    public delegate void peerDisconnectedHancler(object sender, EventArgs e);
+
+    public delegate void moveReceivedHandler(object move, EventArgs e);
+
+    public class PentagoNetwork
     {
+        public event peerDiscoveredHandler Discovered;
+        public event peerConnectionRequestHandler ConnectionRequest;
+        public event peerConnectedHandler Connected;
+        public event peerDisconnectedHancler Disconnected;
+        public event moveReceivedHandler MoveReceived;
+
         enum SentDataType {move, privateChat, globalChat, idRequest, idResponse, connectRequest}
 
-        const int PORT_NUMBER = 32458;
+        //const int PORT_NUMBER = 32458;
+        const int PORT_NUMBER = 12345;
         const string GAME_NAME = "Dragon Horde";
         int myId = new Random().Next();
         static int otherId;
         System.Net.IPEndPoint myIPEndPoint;
 
+        System.Net.IPEndPoint pendingConnectRequester;
+
         NetPeerConfiguration config;
         NetPeer peer;
-        string peerName;
+        public string peerName;
         bool peerOn = false;
+
+        public string clientName;
+        public bool iAmPlayer1 = true;
 
         public List<peerType> availablePeers {get; private set;}
 
@@ -36,23 +60,39 @@ namespace Pentago_Networking
             config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             config.EnableMessageType(NetIncomingMessageType.UnconnectedData);
+            config.EnableMessageType(NetIncomingMessageType.Data);
+            config.ConnectionTimeout = 5;
+            config.AcceptIncomingConnections = true;
             config.MaximumConnections = 32;
             config.Port = PORT_NUMBER;
 
             peer = new NetPeer(config);
-            peer.Start();
-            peerOn = true;
+            try
+            {
+                peer.Start();
+                peerOn = true;
 
-            Console.WriteLine("Peer Started");
+                Console.WriteLine("Peer Started");
 
 
-            Thread t = new Thread(waitForMessages);
-            peerName = playerName;
-            t.Start();
+                Thread t = new Thread(waitForMessages);
+                t.SetApartmentState(ApartmentState.STA);
+                peerName = playerName;
+                t.Start();
 
-            Console.WriteLine(peerName);
+                Console.WriteLine(peerName);
 
-            peer.DiscoverLocalPeers(PORT_NUMBER);
+                peer.DiscoverLocalPeers(PORT_NUMBER);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Caught exception: " + ex.Data);
+            }
+        }
+
+        public void stop()
+        {
+            peer.Shutdown(peerName + " Shutting Down");
         }
 
         public void discoverPeers()
@@ -87,10 +127,34 @@ namespace Pentago_Networking
 
                             // NOTE: Disconnecting and Disconnected are not instant unless client is shutdown with disconnect()
                             Console.WriteLine(msg.SenderConnection.ToString() + " status changed. " + (NetConnectionStatus)msg.SenderConnection.Status);
+
+                            if(msg.SenderConnection.Status == NetConnectionStatus.Connected)
+                            {
+                                if (Connected != null)
+                                {
+                                    foreach (peerType p in availablePeers)
+                                    {
+                                        if (p.address.Equals(peer.Connections[0].RemoteEndPoint))
+                                        {
+                                            clientName = p.name;
+                                        }
+                                    }
+                                    Connected(msg, EventArgs.Empty);
+                                }
+                            }
+
+                            if (msg.SenderConnection.Status == NetConnectionStatus.Disconnected)
+                            {
+                                if (Disconnected != null)
+                                {
+                                    Disconnected(msg, EventArgs.Empty);
+                                }
+                            }
                             break;
 
                         case NetIncomingMessageType.ConnectionApproval:
                             msg.SenderConnection.Approve();
+                            iAmPlayer1 = false;
                             break;
 
                         case NetIncomingMessageType.DiscoveryRequest:
@@ -146,6 +210,11 @@ namespace Pentago_Networking
                             {
                                 Console.WriteLine(p.name);
                             }
+                            // Raise event causing lobby list to be updated.
+                            if (Discovered != null)
+                            {
+                                Discovered(msg, EventArgs.Empty);
+                            }
                             break;
 
                         case NetIncomingMessageType.Data:
@@ -162,9 +231,14 @@ namespace Pentago_Networking
                             {
                                 Console.WriteLine("Type = move; Sender = " + msg.SenderEndPoint);
 
-                                short quadrant = msg.ReadInt16();
-                                short position = msg.ReadInt16();
-                                bool isClockwise = msg.ReadBoolean();
+                                moveType move = new moveType();
+                                move.quad = msg.ReadInt16();
+                                move.position = msg.ReadInt16();
+                                move.isClockwise = msg.ReadBoolean();
+                                if (MoveReceived != null)
+                                {
+                                    MoveReceived(move, EventArgs.Empty);
+                                }
                             }
                             else if (type == (short)SentDataType.globalChat)
                             {
@@ -249,7 +323,12 @@ namespace Pentago_Networking
                             }
                             else if (type == (short)SentDataType.connectRequest)
                             {
-
+                                // Raise event causing user to get connection request
+                                if (ConnectionRequest != null)
+                                {
+                                    pendingConnectRequester = msg.SenderEndPoint;
+                                    ConnectionRequest(msg.ReadString(), EventArgs.Empty);
+                                }
                             }
                             break;
                             #endregion
@@ -326,6 +405,13 @@ namespace Pentago_Networking
             public peerType() { }
         }
 
+        public class moveType
+        {
+            public short quad { get; set; }
+            public short position { get; set; }
+            public bool isClockwise { get; set; }
+        }
+
         private void sendGlobalChat(string chatMessage)
         {
             NetOutgoingMessage message = peer.CreateMessage();
@@ -344,14 +430,36 @@ namespace Pentago_Networking
             peer.SendMessage(message, peer.Connections[0], NetDeliveryMethod.ReliableOrdered);
         }
 
+        //private void RaiseDiscovered(object msg, EventArgs e)
+        //{
+        //    Discovered(msg, e);
+        //}
+
         private void ConnectToPeer(peerType peerToConnectTo)
         {
-            peer.Connect(peerToConnectTo.address);
+            NetOutgoingMessage msg = peer.CreateMessage();
+            msg.Write((short)SentDataType.connectRequest);
+            msg.Write(peerName);
+            peer.SendUnconnectedMessage(msg, peerToConnectTo.address);
         }
 
         public void ConnectUsingIndex(int index)
         {
             ConnectToPeer(availablePeers[index]);
+        }
+
+        public void AcceptConnection()
+        {
+            if (pendingConnectRequester != null)
+            {
+                peer.Connect(pendingConnectRequester);
+            }
+        }
+
+        public void DeclineConnection()
+        {
+            
+            pendingConnectRequester = null;
         }
     }
 }

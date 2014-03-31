@@ -15,7 +15,6 @@ using Pentago.GameCore;
 using Pentago.AI;
 using Pentago;
 using Pentago.GUI.Classes;
-using Pentago_Networking;
 using System.Windows.Media.Animation;
 
 
@@ -27,6 +26,11 @@ namespace Pentago.GUI
     public partial class MainMenu : Window
     {
         ProfileManager profileManager = null;
+
+        public PentagoNetwork networkUtil;
+
+        Window MainMenuWindow;
+
         public MainMenu()
         {
             InitializeComponent();
@@ -34,6 +38,7 @@ namespace Pentago.GUI
             SoundManager.backgroundMusicPlayer.Play();
             //Initialize profile manager
             profileManager = ProfileManager.InstanceCreator();
+            MainMenuWindow = this;
         }
         
         private void QuickMatch_Click(object sender, RoutedEventArgs e)
@@ -100,12 +105,14 @@ namespace Pentago.GUI
                 OptionsPanel.Visibility = Visibility.Hidden;
                 StoryModePanel.Visibility = Visibility.Hidden;
                 NewProfilePanel.Visibility = Visibility.Hidden;
+                HighScorePanel.Visibility = Visibility.Hidden;
             }
             else if (MenuName == "Options")
             {
                 QuickMatchMenuScroll.Visibility = Visibility.Hidden;
                 StoryModePanel.Visibility = Visibility.Hidden;
                 NewProfilePanel.Visibility = Visibility.Hidden;
+                HighScorePanel.Visibility = Visibility.Hidden;
             } 
             else if (MenuName == "StoryMode")
             {
@@ -130,6 +137,24 @@ namespace Pentago.GUI
                 Player1MoveFirstOn.Visibility = Visibility.Hidden;
                 Player2MoveFirstOff.Visibility = Visibility.Hidden;
                 StoryModeMenuScroll.Visibility = Visibility.Hidden;
+                PlayerVsPlayerOff.Visibility = Visibility.Hidden;
+                PlayerVsComputerOn.Visibility = Visibility.Hidden;
+                ComputerLevel.Visibility = Visibility.Hidden;
+                ComputerHardLevel.Visibility = Visibility.Hidden;
+                ComputerEasyLevel.Visibility = Visibility.Hidden;
+                GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+                GameDifficultyHardOff.Visibility = Visibility.Hidden;
+                Player1MoveFirstOn.Visibility = Visibility.Hidden;
+                Player1MoveFirstOff.Visibility = Visibility.Hidden;
+                Player2MoveFirstOn.Visibility = Visibility.Hidden;
+                Player2MoveFirstOff.Visibility = Visibility.Hidden;
+                ComputerHardLevel.Visibility = Visibility.Hidden;
+                ComputerEasyLevel.Visibility = Visibility.Hidden;
+                GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+                GameDifficultyHardOn.Visibility = Visibility.Hidden;
+                GameDifficultyEasyOff.Visibility = Visibility.Hidden;
+                GameDifficultyHardOff.Visibility = Visibility.Hidden;
+                HighScorePanel.Visibility = Visibility.Hidden;
             }
         }
 
@@ -151,7 +176,9 @@ namespace Pentago.GUI
             } else {
                 const string message = "Please, verify names are longer than 1 character and less than 15.";
                 const string caption = "Dragon Horde";
-                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);    
+                //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
+                messageWindow.ShowDialog();
             }
 
         }
@@ -287,6 +314,33 @@ namespace Pentago.GUI
             Player player2 = new Player(player2Name.Trim(), !isPlayer1Active, player2Image, player2ImageHover);
 
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.QuickMatch, player1, player2);
+            Window gameWindow = new GameWindow(gameOptions);
+            App.Current.MainWindow = gameWindow;
+            gameWindow.Show();
+            this.Hide();
+
+        }
+
+        private void InitializeNetworkGame()
+        {
+            string player1Name = networkUtil.peerName;
+
+            bool isPlayer1Active = networkUtil.iAmPlayer1;
+
+            ImageBrush player1Image = new ImageBrush();
+            player1Image.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPup.png", UriKind.Absolute));
+            ImageBrush player1ImageHover = new ImageBrush();
+            player1ImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPupHover.png", UriKind.Absolute));
+            Player player1 = new Player(player1Name.Trim(), isPlayer1Active, player1Image, player1ImageHover);
+
+            string player2Name = networkUtil.clientName;
+            ImageBrush player2Image = new ImageBrush();
+            player2Image.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePup.png", UriKind.Absolute));
+            ImageBrush player2ImageHover = new ImageBrush();
+            player2ImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePupHover.png", UriKind.Absolute));
+            Player player2 = new Player(player2Name.Trim(), !isPlayer1Active, player2Image, player2ImageHover);
+
+            GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.Network, player1, player2, networkUtil);
             Window gameWindow = new GameWindow(gameOptions);
             App.Current.MainWindow = gameWindow;
             gameWindow.Show();
@@ -459,13 +513,78 @@ namespace Pentago.GUI
         {
             OnlineMenuPanel.Visibility = Visibility.Visible;
         }
-
-        PentagoNetwork networkUtil;
-
+        
         private void FindOpponent_Click(object sender, RoutedEventArgs e)
         {
             OpponentsTag.Visibility = Visibility.Visible;
-            networkUtil = new PentagoNetwork(NameBox.Text);
+            if (networkUtil == null)
+            {
+                networkUtil = new PentagoNetwork(NameBox.Text);
+            }
+            else
+            {
+                networkUtil.Discovered -= new peerDiscoveredHandler(PeerDiscovered);
+                networkUtil.ConnectionRequest -= new peerConnectionRequestHandler(ConnectionRequest);
+                networkUtil.Connected -= new peerConnectedHandler(PeerConnected);
+                networkUtil.Disconnected -= new peerDisconnectedHancler(PeerDisconnected);
+                networkUtil.stop();
+                networkUtil = new PentagoNetwork(NameBox.Text);
+            }
+            networkUtil.Discovered += new peerDiscoveredHandler(PeerDiscovered);
+            networkUtil.ConnectionRequest += new peerConnectionRequestHandler(ConnectionRequest);
+            networkUtil.Connected += new peerConnectedHandler(PeerConnected);
+            networkUtil.Disconnected += new peerDisconnectedHancler(PeerDisconnected);
+        }
+
+        private void PeerConnected(object sender, EventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(delegate() { InitializeNetworkGame(); }), null);
+        }
+
+        private void PeerDisconnected(object sender, EventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(delegate() {
+                MessageWindow message = new MessageWindow("Disconnected");
+                message.ShowDialog();
+                Window mainWindow = new MainMenu();
+                App.Current.MainWindow = mainWindow;
+                mainWindow.Show();
+                this.Hide();
+                networkUtil.stop();
+            }));
+        }
+
+        private void PeerDiscovered(object msg, EventArgs e)
+        {
+            AvailableLobbies.Dispatcher.BeginInvoke(new Action(delegate() { UpdateLobbyList(); }), null);            
+        }
+
+        private void UpdateLobbyList()
+        {
+            AvailableLobbies.Items.Clear();
+            foreach (PentagoNetwork.peerType p in networkUtil.availablePeers)
+            {
+                ListBoxItem item = new ListBoxItem();
+                item.Content = p.name;
+                AvailableLobbies.Items.Add(item);
+            }
+        }
+
+        private void ConnectionRequest(object msg, EventArgs e)
+        {
+            string requesterName = (string)msg;
+            AcceptGameText.Dispatcher.BeginInvoke(new Action(delegate() { IncomingRequest(requesterName); }), null); 
+        }
+
+        private void IncomingRequest(string requesterName)
+        {
+            if (OnlineMenuPanel.Visibility == Visibility.Visible)
+            {
+                AcceptGameText.Text = "You have been challenged by " + requesterName + ". Do you accept?";
+                AcceptGameText.Visibility = Visibility.Visible;
+                AcceptChallenge.Visibility = Visibility.Visible;
+                DenyChallenge.Visibility = Visibility.Visible;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -479,9 +598,23 @@ namespace Pentago.GUI
             }
         }
 
+        
+
         private void ChallengeOpponent_Click(object sender, RoutedEventArgs e)
         {
             networkUtil.ConnectUsingIndex(AvailableLobbies.SelectedIndex);
+        }
+
+        private void ChallengeAccept_Click(object sender, RoutedEventArgs e)
+        {
+            networkUtil.AcceptConnection();
+        }
+
+        private void ChallengeDecline_Click(object sender, RoutedEventArgs e)
+        {
+            AcceptGameText.Visibility = Visibility.Hidden;
+            AcceptChallenge.Visibility = Visibility.Hidden;
+            DenyChallenge.Visibility = Visibility.Hidden;
         }
 
         private void CreateNewProfile_Click(object sender, RoutedEventArgs e)
@@ -493,12 +626,15 @@ namespace Pentago.GUI
                 {
                     //append to file 
                     profileManager.CreateNewProfile(newProfileName.Trim());
+                    ExistingProfile_Click(sender, e);
                 }
                 else
                 {
                     const string message = "This profile name already exists, please create a new one.";
                     const string caption = "Dragon Horde";
-                    MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);    
+                    //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
+                    messageWindow.ShowDialog();
                 }
             }
         }
@@ -523,6 +659,20 @@ namespace Pentago.GUI
                     return false;
 
             return true;
+        }
+
+        private bool ValidateName()
+        {
+            string onlineName = NameBox.Text;
+            if (onlineName.Trim() == "" || onlineName.Trim().Length < 1 || onlineName.Trim().Length > 15)
+                return false;
+
+            return true;
+        }
+
+        private void Highscores_Click(object sender, RoutedEventArgs e)
+        {
+            HighScorePanel.Visibility = Visibility.Visible;
         }
 
     }

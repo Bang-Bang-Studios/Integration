@@ -113,6 +113,14 @@ namespace Pentago.GameCore
             }
         }
 
+        public bool PlacePieceByPos(short pos)
+        {
+            short row, col;
+            row = (short)(pos / 6);
+            col = (short)(pos % 6);
+            return PlacePiece(row, col);
+        }
+
         public void RotateBoard(bool rotateClockWise, short quad, int rotationNumber)
         {
             board.RotateQuad(rotateClockWise, quad);

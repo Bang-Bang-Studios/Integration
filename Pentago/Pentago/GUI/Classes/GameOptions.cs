@@ -23,6 +23,15 @@ namespace Pentago.GUI
             this._Player2 = player2;
         }
 
+        public PentagoNetwork _NetworkUtil;
+        public GameOptions(TypeOfGame typeOfGame, Player player1, Player player2, PentagoNetwork networkUtil)
+        {
+            this._TypeOfGame = typeOfGame;
+            this._Player1 = player1;
+            this._Player2 = player2;
+            this._NetworkUtil = networkUtil;
+        }
+
         //Human vs AI
         public computerAI.Difficulty _Difficulty;
         public computerAI _ComputerPlayer;

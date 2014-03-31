@@ -208,7 +208,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Highscores" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Highscores" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="128,418,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="Highscores_MouseEnter" >
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Highscores" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Highscores" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="128,418,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="Highscores_MouseEnter" Click="Highscores_Click" >
             <Button.Triggers>
                 <EventTrigger RoutedEvent="Window.Loaded">
                     <BeginStoryboard>
@@ -286,7 +286,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" Stretch="Fill" VerticalAlignment="Top" Width="340"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
+        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" VerticalAlignment="Top" Width="340"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/Old_Scroll.png" Stretch="Fill" />
         <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="QuickMatchMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="375" Visibility="Hidden" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
         <GroupBox Name="MoveGroupBox" Margin="589,260,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="119" Visibility="Hidden" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}">
             <StackPanel Name="MoveStackPanel" Orientation="Vertical" Width="114" Height="80" Visibility="Hidden">
@@ -373,16 +373,27 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
             <DockPanel.Background>
                 <ImageBrush ImageSource="Images/RosettaStoneCartoony.png"/>
             </DockPanel.Background>
-            <TextBlock x:Name="OpponentsTag" Margin="100,165,0,0" TextWrapping="Wrap" Text="Opponents" Width="180" Foreground="Silver" FontSize="32" FontWeight="Bold" Height="47" VerticalAlignment="Top" FontFamily="Old English Text MT"/>
+            <TextBlock x:Name="OpponentsTag" Margin="115,165,0,0" TextWrapping="Wrap" Text="Opponents" Width="180" Foreground="Silver" FontSize="32" FontWeight="Bold" Height="47" VerticalAlignment="Top" FontFamily="Old English Text MT"/>
             <ListBox x:Name="AvailableLobbies" Width="305" Height="353" VerticalAlignment="Top" Margin="-230,217,0,0" FontSize="32" Background="{x:Null}" Foreground="Silver" FontWeight="Bold" FontFamily="Old English Text MT"/>
             <Button Content="MainMenu" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Margin="150,44,0,746" x:Name="QuitToMainMenu"  Width="206" Foreground="Silver" Click="QuitToMainMenu_Click" />
             <Button Content="Find Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" FontWeight="Bold" Margin="-1020,595,0,0" x:Name="FindOpponent"  Width="212" Foreground="Silver" Height="53" VerticalAlignment="Top" Click="FindOpponent_Click" />
             <Button Content="Challenge Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" FontWeight="Bold" Margin="-480,595,0,0" x:Name="ChallengeOpponent"  Width="284" Foreground="Silver" Height="53" VerticalAlignment="Top" Click="ChallengeOpponent_Click" />
             <TextBox x:Name="NameBox" Height="49" TextWrapping="Wrap" Text="Enter Name" VerticalAlignment="Top" Width="272" Margin="-300,189,0,0" FontSize="32" FontFamily="Old English Text MT" Foreground="Silver" Background="{x:Null}"/>
             <Button Content="Button" Height="19" VerticalAlignment="Bottom" Width="73" Click="Button_Click" Margin="0,0,0,52" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="AcceptGameText" Height="184" Margin="-400,272,0,0" TextWrapping="Wrap" Text="You have been challenge by some honkey, will you make him look the fool?" VerticalAlignment="Top" Width="224" Foreground="Silver" FontFamily="Old English Text MT" FontSize="28"/>
-            <Button Content="Battle" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" FontWeight="Bold" Margin="-560,0,0,364" x:Name="AcceptChallenge"  Width="118" Foreground="Silver" Height="65" VerticalAlignment="Bottom" Click="ChallengeOpponent_Click" />
-            <Button Content="Refuse" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" FontWeight="Bold" Margin="-280,0,0,364" x:Name="DenyChallenge"  Width="128" Foreground="Silver" Height="65" Click="ChallengeOpponent_Click" VerticalAlignment="Bottom" />
+            <TextBlock x:Name="AcceptGameText" Height="184" Margin="-400,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" Foreground="Silver" FontFamily="Old English Text MT" FontSize="28" Visibility="Hidden"/>
+            <Button Content="Battle" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" FontWeight="Bold" Margin="-560,0,0,364" x:Name="AcceptChallenge"  Width="118" Foreground="Silver" Height="65" VerticalAlignment="Bottom" Click="ChallengeAccept_Click" Visibility="Hidden" />
+            <Button Content="Refuse" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="32" FontWeight="Bold" Margin="-280,0,0,364" x:Name="DenyChallenge"  Width="128" Foreground="Silver" Height="65" Click="ChallengeDecline_Click" VerticalAlignment="Bottom" Visibility="Hidden" />
+        </DockPanel>
+        <DockPanel x:Name="HighScorePanel" HorizontalAlignment="Left" Height="675" Margin="519,50,0,0" VerticalAlignment="Top" Width="375" Panel.ZIndex="-15" Visibility="Visible">
+            <DockPanel.Background>
+                <ImageBrush ImageSource="Images/Old_Scroll.png"/>
+            </DockPanel.Background>
+            <TextBlock x:Name="ProfileHighScoresBlock" Height="39" TextWrapping="Wrap" Text="Profile HS" VerticalAlignment="Top" Margin="0,110,0,0" Width="217" FontSize="32"/>
+            <TextBlock x:Name="GameHighScoresBlock" Height="39" TextWrapping="Wrap" Text="Game HS" VerticalAlignment="Top" Margin="0,110,0,0" Width="217" FontSize="32"/>
+            <ListBox Height="189" VerticalAlignment="Top" Width="134" Margin="-500,184,0,0"/>
+            <ListBox Height="189" VerticalAlignment="Top" Width="134" Margin="-199,184,0,0"/>
+            <Button x:Name="ResetProfileHighScores" Content="Reset" Height="67" VerticalAlignment="Top" Width="119" Margin="-500,414,0,0"/>
+            <Button x:Name="ResetGameHighScores" Content="Reset" Height="67" VerticalAlignment="Top" Width="119" Margin="-200,414,0,0"/>
         </DockPanel>
         <Grid.Background>
             <ImageBrush ImageSource="/Pentago;component/GUI/Images/MainBack.png" />

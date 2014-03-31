@@ -83,6 +83,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GUI\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\Classes\Tutorial.cs" />
@@ -91,6 +95,9 @@
     </Compile>
     <Compile Include="GUI\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Networking\PentagoNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -118,7 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Images\BlueCrystal.png" />
-    <Resource Include="GUI\Images\Old_Scroll.png" />
     <Resource Include="GUI\Images\viking1.png" />
     <Resource Include="GUI\Images\viking2.png" />
   </ItemGroup>
@@ -163,6 +169,7 @@
   <ItemGroup>
     <Resource Include="GUI\Images\RosettaStone.png" />
     <Resource Include="GUI\Images\RosettaStoneCartoony.png" />
+    <Resource Include="GUI\Images\Old_Scroll.png" />
     <Content Include="GUI\Sounds\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
