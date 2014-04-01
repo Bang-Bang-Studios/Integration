@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
 using Pentago.GUI;
 using Pentago.GameCore;
 using Pentago.AI;
@@ -47,7 +48,7 @@ namespace Pentago
         private bool isNetwork = false;
         private short movePos;
 
-
+        
         public GameWindow(GameOptions options)
         {
             InitializeComponent();
@@ -389,23 +390,22 @@ namespace Pentago
                 SoundManager.playSFX(SoundManager.SoundType.Rotate);
 
                 gameBrain.RotateBoard(rotateClockwise, quad, 1);
-                RotateAnimation(quad, rotateClockwise);
-                //RePaintBoard();
-                //Thread.Sleep(1000);
                 gameBrain.RotateBoard(rotateClockwise, quad, 2);
-                //RePaintBoard();
             }
             MakeRotationsHidden();
+            RePaintBoard();
         }
 
         private void RotateAnimation(short quad, bool rotateClockwise) 
         {
             var da = new DoubleAnimation(360, 0, new Duration(TimeSpan.FromSeconds(1)));
-            var rt = new RotateTransform();
-            Rectangle rect0 = (Rectangle)Board.Children[0];
-            rect0.RenderTransform = rt;
-            rect0.RenderTransformOrigin = new Point(0.5, 0.5);
-            rt.BeginAnimation(RotateTransform.AngleProperty, da);
+            //var rt = new RotateTransform();
+            TranslateTransform tt = new TranslateTransform();
+
+            //Rectangle rect0 = (Rectangle)Board.Children[0];
+            //rect0.RenderTransform = rt;
+            //rect0.RenderTransformOrigin = new Point(0.5, 0.5);
+            //rt.BeginAnimation(RotateTransform.AngleProperty, da);
         }
 
         //private void InitiateRotation(bool rotateClockwise, short quad)

@@ -371,12 +371,13 @@ namespace Pentago.GUI
             ImageBrush computerPlayerImageHover = new ImageBrush();
             computerPlayerImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePupHover.png", UriKind.Absolute));
 
-            computerAI.Difficulty difficulty;
+            computerAI.Difficulty difficulty = computerAI.Difficulty.Hard;
+            /*
             if (GameDifficultyEasyOn.Visibility == Visibility.Visible)
                 difficulty = computerAI.Difficulty.Easy;
             else
                 difficulty = computerAI.Difficulty.Hard;
-
+            */
             computerAI computerPlayer = new computerAI(computerPlayerName.Trim(), !isPlayer1Active, computerPlayerImage, computerPlayerImageHover, difficulty);
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.AI, player1, computerPlayer);
             Window gameWindow = new GameWindow(gameOptions);

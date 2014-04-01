@@ -19,7 +19,7 @@ namespace Pentago.AI
         private bool _ActivePlayer;
         private ImageBrush _Image;
         private ImageBrush _ImageHover;
-        public enum Difficulty { Easy, Hard };
+        public enum Difficulty { Beginner, Easy, Medium, Hard };
         public Difficulty _DifficultyLevel;
         private int _MaxTreeDepth;
 
@@ -41,10 +41,29 @@ namespace Pentago.AI
             this._ActivePlayer = isActive;
             this._Image = computerImage;
             this._ImageHover = computerImageHover;
-            if (difficulty == Difficulty.Easy)
-                this._MaxTreeDepth = 2;
-            else
-                this._MaxTreeDepth = 3;
+            switch(difficulty)
+            {
+                case Difficulty.Beginner:
+                    this._MaxTreeDepth = 1;
+                    this._DifficultyLevel = Difficulty.Beginner;
+                    break;
+                case Difficulty.Easy:
+                    this._MaxTreeDepth = 1;
+                    this._DifficultyLevel = Difficulty.Easy;
+                    break;
+                case Difficulty.Medium:
+                    this._MaxTreeDepth = 2;
+                    this._DifficultyLevel = Difficulty.Medium;
+                    break;
+                case Difficulty.Hard:
+                    this._MaxTreeDepth = 3;
+                    this._DifficultyLevel = Difficulty.Hard;
+                    break;
+                default:
+                    this._MaxTreeDepth = 1;
+                    this._DifficultyLevel = Difficulty.Beginner;
+                    break;
+            }
         }
 
         public bool ActivePlayer
@@ -316,6 +335,7 @@ namespace Pentago.AI
                         countPiece += 100;
                 }
 
+
                 //Vertical pieces down
                 if (i >= 0 && i < 18)
                 {
@@ -328,41 +348,50 @@ namespace Pentago.AI
                 }
 
                 //Vertical pieces up
-                if (i <= 35 && i >= 18)
+                if (this._DifficultyLevel != Difficulty.Beginner)
                 {
-                    if (board[i] == piece && (board[i - 6] != enemy))
-                        countPiece += 1;
-                    if (board[i] == piece && board[i - 6] == piece && (board[i - 12] != enemy))
-                        countPiece += 16;
-                    if (board[i] == piece && board[i - 6] == piece && board[i - 12] == piece && (board[i - 18] != enemy))
-                        countPiece += 40;
+                    if (i <= 35 && i >= 18)
+                    {
+                        if (board[i] == piece && (board[i - 6] != enemy))
+                            countPiece += 1;
+                        if (board[i] == piece && board[i - 6] == piece && (board[i - 12] != enemy))
+                            countPiece += 16;
+                        if (board[i] == piece && board[i - 6] == piece && board[i - 12] == piece && (board[i - 18] != enemy))
+                            countPiece += 40;
+                    }
                 }
-                 
+
                 //Horizontal pieces
-                if (i < BOARDSIZE - 3)
+                if (this._DifficultyLevel != Difficulty.Beginner && this._DifficultyLevel != Difficulty.Easy)
                 {
-                    if (board[i] == piece && board[i + 1] == piece && board[i + 2] == piece)
-                        countPiece += 16;
-                    if (i < BOARDSIZE - 4)
-                        if (board[i] == piece && board[i + 1] == piece && board[i + 2] == piece && board[i + 3] == piece)
-                            countPiece += 32;
+                    if (i < BOARDSIZE - 3)
+                    {
+                        if (board[i] == piece && board[i + 1] == piece && board[i + 2] == piece)
+                            countPiece += 16;
+                        if (i < BOARDSIZE - 4)
+                            if (board[i] == piece && board[i + 1] == piece && board[i + 2] == piece && board[i + 3] == piece)
+                                countPiece += 32;
+                    }
                 }
 
                 //Vertical pieces
-                if (i < BOARDSIZE - 12)
+                if (this._DifficultyLevel != Difficulty.Beginner && this._DifficultyLevel != Difficulty.Easy)
                 {
-                    if (board[i] == piece && board[i + 6] == piece && board[i + 12] == piece)
-                        countPiece += 16;
-                    if (i < BOARDSIZE - 18)
-                        if (board[i] == piece && board[i + 6] == piece && board[i + 12] == piece && board[i + 18] == piece)
-                            countPiece += 32;
+                    if (i < BOARDSIZE - 12)
+                    {
+                        if (board[i] == piece && board[i + 6] == piece && board[i + 12] == piece)
+                            countPiece += 16;
+                        if (i < BOARDSIZE - 18)
+                            if (board[i] == piece && board[i + 6] == piece && board[i + 12] == piece && board[i + 18] == piece)
+                                countPiece += 32;
+                    }
                 }
 
 
                 
             }
 
-            if (this._MaxTreeDepth == 3)
+            if (this._DifficultyLevel == Difficulty.Hard)
             {
                 countPiece += CheckNEDiagonals(board, piece, enemy);
                 countPiece += CheckSEDiagonals(board, piece, enemy);
