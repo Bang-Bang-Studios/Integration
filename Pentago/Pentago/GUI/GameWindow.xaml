@@ -4,6 +4,10 @@
         Title="Game" Height="900" Width="1440" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" Closing="Window_Closing" WindowState="Maximized" Name="Game">
     <Window.Resources>
 
+        <!--<Storyboard x:Key="FadeOut" Completed="VikingButton_Mousedown">
+            <DoubleAnimation From="1" To="0" Storyboard.TargetName ="SpeechBubble" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:1"/>
+        </Storyboard>-->
+
         <Style x:Key="ScrollFade" TargetType="{x:Type Image}">
             <Style.Triggers>
                 <EventTrigger RoutedEvent="FrameworkElement.Loaded">
@@ -60,6 +64,87 @@
             </Style>
         </Grid.Resources>
         <UniformGrid Name="Board" MouseDown="Board_MouseDown" Height="500" Width="500" Margin="0" Panel.ZIndex="9999" Background="{x:Null}" MouseLeave="Board_MouseLeave" MouseMove="Board_MouseMove">
+            <UniformGrid.Resources>
+                <Style TargetType="{x:Type Rectangle}" >
+                    <Setter Property="Stroke" Value="Gray" />
+                </Style>
+            </UniformGrid.Resources>
+            <Rectangle Height="83" Width="83" >
+                
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle  Height="83" Width="83">
+            </Rectangle>
+            <Rectangle Height="83" Width="83">
+            </Rectangle>
         </UniformGrid>
         <Image Height="100" Width="100" Margin="458,82,860,679" Name="btnClockWise1" Source="/Pentago;component/GUI/Images/ClockWise1.png" MouseDown="btnClockWise1_MouseDown" Visibility="Hidden" />
         <Image Height="100" Width="100" Margin="360,180,958,581" Name="btnCounterClockWise1"  Source="/Pentago;component/GUI/images/CounterClockWise1.png" MouseDown="btnCounterClockWise1_MouseDown" Visibility="Hidden" />
@@ -78,8 +163,8 @@
         <TextBlock Height="49"  Margin="140,761,0,51" Name="Player1NameText" Text="" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="239" />
         <Image Margin="1052,279,25,-24" Name="IceGiant" Stretch="Uniform"  Source="/Pentago;component/GUI/Images/IceGiant.png" />
         <TextBlock Text="" Name="Player2NameText" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold" Height="49" Margin="1066,761,66,51" TextAlignment="Center" />
-        <Image Height="133" HorizontalAlignment="Left" Margin="272,383,0,0" x:Name="SpeechBubble" Stretch="Fill" VerticalAlignment="Top" Width="199"  Opacity="1" Panel.ZIndex="-10" Source="Images/Old_Scroll.png" Visibility="Visible" />
-        <TextBlock x:Name="BubbleText" HorizontalAlignment="Left" Height="70" Margin="311,410,0,0" TextWrapping="Wrap" Text="Try sucking less. Also I need a speech image." VerticalAlignment="Top" Width="119" FontFamily="Old English Text MT" Visibility="Visible" FontSize="16"/>
+        <Image Height="213" HorizontalAlignment="Left" Margin="30,311,0,0" x:Name="SpeechBubble" Stretch="Fill" VerticalAlignment="Top" Width="219"  Opacity="1" Panel.ZIndex="-10" Source="Images/SpeechBubble.png" Visibility="Hidden" />
+        <TextBlock x:Name="BubbleText" HorizontalAlignment="Left" Height="105" Margin="71,352,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="149" FontFamily="Old English Text MT" Visibility="Hidden" FontSize="18"/>
         <Button x:Name="VikingButton" Content="" HorizontalAlignment="Left" Height="293" Margin="167,480,0,0" VerticalAlignment="Top" Width="199" Panel.ZIndex="1" Click="VikingButton_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Images/viking2.png"/>

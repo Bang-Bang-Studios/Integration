@@ -56,7 +56,7 @@ namespace Pentago.GameCore
             this._board[slot] = player;
         }
 
-        private int GetQuadStart(short quad)
+        public int GetQuadStart(short quad)
         {
             int quadStart = 0;
 
@@ -79,9 +79,9 @@ namespace Pentago.GameCore
             return quadStart;
         }
 
-        private int[] CreatePath(int QuadStart)
+        public int[] CreatePath(int QuadStart)
         {
-            int[] path = new int[8];
+            int[] path = new int[9];
 
             // Path follows clockwise starting from top left square
             path[0] = QuadStart;
@@ -92,6 +92,7 @@ namespace Pentago.GameCore
             path[5] = path[4] - 1;
             path[6] = path[5] - 1;
             path[7] = path[6] - 6;
+            path[8] = path[0];
 
             return path;
         }
@@ -99,7 +100,7 @@ namespace Pentago.GameCore
         // rotates quad one space
         public void RotateQuad(bool rotateClockwise, short quad)
         {
-            int[] path = new int[8];
+            int[] path;
             int placeHolder;
             int pos;
 

@@ -46,6 +46,7 @@ namespace Pentago.GUI
             SoundManager.playSFX(SoundManager.SoundType.Click);
             if (QuickMatchMenuScroll.Visibility != Visibility.Visible)
             {
+                ReHideMenues();
                 QuickMatchMenuScroll.Visibility = Visibility.Hidden;
                 QuickMatchMenuScroll.Visibility = Visibility.Visible;
                 PlayerVsGroupBox.Visibility = Visibility.Visible;
@@ -69,7 +70,7 @@ namespace Pentago.GUI
                 Player1MoveFirstOn.Visibility = Visibility.Visible;
                 Player2MoveFirstOff.Visibility = Visibility.Visible;
 
-                ReHideMenues("Quick");
+                
             }
             Player1NameTextBox.Focusable = true;
             Player1NameTextBox.Focus();
@@ -81,81 +82,49 @@ namespace Pentago.GUI
             Application.Current.Shutdown();
         }
 
-        private void ReHideMenues(string MenuName)
+        private void ReHideMenues()
         {
-            if (MenuName == "Quick")
-            {
-                QuickMatchMenuScroll.Visibility = Visibility.Visible;
-                PlayerVsGroupBox.Visibility = Visibility.Visible;
-                PlayerVsStackPanel.Visibility = Visibility.Visible;
-                PlayerVsPlayer.Visibility = Visibility.Visible;
-                PlayerVsComputer.Visibility = Visibility.Visible;
-                MoveFirst.Visibility = Visibility.Visible;
-                MoveGroupBox.Visibility = Visibility.Visible;
-                MoveStackPanel.Visibility = Visibility.Visible;
-                Player1.Visibility = Visibility.Visible;
-                Player2.Visibility = Visibility.Visible;
-                Player1Name.Visibility = Visibility.Visible;
-                Player1NameTextBox.Visibility = Visibility.Visible;
-                Player2Name.Visibility = Visibility.Visible;
-                Player2NameTextBox.Visibility = Visibility.Visible;
-                Battle.Visibility = Visibility.Visible;
-           
-                StoryModeMenuScroll.Visibility = Visibility.Visible;
-                OptionsPanel.Visibility = Visibility.Hidden;
-                StoryModePanel.Visibility = Visibility.Hidden;
-                NewProfilePanel.Visibility = Visibility.Hidden;
-                HighScorePanel.Visibility = Visibility.Hidden;
-            }
-            else if (MenuName == "Options")
-            {
-                QuickMatchMenuScroll.Visibility = Visibility.Hidden;
-                StoryModePanel.Visibility = Visibility.Hidden;
-                NewProfilePanel.Visibility = Visibility.Hidden;
-                HighScorePanel.Visibility = Visibility.Hidden;
-            } 
-            else if (MenuName == "StoryMode")
-            {
-                OptionsPanel.Visibility = Visibility.Hidden;
-                QuickMatchMenuScroll.Visibility = Visibility.Hidden;
-                PlayerVsGroupBox.Visibility = Visibility.Hidden;
-                PlayerVsStackPanel.Visibility = Visibility.Hidden;
-                PlayerVsPlayer.Visibility = Visibility.Hidden;
-                PlayerVsComputer.Visibility = Visibility.Hidden;
-                MoveFirst.Visibility = Visibility.Hidden;
-                MoveGroupBox.Visibility = Visibility.Hidden;
-                MoveStackPanel.Visibility = Visibility.Hidden;
-                Player1.Visibility = Visibility.Hidden;
-                Player2.Visibility = Visibility.Hidden;
-                Player1Name.Visibility = Visibility.Hidden;
-                Player1NameTextBox.Visibility = Visibility.Hidden;
-                Player2Name.Visibility = Visibility.Hidden;
-                Player2NameTextBox.Visibility = Visibility.Hidden;
-                Battle.Visibility = Visibility.Hidden;
-                PlayerVsPlayerOn.Visibility = Visibility.Hidden;
-                PlayerVsComputerOff.Visibility = Visibility.Hidden;
-                Player1MoveFirstOn.Visibility = Visibility.Hidden;
-                Player2MoveFirstOff.Visibility = Visibility.Hidden;
-                StoryModeMenuScroll.Visibility = Visibility.Hidden;
-                PlayerVsPlayerOff.Visibility = Visibility.Hidden;
-                PlayerVsComputerOn.Visibility = Visibility.Hidden;
-                ComputerLevel.Visibility = Visibility.Hidden;
-                ComputerHardLevel.Visibility = Visibility.Hidden;
-                ComputerEasyLevel.Visibility = Visibility.Hidden;
-                GameDifficultyEasyOn.Visibility = Visibility.Hidden;
-                GameDifficultyHardOff.Visibility = Visibility.Hidden;
-                Player1MoveFirstOn.Visibility = Visibility.Hidden;
-                Player1MoveFirstOff.Visibility = Visibility.Hidden;
-                Player2MoveFirstOn.Visibility = Visibility.Hidden;
-                Player2MoveFirstOff.Visibility = Visibility.Hidden;
-                ComputerHardLevel.Visibility = Visibility.Hidden;
-                ComputerEasyLevel.Visibility = Visibility.Hidden;
-                GameDifficultyEasyOn.Visibility = Visibility.Hidden;
-                GameDifficultyHardOn.Visibility = Visibility.Hidden;
-                GameDifficultyEasyOff.Visibility = Visibility.Hidden;
-                GameDifficultyHardOff.Visibility = Visibility.Hidden;
-                HighScorePanel.Visibility = Visibility.Hidden;
-            }
+            OptionsPanel.Visibility = Visibility.Hidden;
+            QuickMatchMenuScroll.Visibility = Visibility.Hidden;
+            PlayerVsGroupBox.Visibility = Visibility.Hidden;
+            PlayerVsStackPanel.Visibility = Visibility.Hidden;
+            PlayerVsPlayer.Visibility = Visibility.Hidden;
+            PlayerVsComputer.Visibility = Visibility.Hidden;
+            MoveFirst.Visibility = Visibility.Hidden;
+            MoveGroupBox.Visibility = Visibility.Hidden;
+            MoveStackPanel.Visibility = Visibility.Hidden;
+            Player1.Visibility = Visibility.Hidden;
+            Player2.Visibility = Visibility.Hidden;
+            Player1Name.Visibility = Visibility.Hidden;
+            Player1NameTextBox.Visibility = Visibility.Hidden;
+            Player2Name.Visibility = Visibility.Hidden;
+            Player2NameTextBox.Visibility = Visibility.Hidden;
+            Battle.Visibility = Visibility.Hidden;
+            PlayerVsPlayerOn.Visibility = Visibility.Hidden;
+            PlayerVsComputerOff.Visibility = Visibility.Hidden;
+            Player1MoveFirstOn.Visibility = Visibility.Hidden;
+            Player2MoveFirstOff.Visibility = Visibility.Hidden;
+            StoryModeMenuScroll.Visibility = Visibility.Hidden;
+            PlayerVsPlayerOff.Visibility = Visibility.Hidden;
+            PlayerVsComputerOn.Visibility = Visibility.Hidden;
+            ComputerLevel.Visibility = Visibility.Hidden;
+            ComputerHardLevel.Visibility = Visibility.Hidden;
+            ComputerEasyLevel.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyHardOff.Visibility = Visibility.Hidden;
+            Player1MoveFirstOn.Visibility = Visibility.Hidden;
+            Player1MoveFirstOff.Visibility = Visibility.Hidden;
+            Player2MoveFirstOn.Visibility = Visibility.Hidden;
+            Player2MoveFirstOff.Visibility = Visibility.Hidden;
+            ComputerHardLevel.Visibility = Visibility.Hidden;
+            ComputerEasyLevel.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOff.Visibility = Visibility.Hidden;
+            GameDifficultyHardOff.Visibility = Visibility.Hidden;
+            HighScorePanel.Visibility = Visibility.Hidden;
+            StoryModePanel.Visibility = Visibility.Hidden;
+            NewProfilePanel.Visibility = Visibility.Hidden;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -452,8 +421,9 @@ namespace Pentago.GUI
         {
             if (OptionsPanel.Visibility != Visibility.Visible)
             {
+                ReHideMenues();
                 OptionsPanel.Visibility = Visibility.Visible;
-                ReHideMenues("Options");
+                
             }
         }
 
@@ -462,12 +432,13 @@ namespace Pentago.GUI
             //if it is already visible, dont show it again!
             if (StoryModePanel.Visibility != Visibility.Visible)
             {
+                ReHideMenues();
                 StoryModePanel.Visibility = Visibility.Visible;
                 NewProfilePanel.Visibility = Visibility.Hidden;
                 LoadProfilesList();
                 ProfileList.Visibility = Visibility.Visible;
                 ContineAdventure.Visibility = Visibility.Visible;
-                ReHideMenues("StoryMode");
+                
             }
         }
 
@@ -512,6 +483,12 @@ namespace Pentago.GUI
 
         private void OnlineGame_Click(object sender, RoutedEventArgs e)
         {
+            ReHideMenues();
+            //Point beginning;
+            //Point ending;
+            //TranslateTransform trans;
+            //DoubleAnimation RockDropAnimation = new DoubleAnimation(beginning.Y, ending.Y, TimeSpan.FromSeconds(.5));
+            //trans.BeginAnimation(TranslateTransform.YProperty, RockDropAnimation);
             OnlineMenuPanel.Visibility = Visibility.Visible;
         }
         
@@ -673,8 +650,16 @@ namespace Pentago.GUI
 
         private void Highscores_Click(object sender, RoutedEventArgs e)
         {
+            ReHideMenues();
             HighScorePanel.Visibility = Visibility.Visible;
         }
 
+        private void Menu_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource != OnlineMenuPanel)
+            {
+                OnlineMenuPanel.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

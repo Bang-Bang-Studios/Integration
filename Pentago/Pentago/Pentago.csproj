@@ -170,6 +170,7 @@
     <Resource Include="GUI\Images\RosettaStone.png" />
     <Resource Include="GUI\Images\RosettaStoneCartoony.png" />
     <Resource Include="GUI\Images\Old_Scroll.png" />
+    <Resource Include="GUI\Images\SpeechBubble.png" />
     <Content Include="GUI\Sounds\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
