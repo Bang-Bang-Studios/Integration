@@ -81,12 +81,21 @@ namespace Pentago.GameCore
             RotateBoard(rotateClockWise, quad, rotation);
         }
 
-        //public void MakeComputerRotation()
-        //{
-        //    bool rotateClockWise = player2.GetRotationDirection();
-        //    short quad = player2.GetCuadrant();
-        //    RotateBoard(rotateClockWise, quad);
-        //}
+        public int[] GetComputerRotation()
+        {
+            int[] rotation = new int[2];
+            bool rotateClockWise = player2.GetRotationDirection();
+            int rotationDirection;
+            if (rotateClockWise)
+                rotationDirection = 1;
+            else
+                rotationDirection = 0;
+
+            short quad = player2.GetCuadrant();
+            rotation[0] = (int)quad;
+            rotation[1] = rotationDirection;
+            return rotation;
+        }
 
         private void InitializeBoard()
         {

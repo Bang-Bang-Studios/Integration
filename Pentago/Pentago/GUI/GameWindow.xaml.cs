@@ -48,12 +48,13 @@ namespace Pentago
         private bool isNetwork = false;
         private short movePos;
 
+        private bool isAnimationExecuting = false;
 
         public GameWindow(GameOptions options)
         {
             InitializeComponent();
-            //SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Gameplay.mp3", UriKind.Relative));
-            //SoundManager.backgroundMusicPlayer.Play();
+            SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Gameplay.mp3", UriKind.Relative));
+            SoundManager.backgroundMusicPlayer.Play();
             gameOptions = options;
             CreateChildrenList();
             switch (gameOptions._TypeOfGame)
@@ -104,7 +105,7 @@ namespace Pentago
         }
         private void Board_MouseMove(object sender, MouseEventArgs e)
         {
-            if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || player1.ActivePlayer)
+            if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || player1.ActivePlayer && !isAnimationExecuting)
             {
                 RePaintBoard();
                 int rectSize = (int)Board.Width / MAXCOLUMNS;
@@ -130,12 +131,12 @@ namespace Pentago
 
         private void Board_MouseLeave(object sender, MouseEventArgs e)
         {
-            RePaintBoard();
+                RePaintBoard();
         }
 
         private void Board_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || player1.ActivePlayer)
+            if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || player1.ActivePlayer && !isAnimationExecuting)
             {
                 int rectSize = (int)Board.Width / MAXCOLUMNS;
 
@@ -224,35 +225,36 @@ namespace Pentago
 
         private void RePaintBoard()
         {
-            int[] tempBoard = gameBrain.GetBoard;
-            var rectangleChildren = Board.Children;
-            int slot = 0;
-            foreach (Rectangle element in rectangleChildren)
+            if (!isAnimationExecuting)
             {
-                if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch ||
-                                gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
+                int[] tempBoard = gameBrain.GetBoard;
+                var rectangleChildren = Board.Children;
+                int slot = 0;
+                foreach (Rectangle element in rectangleChildren)
                 {
-                    if (tempBoard[slot] == 1)
-                        element.Fill = player1.Image;
-                    else if (tempBoard[slot] == 2)
-                        element.Fill = player2.Image;
-                    else
-                        element.Fill = Brushes.Transparent;
+                    if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch ||
+                                    gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
+                    {
+                        if (tempBoard[slot] == 1)
+                            element.Fill = player1.Image;
+                        else if (tempBoard[slot] == 2)
+                            element.Fill = player2.Image;
+                        else
+                            element.Fill = Brushes.Transparent;
+                    }
+                    else if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.AI)
+                    {
+                        if (tempBoard[slot] == 1)
+                            element.Fill = player1.Image;
+                        else if (tempBoard[slot] == 2)
+                            element.Fill = computerPlayer.Image;
+                        else
+                            element.Fill = Brushes.Transparent;
+                    }
+                    element.Opacity = 1;
+                    slot++;
                 }
-                else if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.AI)
-                {
-                    if (tempBoard[slot] == 1)
-                        element.Fill = player1.Image;
-                    else if (tempBoard[slot] == 2)
-                        element.Fill = computerPlayer.Image;
-                    else
-                        element.Fill = Brushes.Transparent;
-                }
-                element.Opacity = 1;
-                slot++;
             }
-
-
         }
 
         private void RemoveGrid()
@@ -308,7 +310,6 @@ namespace Pentago
         //Hide all rotations and show which player turn is it
         private void MakeRotationsHidden()
         {
-            userMadeRotation = true;
             btnClockWise1.Visibility = Visibility.Hidden;
             btnCounterClockWise1.Visibility = Visibility.Hidden;
             btnClockWise2.Visibility = Visibility.Hidden;
@@ -317,6 +318,7 @@ namespace Pentago
             btnCounterClockWise3.Visibility = Visibility.Hidden;
             btnClockWise4.Visibility = Visibility.Hidden;
             btnCounterClockWise4.Visibility = Visibility.Hidden;
+            userMadeRotation = true;
 
             //Changes turn of player in GUI
             player1.ActivePlayer = gameBrain.isPlayer1Turn();
@@ -365,7 +367,7 @@ namespace Pentago
                 {
                     //Update GUI player
                     int computerMove = gameBrain.GetComputerMove();
-                    Rectangle rec = (Rectangle)Board.Children[computerMove];
+                    Rectangle rec = rectangleChildren.ElementAt(computerMove);
                     rec.Fill = computerPlayer.Image;
                     winner = gameBrain.CheckForWin();
                     if (winner != 0)
@@ -388,10 +390,20 @@ namespace Pentago
             for (int i = 1; i <= 2; i++)
             {
                 gameBrain.MakeComputerRotation(i);
-                RePaintBoard();
+                //RePaintBoard();
             }
+            int[] computerRotation = gameBrain.GetComputerRotation();
+            short quad = (short)computerRotation[0];
+            bool isClockWise;
+            if (computerRotation[1] == 1)
+                isClockWise = true;
+            else
+                isClockWise = false;
 
-            MakeRotationsHidden();
+            //SoundManager.playSFX(SoundManager.SoundType.Rotate);
+            //InitiateRotation(isClockWise, quad);
+            RotateAnimation(quad, isClockWise);
+            //MakeRotationsHidden();
         }
 
         private void NetworkMoveReceived(object move, EventArgs e)
@@ -427,6 +439,7 @@ namespace Pentago
 
         private void RotateAnimation(short quad, bool rotateClockwise)
         {
+            isAnimationExecuting = true;
             switch (quad)
             {
                 case 1:
@@ -481,6 +494,7 @@ namespace Pentago
             RemoveGrid();
             RecreateGrid();
             MakeRotationsHidden();
+            isAnimationExecuting = false;
         }
 
         private void RotateQuad1Clockwise()
@@ -494,31 +508,30 @@ namespace Pentago
             Point x;
             Point y;
 
+            //0
             trans = new TranslateTransform();
             from = rectangleChildren[0];
             from.RenderTransform = trans;
-            to = rectangleChildren[2];
-            x = to.TranslatePoint(new Point(to.ActualWidth*2, 0), Board);
+            to = rectangleChildren[1];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
             animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
-            
             trans.BeginAnimation(TranslateTransform.XProperty, animateX);
 
+            //1
             trans = new TranslateTransform();
             from = rectangleChildren[1];
             from.RenderTransform = trans;
             to = rectangleChildren[0];
             x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
             animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
-
             trans.BeginAnimation(TranslateTransform.XProperty, animateX);
 
             to = rectangleChildren[8];
             y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
             animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
-
             trans.BeginAnimation(TranslateTransform.YProperty, animateY);
 
-
+            //2
             trans = new TranslateTransform();
             from = rectangleChildren[2];
             from.RenderTransform = trans;
@@ -527,7 +540,7 @@ namespace Pentago
             animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
             trans.BeginAnimation(TranslateTransform.YProperty, animateY);
 
-
+            //8
             trans = new TranslateTransform();
             from = rectangleChildren[8];
             from.RenderTransform = trans;
@@ -541,7 +554,7 @@ namespace Pentago
             animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
             trans.BeginAnimation(TranslateTransform.XProperty, animateX);
 
-
+            //14
             trans = new TranslateTransform();
             from = rectangleChildren[14];
             from.RenderTransform = trans;
@@ -550,7 +563,7 @@ namespace Pentago
             animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
             trans.BeginAnimation(TranslateTransform.XProperty, animateX);
 
-
+            //13
             trans = new TranslateTransform();
             from = rectangleChildren[13];
             from.RenderTransform = trans;
@@ -564,7 +577,7 @@ namespace Pentago
             animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
             trans.BeginAnimation(TranslateTransform.YProperty, animateY);
 
-
+            //12
             trans = new TranslateTransform();
             from = rectangleChildren[12];
             from.RenderTransform = trans;
@@ -573,24 +586,21 @@ namespace Pentago
             animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
             trans.BeginAnimation(TranslateTransform.YProperty, animateY);
 
+            //6
             trans = new TranslateTransform();
             from = rectangleChildren[6];
             from.RenderTransform = trans;
             to = holder;
-            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
             animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
             trans.BeginAnimation(TranslateTransform.YProperty, animateY);
 
-            from = to;
             from.RenderTransform = trans;
             to = rectangleChildren[1];
-            x = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
             animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
             animateX.Completed += new EventHandler(OnAnimationCompletition);
             trans.BeginAnimation(TranslateTransform.XProperty, animateX);
-
-            
-
         }
 
         private void RotateQuad1CounterClockwise()
@@ -598,10 +608,106 @@ namespace Pentago
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //0
+            trans = new TranslateTransform();
+            from = rectangleChildren[0];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //1
+            trans = new TranslateTransform();
+            from = rectangleChildren[1];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //2
+            trans = new TranslateTransform();
+            from = rectangleChildren[2];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth*2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //8
+            trans = new TranslateTransform();
+            from = rectangleChildren[8];
+            from.RenderTransform = trans;
+            to = rectangleChildren[2];
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //14
+            trans = new TranslateTransform();
+            from = rectangleChildren[14];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //13
+            trans = new TranslateTransform();
+            from = rectangleChildren[13];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //12
+            trans = new TranslateTransform();
+            from = rectangleChildren[12];
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //6
+            trans = new TranslateTransform();
+            from = rectangleChildren[6];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
 
         private void RotateQuad2Clockwise()
@@ -609,20 +715,210 @@ namespace Pentago
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //3
+            trans = new TranslateTransform();
+            from = rectangleChildren[3];
+            from.RenderTransform = trans;
+            to = rectangleChildren[1];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //4
+            trans = new TranslateTransform();
+            from = rectangleChildren[4];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //5
+            trans = new TranslateTransform();
+            from = rectangleChildren[5];
+            from.RenderTransform = trans;
+            to = rectangleChildren[14];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //11
+            trans = new TranslateTransform();
+            from = rectangleChildren[11];
+            from.RenderTransform = trans;
+            to = rectangleChildren[14];
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //17
+            trans = new TranslateTransform();
+            from = rectangleChildren[17];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //16
+            trans = new TranslateTransform();
+            from = rectangleChildren[16];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //15
+            trans = new TranslateTransform();
+            from = rectangleChildren[15];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //9
+            trans = new TranslateTransform();
+            from = rectangleChildren[9];
+            from.RenderTransform = trans;
+            to = holder;
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            from.RenderTransform = trans;
+            to = rectangleChildren[1];
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
         private void RotateQuad2CounterClockwise()
         {
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //3
+            trans = new TranslateTransform();
+            from = rectangleChildren[3];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //4
+            trans = new TranslateTransform();
+            from = rectangleChildren[4];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //5
+            trans = new TranslateTransform();
+            from = rectangleChildren[5];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //11
+            trans = new TranslateTransform();
+            from = rectangleChildren[11];
+            from.RenderTransform = trans;
+            to = rectangleChildren[2];
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //17
+            trans = new TranslateTransform();
+            from = rectangleChildren[17];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //16
+            trans = new TranslateTransform();
+            from = rectangleChildren[16];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //15
+            trans = new TranslateTransform();
+            from = rectangleChildren[15];
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //9
+            trans = new TranslateTransform();
+            from = rectangleChildren[9];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            y = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
 
         private void RotateQuad3Clockwise()
@@ -630,10 +926,106 @@ namespace Pentago
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //18
+            trans = new TranslateTransform();
+            from = rectangleChildren[18];
+            from.RenderTransform = trans;
+            to = rectangleChildren[1];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //19
+            trans = new TranslateTransform();
+            from = rectangleChildren[19];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //20
+            trans = new TranslateTransform();
+            from = rectangleChildren[20];
+            from.RenderTransform = trans;
+            to = rectangleChildren[14];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //26
+            trans = new TranslateTransform();
+            from = rectangleChildren[26];
+            from.RenderTransform = trans;
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //32
+            trans = new TranslateTransform();
+            from = rectangleChildren[32];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //31
+            trans = new TranslateTransform();
+            from = rectangleChildren[31];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //30
+            trans = new TranslateTransform();
+            from = rectangleChildren[30];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //24
+            trans = new TranslateTransform();
+            from = rectangleChildren[24];
+            from.RenderTransform = trans;
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+       
+            from.RenderTransform = trans;
+            to = rectangleChildren[1];
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
 
         private void RotateQuad3CounterClockwise()
@@ -641,10 +1033,105 @@ namespace Pentago
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //18
+            trans = new TranslateTransform();
+            from = rectangleChildren[18];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //19
+            trans = new TranslateTransform();
+            from = rectangleChildren[19];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //20
+            trans = new TranslateTransform();
+            from = rectangleChildren[20];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //26
+            trans = new TranslateTransform();
+            from = rectangleChildren[26];
+            from.RenderTransform = trans;
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //32
+            trans = new TranslateTransform();
+            from = rectangleChildren[32];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //31
+            trans = new TranslateTransform();
+            from = rectangleChildren[31];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //30
+            trans = new TranslateTransform();
+            from = rectangleChildren[30];
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //24
+            trans = new TranslateTransform();
+            from = rectangleChildren[24];
+            from.RenderTransform = trans;
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = from.TranslatePoint(new Point(from.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
 
         private void RotateQuad4Clockwise()
@@ -652,10 +1139,106 @@ namespace Pentago
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //21
+            trans = new TranslateTransform();
+            from = rectangleChildren[21];
+            from.RenderTransform = trans;
+            to = rectangleChildren[1];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //22
+            trans = new TranslateTransform();
+            from = rectangleChildren[22];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //23
+            trans = new TranslateTransform();
+            from = rectangleChildren[23];
+            from.RenderTransform = trans;
+            to = rectangleChildren[14];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //29
+            trans = new TranslateTransform();
+            from = rectangleChildren[29];
+            from.RenderTransform = trans;
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //35
+            trans = new TranslateTransform();
+            from = rectangleChildren[35];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //34
+            trans = new TranslateTransform();
+            from = rectangleChildren[34];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //33
+            trans = new TranslateTransform();
+            from = rectangleChildren[33];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //27
+            trans = new TranslateTransform();
+            from = rectangleChildren[27];
+            from.RenderTransform = trans;
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+
+            from.RenderTransform = trans;
+            to = rectangleChildren[1];
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
 
         private void RotateQuad4CounterClockwise()
@@ -663,10 +1246,105 @@ namespace Pentago
             TranslateTransform trans;
             Rectangle from;
             Rectangle to;
+            Rectangle holder = rectangleChildren.ElementAt(0);
             DoubleAnimation animateX;
             DoubleAnimation animateY;
             Point x;
             Point y;
+
+            //21
+            trans = new TranslateTransform();
+            from = rectangleChildren[21];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //22
+            trans = new TranslateTransform();
+            from = rectangleChildren[22];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //23
+            trans = new TranslateTransform();
+            from = rectangleChildren[23];
+            from.RenderTransform = trans;
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //29
+            trans = new TranslateTransform();
+            from = rectangleChildren[29];
+            from.RenderTransform = trans;
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            to = rectangleChildren[0];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, -x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //35
+            trans = new TranslateTransform();
+            from = rectangleChildren[35];
+            from.RenderTransform = trans;
+            to = holder;
+            y = to.TranslatePoint(new Point(to.ActualWidth * 2, 0), Board);
+            animateY = new DoubleAnimation(0, -y.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //34
+            trans = new TranslateTransform();
+            from = rectangleChildren[34];
+            from.RenderTransform = trans;
+            to = rectangleChildren[12];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            to = rectangleChildren[8];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, -y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            //33
+            trans = new TranslateTransform();
+            from = rectangleChildren[33];
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
+
+            //27
+            trans = new TranslateTransform();
+            from = rectangleChildren[27];
+            from.RenderTransform = trans;
+            to = rectangleChildren[6];
+            y = to.TranslatePoint(new Point(to.ActualWidth, 0), Board);
+            animateY = new DoubleAnimation(0, y.Y, TimeSpan.FromSeconds(1));
+            trans.BeginAnimation(TranslateTransform.YProperty, animateY);
+
+            from.RenderTransform = trans;
+            to = rectangleChildren[13];
+            x = holder.TranslatePoint(new Point(holder.ActualWidth, 0), Board);
+            animateX = new DoubleAnimation(0, x.X, TimeSpan.FromSeconds(1));
+            animateX.Completed += new EventHandler(OnAnimationCompletition);
+            trans.BeginAnimation(TranslateTransform.XProperty, animateX);
         }
 
 
@@ -825,8 +1503,6 @@ namespace Pentago
             SoundManager.playSFX(SoundManager.SoundType.Click);
 
             const string message = "Are you sure you want to exit the game?";
-            const string caption = "Dragon Horde";
-            //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
             MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.YesNo);
             messageWindow.ShowDialog();
 

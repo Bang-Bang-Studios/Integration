@@ -155,7 +155,7 @@
         <Image Height="100" Width="100" Margin="859,679,459,82" Name="btnClockWise4"  Source="/Pentago;component/GUI/images/ClockWise4.png" MouseDown="btnClockWise4_MouseDown" Visibility="Hidden"/>
         <Image Height="100" Width="100" Margin="960,580,358,180" Name="btnCounterClockWise4" Source="/Pentago;component/GUI/images/CounterClockWise4.png" MouseDown="btnCounterClockWise4_MouseDown" Visibility="Hidden" />
         <Rectangle Height="75" Name="ActivePlayer" Stroke="Gray" Width="75" Margin="670,75,673,710" />
-        <TextBlock Height="50"  Margin="511,761,497,50" Name="winnerAnnoucement" Text="" FontWeight="Bold" FontSize="24" FontFamily="Agency FB" TextAlignment="Center" />
+        <TextBlock Height="50"  Margin="511,761,497,50" Name="winnerAnnoucement" Text="" FontWeight="Bold" FontSize="24" FontFamily="Old English Text MT" TextAlignment="Center" />
         <Image Margin="167,480,1074,127" x:Name="Viking" Stretch="Fill" Source="/Pentago;component/GUI/Images/viking2.png" />
         <Image Height="105" Margin="1102,12,12,744" Name="ExitScrollImage" Stretch="Fill" Width="304" Source="/Pentago;component/GUI/Images/ExitScroll.png" />
         <Button Content="Exit" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Height="64" Margin="1166,33,77,764" Name="ExitButton"  Width="175" Click="ExitButton_Click" MouseEnter="ExitButton_MouseEnter" />

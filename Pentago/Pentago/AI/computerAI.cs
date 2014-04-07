@@ -78,6 +78,7 @@ namespace Pentago.AI
                 this._TempBoard[i] = board.GetPlayer(i);
 
             Hashtable hashTable = new Hashtable();
+            Thread.Sleep(1000);
             Stopwatch sw = Stopwatch.StartNew();
             alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
             sw.Stop();

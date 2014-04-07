@@ -484,11 +484,6 @@ namespace Pentago.GUI
         private void OnlineGame_Click(object sender, RoutedEventArgs e)
         {
             ReHideMenues();
-            //Point beginning;
-            //Point ending;
-            //TranslateTransform trans;
-            //DoubleAnimation RockDropAnimation = new DoubleAnimation(beginning.Y, ending.Y, TimeSpan.FromSeconds(.5));
-            //trans.BeginAnimation(TranslateTransform.YProperty, RockDropAnimation);
             OnlineMenuPanel.Visibility = Visibility.Visible;
         }
         
@@ -660,6 +655,399 @@ namespace Pentago.GUI
             {
                 OnlineMenuPanel.Visibility = Visibility.Hidden;
             }
+        }
+        int unMuteMusicVol = 6;
+        int currentMusicVol = 6;
+        int unMuteSoundVol = 6;
+        int currentSoundVol = 6;
+
+        private void MusicToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentMusicVol == 0)
+            {
+                restoreMusicVol(unMuteMusicVol);
+                currentMusicVol = unMuteMusicVol;
+            }
+
+            else if (currentMusicVol > 0)
+            {
+                MusicOn1.Visibility = Visibility.Hidden;
+                MusicOn2.Visibility = Visibility.Hidden;
+                MusicOn3.Visibility = Visibility.Hidden;
+                MusicOn4.Visibility = Visibility.Hidden;
+                MusicOn5.Visibility = Visibility.Hidden;
+                MusicOn6.Visibility = Visibility.Hidden;
+                MusicOff1.Visibility = Visibility.Visible;
+                MusicOff2.Visibility = Visibility.Visible;
+                MusicOff3.Visibility = Visibility.Visible;
+                MusicOff4.Visibility = Visibility.Visible;
+                MusicOff5.Visibility = Visibility.Visible;
+                MusicOff6.Visibility = Visibility.Visible;
+                currentMusicVol = 0;
+            }
+        }
+
+        private void SoundToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentSoundVol == 0)
+            {
+                restoreSoundVol(unMuteSoundVol);
+                currentSoundVol = unMuteSoundVol;
+            }
+
+            else if (currentSoundVol > 0)
+            {
+                SoundOn1.Visibility = Visibility.Hidden;
+                SoundOn2.Visibility = Visibility.Hidden;
+                SoundOn3.Visibility = Visibility.Hidden;
+                SoundOn4.Visibility = Visibility.Hidden;
+                SoundOn5.Visibility = Visibility.Hidden;
+                SoundOn6.Visibility = Visibility.Hidden;
+                SoundOff1.Visibility = Visibility.Visible;
+                SoundOff2.Visibility = Visibility.Visible;
+                SoundOff3.Visibility = Visibility.Visible;
+                SoundOff4.Visibility = Visibility.Visible;
+                SoundOff5.Visibility = Visibility.Visible;
+                SoundOff6.Visibility = Visibility.Visible;
+                currentSoundVol = 0;
+            }
+        }
+        private void restoreMusicVol(int i)
+        {
+            switch(i)
+            {
+                case 1: MusicOn1.Visibility = Visibility.Visible;
+                     MusicOn2.Visibility = Visibility.Hidden;
+                    MusicOn3.Visibility = Visibility.Hidden;
+                    MusicOn4.Visibility = Visibility.Hidden;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Visible;
+                    MusicOff3.Visibility = Visibility.Visible;
+                    MusicOff4.Visibility = Visibility.Visible;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 2: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Hidden;
+                    MusicOn4.Visibility = Visibility.Hidden;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Visible;
+                    MusicOff4.Visibility = Visibility.Visible;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 3: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Hidden;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Visible;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 4: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Visible;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Hidden;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 5: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Visible;
+                    MusicOn5.Visibility = Visibility.Visible;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Hidden;
+                    MusicOff5.Visibility = Visibility.Hidden;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 6: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Visible;
+                    MusicOn5.Visibility = Visibility.Visible;
+                    MusicOn6.Visibility = Visibility.Visible;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Hidden;
+                    MusicOff5.Visibility = Visibility.Hidden;
+                    MusicOff6.Visibility = Visibility.Hidden;
+                    break;
+            }
+        }
+
+        private void restoreSoundVol(int i)
+        {
+            switch (i)
+            {
+                case 1: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Hidden;
+                    SoundOn3.Visibility = Visibility.Hidden;
+                    SoundOn4.Visibility = Visibility.Hidden;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Visible;
+                    SoundOff3.Visibility = Visibility.Visible;
+                    SoundOff4.Visibility = Visibility.Visible;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 2: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Hidden;
+                    SoundOn4.Visibility = Visibility.Hidden;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Visible;
+                    SoundOff4.Visibility = Visibility.Visible;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 3: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Hidden;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Visible;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 4: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Visible;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Hidden;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 5: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Visible;
+                    SoundOn5.Visibility = Visibility.Visible;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Hidden;
+                    SoundOff5.Visibility = Visibility.Hidden;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 6: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Visible;
+                    SoundOn5.Visibility = Visibility.Visible;
+                    SoundOn6.Visibility = Visibility.Visible;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Hidden;
+                    SoundOff5.Visibility = Visibility.Hidden;
+                    SoundOff6.Visibility = Visibility.Hidden;
+                    break;
+            }
+        }
+
+        private void MusicOff1_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 1;
+            unMuteMusicVol = 1;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff2_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 2;
+            unMuteMusicVol = 2;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff3_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 3;
+            unMuteMusicVol = 3;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff4_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 4;
+            unMuteMusicVol = 4;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff5_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 5;
+            unMuteMusicVol = 5;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff6_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 6;
+            unMuteMusicVol = 6;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn1_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 1;
+            unMuteMusicVol = 1;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn2_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 2;
+            unMuteMusicVol = 2;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn3_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 3;
+            unMuteMusicVol = 3;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn4_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 4;
+            unMuteMusicVol = 4;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn5_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 5;
+            unMuteMusicVol = 5;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn6_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 6;
+            unMuteMusicVol = 6;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void SoundOff1_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 1;
+            unMuteSoundVol = 1;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff2_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 2;
+            unMuteSoundVol = 2;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff3_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 3;
+            unMuteSoundVol = 3;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff4_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 4;
+            unMuteSoundVol = 4;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff5_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 5;
+            unMuteSoundVol = 5;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff6_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 6;
+            unMuteSoundVol = 6;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn1_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 1;
+            unMuteSoundVol = 1;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn2_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 2;
+            unMuteSoundVol = 2;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn3_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 3;
+            unMuteSoundVol = 3;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn4_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 4;
+            unMuteSoundVol = 4;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn5_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 5;
+            unMuteSoundVol = 5;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn6_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 6;
+            unMuteSoundVol = 6;
+            restoreSoundVol(currentSoundVol);
         }
     }
 }
