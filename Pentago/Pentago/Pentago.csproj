@@ -135,9 +135,6 @@
     <Resource Include="GUI\Images\TitleWork.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\MainBack.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="GUI\Images\BluePup.png" />
     <Resource Include="GUI\Images\RedPup.png" />
   </ItemGroup>
@@ -171,6 +168,7 @@
     <Resource Include="GUI\Images\RosettaStoneCartoony.png" />
     <Resource Include="GUI\Images\Old_Scroll.png" />
     <Resource Include="GUI\Images\SpeechBubble.png" />
+    <Resource Include="GUI\Images\MainBack.png" />
     <Content Include="GUI\Sounds\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

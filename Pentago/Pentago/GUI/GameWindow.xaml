@@ -70,7 +70,7 @@
                 </Style>
             </UniformGrid.Resources>
             <Rectangle Height="83" Width="83" >
-                
+
             </Rectangle>
             <Rectangle Height="83" Width="83">
             </Rectangle>
@@ -159,7 +159,7 @@
         <Image Margin="167,480,1074,127" x:Name="Viking" Stretch="Fill" Source="/Pentago;component/GUI/Images/viking2.png" />
         <Image Height="105" Margin="1102,12,12,744" Name="ExitScrollImage" Stretch="Fill" Width="304" Source="/Pentago;component/GUI/Images/ExitScroll.png" />
         <Button Content="Exit" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" Height="64" Margin="1166,33,77,764" Name="ExitButton"  Width="175" Click="ExitButton_Click" MouseEnter="ExitButton_MouseEnter" />
-        <TextBlock Height="56"  Margin="595,12,585,793" Name="ActiveTurnText" Text="Current Turn" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold"  Width="239" TextAlignment="Center" />
+        <TextBlock Height="56"  Margin="469,32,470,812" Name="ActiveTurnText" Text="Current Turn" FontFamily="Old English Text MT" FontSize="40" FontWeight="Bold" TextAlignment="Center" />
         <TextBlock Height="49"  Margin="140,761,0,51" Name="Player1NameText" Text="" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="239" />
         <Image Margin="1052,279,25,-24" Name="IceGiant" Stretch="Uniform"  Source="/Pentago;component/GUI/Images/IceGiant.png" />
         <TextBlock Text="" Name="Player2NameText" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold" Height="49" Margin="1066,761,66,51" TextAlignment="Center" />

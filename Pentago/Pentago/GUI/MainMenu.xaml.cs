@@ -656,12 +656,12 @@ namespace Pentago.GUI
                 OnlineMenuPanel.Visibility = Visibility.Hidden;
             }
         }
-        int unMuteMusicVol = 6;
-        int currentMusicVol = 6;
-        int unMuteSoundVol = 6;
-        int currentSoundVol = 6;
+        public int unMuteMusicVol = 6;
+        public int currentMusicVol = 6;
+        public int unMuteSoundVol = 6;
+        public int currentSoundVol = 6;
 
-        private void MusicToggle_Click(object sender, RoutedEventArgs e)
+        public void MusicToggle_Click(object sender, RoutedEventArgs e)
         {
             if (currentMusicVol == 0)
             {
@@ -687,7 +687,7 @@ namespace Pentago.GUI
             }
         }
 
-        private void SoundToggle_Click(object sender, RoutedEventArgs e)
+        public void SoundToggle_Click(object sender, RoutedEventArgs e)
         {
             if (currentSoundVol == 0)
             {
