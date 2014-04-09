@@ -31,14 +31,37 @@ namespace Pentago.GUI
 
         Window MainMenuWindow;
 
+
+        private Point vikingArmPivot;
+        private Point giantArmPivot;
+        private Point zero;
+        private Point topRight;
+
+
+        public int unMuteMusicVol = 6;
+        public int currentMusicVol = 6;
+        public int unMuteSoundVol = 6;
+        public int currentSoundVol = 6;
+
         public MainMenu()
         {
             InitializeComponent();
+            SoundManager.sfxVolume = Properties.Settings.Default.SFXVolume;
+            SoundManager.musicVolume = Properties.Settings.Default.MusicVolume;
+            unMuteMusicVol = SoundManager.musicVolume / 16;
+            unMuteSoundVol = SoundManager.sfxVolume / 16;
+            currentMusicVol = SoundManager.musicVolume / 16;
+            currentSoundVol = SoundManager.sfxVolume / 16;
             SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Intro.mp3", UriKind.Relative));
             SoundManager.backgroundMusicPlayer.Play();
             //Initialize profile manager
             profileManager = ProfileManager.InstanceCreator();
             MainMenuWindow = this;
+
+
+            vikingArmPivot = new Point(167 + 40, this.Height - 420 + 121);
+            zero = new Point(0, 0);
+            topRight = new Point(Width, 0);
         }
         
         private void QuickMatch_Click(object sender, RoutedEventArgs e)
@@ -656,10 +679,6 @@ namespace Pentago.GUI
                 OnlineMenuPanel.Visibility = Visibility.Hidden;
             }
         }
-        public int unMuteMusicVol = 6;
-        public int currentMusicVol = 6;
-        public int unMuteSoundVol = 6;
-        public int currentSoundVol = 6;
 
         public void MusicToggle_Click(object sender, RoutedEventArgs e)
         {
@@ -684,6 +703,7 @@ namespace Pentago.GUI
                 MusicOff5.Visibility = Visibility.Visible;
                 MusicOff6.Visibility = Visibility.Visible;
                 currentMusicVol = 0;
+                SoundManager.musicVolume = 0;
             }
         }
 
@@ -710,6 +730,7 @@ namespace Pentago.GUI
                 SoundOff5.Visibility = Visibility.Visible;
                 SoundOff6.Visibility = Visibility.Visible;
                 currentSoundVol = 0;
+                SoundManager.sfxVolume = 0;
             }
         }
         private void restoreMusicVol(int i)
@@ -795,6 +816,7 @@ namespace Pentago.GUI
                     MusicOff6.Visibility = Visibility.Hidden;
                     break;
             }
+            SoundManager.musicVolume = 16 * i;
         }
 
         private void restoreSoundVol(int i)
@@ -880,6 +902,7 @@ namespace Pentago.GUI
                     SoundOff6.Visibility = Visibility.Hidden;
                     break;
             }
+            SoundManager.sfxVolume = 16 * i;
         }
 
         private void MusicOff1_Click(object sender, RoutedEventArgs e)
@@ -1049,5 +1072,191 @@ namespace Pentago.GUI
             unMuteSoundVol = 6;
             restoreSoundVol(currentSoundVol);
         }
+
+        int BeardCount = 1;
+        int ArmorCount = 1;
+        int PantsCount = 1;
+
+        private void ArmorCycleRight_Click(object sender, RoutedEventArgs e)
+        {
+            ArmorCount++;
+            if (ArmorCount == 6)
+            {
+                ArmorCount = 1;
+            }
+            ArmorChange(ArmorCount);
+        }
+
+        private void ArmorCycleLeft_Click(object sender, RoutedEventArgs e)
+        {
+            ArmorCount--;
+            if (ArmorCount == 0)
+            {
+                ArmorCount = 5;
+            }
+            ArmorChange(ArmorCount);
+        }
+
+        private void ArmorChange(int i)
+        {
+            switch (i)
+            {
+                case 1: RedArmor.Visibility = Visibility.Hidden;
+                    BlackArmor.Visibility = Visibility.Hidden;
+                    SilverArmor.Visibility = Visibility.Hidden;
+                    GoldArmor.Visibility = Visibility.Hidden;
+                    break;
+                case 2: RedArmor.Visibility = Visibility.Visible;
+                    BlackArmor.Visibility = Visibility.Hidden;
+                    SilverArmor.Visibility = Visibility.Hidden;
+                    GoldArmor.Visibility = Visibility.Hidden;
+                    break;
+                case 3: RedArmor.Visibility = Visibility.Hidden;
+                    BlackArmor.Visibility = Visibility.Visible;
+                    SilverArmor.Visibility = Visibility.Hidden;
+                    GoldArmor.Visibility = Visibility.Hidden;
+                    break;
+                case 4: RedArmor.Visibility = Visibility.Hidden;
+                    BlackArmor.Visibility = Visibility.Hidden;
+                    SilverArmor.Visibility = Visibility.Visible;
+                    GoldArmor.Visibility = Visibility.Hidden;
+                    break;
+                case 5: RedArmor.Visibility = Visibility.Hidden;
+                    BlackArmor.Visibility = Visibility.Hidden;
+                    SilverArmor.Visibility = Visibility.Hidden;
+                    GoldArmor.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
+
+        private void BeardChange(int i)
+        {
+            switch (i)
+            {
+                case 1: RedBeard.Visibility = Visibility.Hidden;
+                    BlackBeard.Visibility = Visibility.Hidden;
+                    GrayBeard.Visibility = Visibility.Hidden;
+                    BrownBeard.Visibility = Visibility.Hidden;
+                    break;
+                case 2: RedBeard.Visibility = Visibility.Visible;
+                    BlackBeard.Visibility = Visibility.Hidden;
+                    GrayBeard.Visibility = Visibility.Hidden;
+                    BrownBeard.Visibility = Visibility.Hidden;
+                    break;
+                case 3: RedBeard.Visibility = Visibility.Hidden;
+                    BlackBeard.Visibility = Visibility.Visible;
+                    GrayBeard.Visibility = Visibility.Hidden;
+                    BrownBeard.Visibility = Visibility.Hidden;
+                    break;
+                case 4: RedBeard.Visibility = Visibility.Hidden;
+                    BlackBeard.Visibility = Visibility.Hidden;
+                    GrayBeard.Visibility = Visibility.Visible;
+                    BrownBeard.Visibility = Visibility.Hidden;
+                    break;
+                case 5: RedBeard.Visibility = Visibility.Hidden;
+                    BlackBeard.Visibility = Visibility.Hidden;
+                    GrayBeard.Visibility = Visibility.Hidden;
+                    BrownBeard.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
+
+        private void PantsChange(int i)
+        {
+            switch (i)
+            {
+                case 1: RedPants.Visibility = Visibility.Hidden;
+                    PurplePants.Visibility = Visibility.Hidden;
+                    PinkPants.Visibility = Visibility.Hidden;
+                    GrayPants.Visibility = Visibility.Hidden;
+                    GoldPants.Visibility = Visibility.Hidden;
+                    BrownPants.Visibility = Visibility.Hidden;
+                    break;
+                case 2: RedPants.Visibility = Visibility.Visible;
+                    PurplePants.Visibility = Visibility.Hidden;
+                    PinkPants.Visibility = Visibility.Hidden;
+                    GrayPants.Visibility = Visibility.Hidden;
+                    GoldPants.Visibility = Visibility.Hidden;
+                    BrownPants.Visibility = Visibility.Hidden;
+                    break;
+                case 3: RedPants.Visibility = Visibility.Hidden;
+                    PurplePants.Visibility = Visibility.Visible;
+                    PinkPants.Visibility = Visibility.Hidden;
+                    GrayPants.Visibility = Visibility.Hidden;
+                    GoldPants.Visibility = Visibility.Hidden;
+                    BrownPants.Visibility = Visibility.Hidden;
+                    break;
+                case 4: RedPants.Visibility = Visibility.Hidden;
+                    PurplePants.Visibility = Visibility.Hidden;
+                    PinkPants.Visibility = Visibility.Visible;
+                    GrayPants.Visibility = Visibility.Hidden;
+                    GoldPants.Visibility = Visibility.Hidden;
+                    BrownPants.Visibility = Visibility.Hidden;
+                    break;
+                case 5: RedPants.Visibility = Visibility.Hidden;
+                    PurplePants.Visibility = Visibility.Hidden;
+                    PinkPants.Visibility = Visibility.Hidden;
+                    GrayPants.Visibility = Visibility.Visible;
+                    GoldPants.Visibility = Visibility.Hidden;
+                    BrownPants.Visibility = Visibility.Hidden;
+                    break;
+                case 6: RedPants.Visibility = Visibility.Hidden;
+                    PurplePants.Visibility = Visibility.Hidden;
+                    PinkPants.Visibility = Visibility.Hidden;
+                    GrayPants.Visibility = Visibility.Hidden;
+                    GoldPants.Visibility = Visibility.Visible;
+                    BrownPants.Visibility = Visibility.Hidden;
+                    break;
+                case 7: RedPants.Visibility = Visibility.Hidden;
+                    PurplePants.Visibility = Visibility.Hidden;
+                    PinkPants.Visibility = Visibility.Hidden;
+                    GrayPants.Visibility = Visibility.Hidden;
+                    GoldPants.Visibility = Visibility.Hidden;
+                    BrownPants.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
+
+        private void BeardCycleRight_Click(object sender, RoutedEventArgs e)
+        {
+            BeardCount++;
+            if (BeardCount == 6)
+            {
+                BeardCount = 1;
+            }
+            BeardChange(BeardCount);
+        }
+
+        private void BeardCycleLeft_Click(object sender, RoutedEventArgs e)
+        {
+            BeardCount--;
+            if (BeardCount == 0)
+            {
+                BeardCount = 5;
+            }
+            BeardChange(BeardCount);
+        }
+
+        private void PantsCycleRight_Click(object sender, RoutedEventArgs e)
+        {
+            PantsCount++;
+            if (PantsCount == 8)
+            {
+                PantsCount = 1;
+            }
+            PantsChange(PantsCount);
+        }
+
+        private void PantsCycleLeft_Click(object sender, RoutedEventArgs e)
+        {
+            PantsCount--;
+            if (PantsCount == 0)
+            {
+                PantsCount = 7;
+            }
+            PantsChange(PantsCount);
+        }
+
+
     }
 }

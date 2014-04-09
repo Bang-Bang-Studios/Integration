@@ -1,0 +1,10 @@
+﻿<Window x:Class="Pentago.CompanyIntro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CompanyIntro" Height="768" Width="1024" AllowsTransparency="True" WindowStyle="None" KeyDown="Window_KeyDown" Topmost="True" WindowState="Maximized" ResizeMode="NoResize" ShowInTaskbar="False" Cursor="None" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Grid Background="Black">
+        <!--<Image x:Name="logo" Margin="150,77" Stretch="Fill" Source="Images/StudioOutline.png" Visibility="Hidden"/>
+        <Rectangle x:Name="White" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="9000" Stroke="Black" VerticalAlignment="Center" Width="9000" Visibility="Hidden" Grid.IsSharedSizeScope="True"/>-->
+        <MediaElement x:Name="video" Source="GUI/Videos/BangBang.wmv" MediaEnded="video_MediaEnded" Volume="0.3"/>
+    </Grid>
+</Window>

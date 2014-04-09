@@ -47,6 +47,9 @@ namespace Pentago
         private bool isNetwork = false;
         private short movePos;
 
+        private Point vikingArmPivot;
+        private Point zero;
+
         private bool isAnimationExecuting = false;
 
         public GameWindow(GameOptions options)
@@ -90,6 +93,9 @@ namespace Pentago
                     break;
             }
             ShowActivePlayer();
+
+            vikingArmPivot = new Point(167 + 40, this.Height - 420 + 121);
+            zero = new Point(0, 0);
         }
 
         private List<Rectangle> rectangleChildren = null;
@@ -154,12 +160,23 @@ namespace Pentago
                 if (userMadeRotation && winner == 0 && gameBrain.PlacePiece(row, col))
                 {
                     SoundManager.playSFX(SoundManager.SoundType.Click);
+                    TranslateTransform translate = new TranslateTransform();
+                    DoubleAnimation enter;
+                    Point targetPoint;
                     userMadeRotation = false;
                     Rectangle rec = rectangleChildren.ElementAt(MAXCOLUMNS * row + col);
+                    targetPoint = rec.TranslatePoint(new Point(rec.ActualWidth, 0), Board);
                     if (gameBrain.isPlayer1Turn())
+                    {
+                        enter = new DoubleAnimation(0, targetPoint.X, TimeSpan.FromSeconds(1));
                         rec.Fill = player1.Image;
+                    }
                     else
+                    {
+                        enter = new DoubleAnimation(0, -targetPoint.X, TimeSpan.FromSeconds(1));
                         rec.Fill = player2.Image;
+                    }
+                    translate.BeginAnimation(TranslateTransform.XProperty, enter);
                     RePaintBoard();
                     winner = gameBrain.CheckForWin();
                     if (winner != 0)
@@ -1548,6 +1565,34 @@ namespace Pentago
         private void VikingButton_Mousedown(object sender, EventArgs e)
         {
 
+        }
+
+        private void RotateSword(MouseEventArgs e)
+        {
+            Point mousePositionRelativeToWindow = e.GetPosition(this);
+            Console.WriteLine("Window: " + mousePositionRelativeToWindow.ToString());
+
+
+
+            double a = Math.Sqrt((vikingArmPivot.X * vikingArmPivot.X) + (vikingArmPivot.Y * vikingArmPivot.Y));
+            double b = Math.Sqrt(((vikingArmPivot.X - mousePositionRelativeToWindow.X) * (vikingArmPivot.X - mousePositionRelativeToWindow.X)) +
+                ((vikingArmPivot.Y - mousePositionRelativeToWindow.Y) * (vikingArmPivot.Y - mousePositionRelativeToWindow.Y)));
+            double c = Math.Sqrt((mousePositionRelativeToWindow.X * mousePositionRelativeToWindow.X) + (mousePositionRelativeToWindow.Y * mousePositionRelativeToWindow.Y));
+
+            double angle = Math.Acos((a * a + b * b - c * c) / (2 * a * b)) * (180 / Math.PI);
+
+
+            VikingButton_Sword.RenderTransform = new RotateTransform(angle - 66, 40, 121);
+        }
+
+        private void Game_MouseMove(object sender, MouseEventArgs e)
+        {
+            RotateSword(e);
+            Point mousePositionRelativeToWindow = e.GetPosition(this);
+            TransformGroup t = new TransformGroup();
+            t.Children.Add(new ScaleTransform(-1, 1));
+            t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + Pointer.Width, mousePositionRelativeToWindow.Y));
+            Pointer.RenderTransform = t;
         }
     }
 }

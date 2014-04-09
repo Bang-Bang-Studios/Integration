@@ -75,9 +75,17 @@
     <Compile Include="GUI\Classes\SoundManager.cs" />
     <Compile Include="GameCore\GameBrain.cs" />
     <Compile Include="GUI\Classes\GameOptions.cs" />
+    <Page Include="GUI\CompanyIntro.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="GUI\GameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\LoadingScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\MainMenu.xaml">
       <SubType>Designer</SubType>
@@ -90,8 +98,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\Classes\Tutorial.cs" />
+    <Compile Include="GUI\CompanyIntro.xaml.cs">
+      <DependentUpon>CompanyIntro.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\LoadingScreen.xaml.cs">
+      <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
@@ -117,6 +131,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="CELTG___.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -125,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Images\BlueCrystal.png" />
-    <Resource Include="GUI\Images\viking1.png" />
     <Resource Include="GUI\Images\viking2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -154,9 +171,6 @@
     <Resource Include="GUI\Images\CounterClockWise4.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Images\IceGiant.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="GUI\Images\ClockWise1.png" />
   </ItemGroup>
   <ItemGroup>
@@ -164,11 +178,33 @@
     <Resource Include="GUI\Images\RedPupHover.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GUI\Videos\bangbang.wmv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="GUI\Images\RosettaStone.png" />
     <Resource Include="GUI\Images\RosettaStoneCartoony.png" />
     <Resource Include="GUI\Images\Old_Scroll.png" />
     <Resource Include="GUI\Images\SpeechBubble.png" />
     <Resource Include="GUI\Images\MainBack.png" />
+    <Resource Include="GUI\Images\Base.png" />
+    <Resource Include="GUI\Images\IceGiant.png" />
+    <Resource Include="GUI\Images\Black.png" />
+    <Resource Include="GUI\Images\Gold.png" />
+    <Resource Include="GUI\Images\Red.png" />
+    <Resource Include="GUI\Images\Silver.png" />
+    <Resource Include="GUI\Images\RedBeard.png" />
+    <Resource Include="GUI\Images\BlackBeard.png" />
+    <Resource Include="GUI\Images\Brown.png" />
+    <Resource Include="GUI\Images\Gray.png" />
+    <Resource Include="GUI\Images\BrownPants.png" />
+    <Resource Include="GUI\Images\GoldPants.png" />
+    <Resource Include="GUI\Images\GrayPants.png" />
+    <Resource Include="GUI\Images\PinkPants.png" />
+    <Resource Include="GUI\Images\PurplePants.png" />
+    <Resource Include="GUI\Images\RedPants.png" />
+    <Resource Include="GUI\Images\PointSword.png" />
+    <Resource Include="GUI\Images\Armless.png" />
+    <Resource Include="GUI\Images\Iron_arrow_detail.png" />
     <Content Include="GUI\Sounds\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
