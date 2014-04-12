@@ -67,6 +67,143 @@
             <RowDefinition/>
             <RowDefinition Height="44*"/>
         </Grid.RowDefinitions>
+        <Popup x:Name="Message" Height="900" Width="650" Placement="Center" AllowsTransparency="True" PopupAnimation="Slide">
+            <Canvas HorizontalAlignment="Left" Height="900" VerticalAlignment="Top" Width="650">
+                <Canvas.Background>
+                    <ImageBrush ImageSource="Images/RosettaStoneCartoony.png"/>
+                </Canvas.Background>
+                <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="MusicToggle" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Music" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="146" BorderThickness="0" IsTabStop="False" Click="MusicToggle_Click" Canvas.Left="293" Canvas.Top="128" Foreground="#FFA48F0C" />
+                <Button Height="24" HorizontalAlignment="Left"  x:Name="MusicOff1" Panel.ZIndex="0"   VerticalAlignment="Top" Visibility="Hidden" Width="24" Click="MusicOff1_Click" Canvas.Left="248" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="27"  x:Name="MusicOff2" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="27" Click="MusicOff2_Click" Canvas.Left="277" Canvas.Top="189" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="33" x:Name="MusicOff4" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="33" Click="MusicOff4_Click" Canvas.Left="344" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="30"  x:Name="MusicOff3" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="30" Click="MusicOff3_Click" Canvas.Left="309" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="36"  x:Name="MusicOff5" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="36" Click="MusicOff5_Click" Canvas.Left="382" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="39"  x:Name="MusicOff6" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="39" Click="MusicOff6_Click" Canvas.Left="424" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" x:Name="MusicOn1" Panel.ZIndex="0"  VerticalAlignment="Top" Visibility="Visible" Width="24" Click="MusicOn1_Click" Canvas.Left="248" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="30"  x:Name="MusicOn3" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="30" Click="MusicOn3_Click" Canvas.Left="309" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="33" x:Name="MusicOn4" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="33" Click="MusicOn4_Click" Canvas.Left="344" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="36"  x:Name="MusicOn5" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="36" Click="MusicOn5_Click" Canvas.Left="382" Canvas.Top="186" 
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="39"  x:Name="MusicOn6" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="39" Click="MusicOn6_Click" Canvas.Left="424" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="27"  x:Name="MusicOn2" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="27" Click="MusicOn2_Click" Canvas.Left="277" Canvas.Top="186" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="44" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="SoundToggle" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Sound" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="146" BorderThickness="0"  IsTabStop="False" Click="SoundToggle_Click" Canvas.Left="293" Canvas.Top="269" Foreground="#FFA48F0C" />
+                <Button Height="24" HorizontalAlignment="Left" x:Name="SoundOn1" Panel.ZIndex="0"  VerticalAlignment="Top" Visibility="Visible" Width="24" Click="SoundOn1_Click" Canvas.Left="248" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="30"  x:Name="SoundOn3" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="30" Click="SoundOn3_Click" Canvas.Left="309" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="33" x:Name="SoundOn4" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="33" Click="SoundOn4_Click" Canvas.Left="344" Canvas.Top="326" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="36"  x:Name="SoundOn5" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="36" Click="SoundOn5_Click" Canvas.Left="382" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="39"  x:Name="SoundOn6" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="39" Click="SoundOn6_Click" Canvas.Left="424" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="27"  x:Name="SoundOn2" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="27" Click="SoundOn2_Click" Canvas.Left="277" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" x:Name="SoundOff1" Panel.ZIndex="0"  VerticalAlignment="Top" Visibility="Hidden" Width="24" Click="SoundOff1_Click" Canvas.Left="248" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="30"  x:Name="SoundOff3" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="30" Click="SoundOff3_Click" Canvas.Left="309" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="33" x:Name="SoundOff4" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="33" Click="SoundOff4_Click" Canvas.Left="344" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="36"  x:Name="SoundOff5" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="36" Click="SoundOff5_Click" Canvas.Left="382" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="39"  x:Name="SoundOff6" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Visible" Width="39" Click="SoundOff6_Click" Canvas.Left="424" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Height="27"  x:Name="SoundOff2" Panel.ZIndex="0"  VerticalAlignment="Bottom" Visibility="Hidden" Width="27" Click="SoundOff2_Click" Canvas.Left="277" Canvas.Top="326">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="Yes_Button" Content="Yes" Canvas.Left="382" Canvas.Top="647" Width="87" Height="42" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFA48F0C" FontFamily="Celtic Garamond the 2nd" FontSize="36" Click="Button_Click" Visibility="Hidden"/>
+                <Button x:Name="Resume_Button" Content="Resume" Canvas.Left="292" Canvas.Top="554" Width="147" Height="42" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFA48F0C" FontFamily="Celtic Garamond the 2nd" FontSize="36" Click="Cancel_Button_Click"/>
+                <Image x:Name="MusicMuteToggle" Height="42" Canvas.Left="434" Canvas.Top="133" Width="42" Source="Images/Unmute.png" MouseDown="MusicMuteToggle_Click"/>
+                <Image x:Name="SoundMuteToggle" Height="42" Canvas.Left="434" Canvas.Top="269" Width="42" Source="Images/Unmute.png" MouseDown="SoudMuteToggle_Click"/>
+                <Button x:Name="Exit_Button" Content="Exit" Canvas.Left="292" Canvas.Top="600" Width="147" Height="42" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFA48F0C" FontFamily="Celtic Garamond the 2nd" FontSize="36" Click="Exit_Button_Click"/>
+                <Button x:Name="No_Button" Content="No" Canvas.Left="277" Canvas.Top="647" Width="87" Height="42" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFA48F0C" FontFamily="Celtic Garamond the 2nd" FontSize="36" Click="No_Button_Click" Visibility="Hidden"/>
+                <Label x:Name="ConfirmLabel" Content="Are you sure?" Canvas.Left="224" Canvas.Top="591" Foreground="#FF0A8CB2" FontFamily="Celtic Garamond the 2nd" FontSize="36" Width="290" Visibility="Hidden"/>
+            </Canvas>
+        </Popup>
         <UniformGrid Name="Board" MouseDown="Board_MouseDown" Height="500" Width="500" Margin="470,180,470,200" Panel.ZIndex="9999" Background="{x:Null}" MouseLeave="Board_MouseLeave" MouseMove="Board_MouseMove" Grid.Row="1">
             <UniformGrid.Resources>
                 <Style TargetType="{x:Type Rectangle}" >
@@ -223,7 +360,7 @@
         </Image>
         <Rectangle Height="75" Name="ActivePlayer" Stroke="Gray" Width="75" Margin="681,75,684,730" Grid.Row="1" />
         <TextBlock Height="50"  Margin="511,0,497,70" Name="winnerAnnoucement" Text="" FontWeight="Bold" FontSize="24" FontFamily="Celtic Garamond the 2nd" TextAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1" />
-        <Button Content="Pause" BorderThickness="0" BorderBrush="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="40" FontWeight="Bold" Height="64" Margin="0,32,88,0" Name="ExitButton"  Width="175" Click="ExitButton_Click" MouseEnter="ExitButton_MouseEnter" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" >
+        <Button Content="Pause" BorderThickness="0" BorderBrush="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="36" FontWeight="Bold" Height="79" Margin="0,32,85,0" Name="ExitButton"  Width="178" Click="ExitButton_Click" MouseEnter="ExitButton_MouseEnter" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" >
             <Button.Background>
                 <ImageBrush ImageSource="Images/PauseScroll.png"/>
             </Button.Background>
@@ -261,8 +398,8 @@
                     <Setter Property="Visibility" Value="Visible" />
                 </Style>
             </StackPanel.Resources>
-            <Image/>
-            <Image/>
+            <Image Margin="-1,0"/>
+            <Image Margin="-1,0"/>
             <Image/>
             <Image/>
             <Image/>
@@ -294,13 +431,13 @@
             </Button.Background>
         </Button>
         <Image HorizontalAlignment="Left" Height="100" Margin="469,-52,0,0" VerticalAlignment="Top" Width="100" Grid.RowSpan="2"/>
-        <Image Margin="0,0,-81,56" x:Name="IceGiant_Arm" Stretch="Fill"  Source="Images/Arm.png" Height="546" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="342" RenderTransformOrigin="0.5,0.5" Grid.Row="1" >
+        <Image Margin="0,0,-81,56" x:Name="IceGiant_Arm" Stretch="Fill"  Source="Images/Arm.png" Height="546" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="342" RenderTransformOrigin="0.559,0.282" Grid.Row="1" >
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="1" ScaleX="-1"/>
                     <SkewTransform AngleY="0" AngleX="0"/>
                     <RotateTransform Angle="0"/>
-                    <TranslateTransform/>
+                    <TranslateTransform X="-40.356"/>
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
@@ -314,7 +451,6 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <Image x:Name="Pointer" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="68" Grid.RowSpan="2" Source="Images/MouseArrowMod.png" Panel.ZIndex="10000" Cursor="None" LostFocus="Pointer_LostFocus"/>
     </Grid>
     <Window.Background>
         <ImageBrush ImageSource="/Pentago;component/GUI/Images/MainBack.png" />

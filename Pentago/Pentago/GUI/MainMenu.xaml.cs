@@ -66,7 +66,7 @@ namespace Pentago.GUI
             SoundManager.backgroundMusicPlayer.Play();
             //Initialize profile manager
             profileManager = ProfileManager.InstanceCreator();
-            MainMenuWindow = this;
+            //MainMenuWindow = this;
 
 
             vikingArmPivot = new System.Windows.Point(167 + 40, this.Height - 420 + 121);
@@ -336,12 +336,11 @@ namespace Pentago.GUI
 
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.QuickMatch, player1, player2);
 
-            Window loadingWindow = new LoadingScreen(gameOptions);
+            //Window loadingWindow = new LoadingScreen(gameOptions);
             Window gameWindow = new GameWindow(gameOptions);
             App.Current.MainWindow = gameWindow;
             gameWindow.Show();
             this.Hide();
-
         }
 
         private void InitializeNetworkGame()

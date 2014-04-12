@@ -194,6 +194,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="GUI\Images\PauseScroll.png" />
+    <Resource Include="GUI\Images\MuteLight.png" />
+    <Resource Include="GUI\Images\Unmute.png" />
     <Content Include="GUI\Videos\bangbang.wmv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

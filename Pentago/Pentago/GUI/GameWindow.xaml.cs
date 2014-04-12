@@ -55,10 +55,30 @@ namespace Pentago
         private Point iceGiantArmPivot;
 
         private bool isAnimationExecuting = false;
+        private bool isAnimationEnterExecuting = false;
 
         private Quotes quotes;
         bool lockSword = false;
         bool lockClub = true;
+
+        Image currentDragon;
+        bool fireDragon = false;
+
+        Point fireDragon1Origin;
+        Point fireDragon2Origin;
+        Point fireDragon3Origin;
+        Point fireDragon4Origin;
+        Point fireDragon5Origin;
+        Point fireDragon6Origin;
+
+        Point iceDragon1Origin;
+        Point iceDragon2Origin;
+        Point iceDragon3Origin;
+        Point iceDragon4Origin;
+        Point iceDragon5Origin;
+        Point iceDragon6Origin;
+
+
 
         public GameWindow(GameOptions options)
         {
@@ -114,10 +134,25 @@ namespace Pentago
             vikingArmPivot = new Point(167 + 40, this.Height - 420 + 121);
             zero = new Point(0, 0);
             topRight = new Point(Width, 0);
-            iceGiantArmPivot = new Point(Width - 120, Height - 380);
+            iceGiantArmPivot = new Point(Width - 261, Height - 600);
+
+            unMuteMusicVol = SoundManager.musicVolume / 16;
+            unMuteSoundVol = SoundManager.sfxVolume / 16;
+            currentMusicVol = SoundManager.musicVolume / 16;
+            currentSoundVol = SoundManager.sfxVolume / 16;
+            restoreMusicVol(currentMusicVol);
+            restoreSoundVol(currentSoundVol);
 
             Stream cur = File.OpenRead("GUI/images/MouseArrow.cur");
             this.Cursor = new Cursor(cur);
+
+            InitializeDragonOrigins();
+        }
+
+        private void InitializeDragonOrigins()
+        {
+            fireDragon1Origin = new Point(fireDragonEntryImages[0].Margin.Left, fireDragonEntryImages[0].Margin.Top);//fireDragonEntryImages[0].TranslatePoint(new Point(fireDragonEntryImages[0].ActualWidth, 0), this);
+            //new Point(fireDragonEntryImages[0].Margin.Left, fireDragonEntryImages[0].Margin.Top);
         }
 
         private List<Rectangle> rectangleChildren = null;
@@ -178,6 +213,8 @@ namespace Pentago
             RePaintBoard();
         }
 
+        private short col;
+        private short row;
         private void Board_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || player1.ActivePlayer && !isAnimationExecuting)
@@ -186,18 +223,20 @@ namespace Pentago
                 int rectSize = (int)Board.Width / MAXCOLUMNS;
 
                 Point mousePosition = e.GetPosition(Board);
-                short row = (short)(mousePosition.Y / rectSize);
+                row = (short)(mousePosition.Y / rectSize);
                 if (row == 6)
                     row--;
-                short col = (short)(mousePosition.X / rectSize);
+                col = (short)(mousePosition.X / rectSize);
                 if (col == 6)
                     col--;
                 int winner = gameBrain.CheckForWin();
                 movePos = 0;
                 movePos += col;
                 movePos += (short)(row * 6);
+                RePaintBoard();
                 if (userMadeRotation && winner == 0 && gameBrain.PlacePiece(row, col))
                 {
+                    
                     SoundManager.playSFX(SoundManager.SoundType.Click);
                     TranslateTransform translate = new TranslateTransform();
                     DoubleAnimation enter;
@@ -208,34 +247,89 @@ namespace Pentago
                     targetPoint = rec.TranslatePoint(new Point(rec.ActualWidth, 0), Board);
                     if (gameBrain.isPlayer1Turn())
                     {
-                        fireDragonEntryImages[1].RenderTransform = translate;
+                        fireDragon = true;
+                        currentDragon = fireDragonEntryImages[row];
+                        currentDragon.RenderTransform = translate;
                         enter = new DoubleAnimation(0, GetFireAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));
-                        rec.Fill = player1.Image;
+                        //rec.Fill = player1.Image;
                     }
                     else
                     {
-                        iceDragonEntryImages[0].RenderTransform = translate;
-                        enter = new DoubleAnimation(0, -GetIceAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));
-                        rec.Fill = player2.Image;
+                        fireDragon = false;
+                        currentDragon = iceDragonEntryImages[row];
+                        currentDragon.RenderTransform = translate;
+                        enter = new DoubleAnimation(0, -GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
+                        //rec.Fill = player2.Image;
                     }
-                    //translate.BeginAnimation(TranslateTransform.XProperty, enter);
-                    RePaintBoard();
-                    winner = gameBrain.CheckForWin();
-                    if (winner != 0)
-                    {
-                        ShowWinner(winner);
-                        if (isNetwork)
-                        {
-                            networkUtil.SendMove(-1, movePos, true);
-                        }
-                    }
-                    else
-                        MakeRotationsVisible();
+                    enter.Completed += new EventHandler(OnAnimationEnterCompletition);
+                    isAnimationEnterExecuting = true;
+                    translate.BeginAnimation(TranslateTransform.XProperty, enter);
+                    
                 }
                 else if (winner != 0)
                     ShowWinner(winner);
             }
 
+        }
+
+        private void MakeDragonsVisble(object sender, EventArgs e)
+        {
+            foreach ( Image dragon in fireDragonEntryImages)
+            {
+                dragon.Visibility = Visibility.Visible;
+            }
+
+            foreach (Image dragon in iceDragonEntryImages)
+            {
+                dragon.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ReturnDragon()
+        {
+            TranslateTransform translate = new TranslateTransform();
+            Point targetPoint;
+            DoubleAnimation enter;
+            var element = MAXCOLUMNS * row + col;
+            Rectangle rec = rectangleChildren.ElementAt(MAXCOLUMNS * row + col);
+            targetPoint = currentDragon.TranslatePoint(new Point(currentDragon.ActualWidth, 0), Board);
+
+            if (fireDragon)
+            {
+                enter = new DoubleAnimation(0, -GetFireAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));               
+            }
+            else
+            {
+                enter = new DoubleAnimation(0, GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
+            }
+            enter.Completed += new EventHandler(MakeDragonsVisble);
+
+            enter.BeginAnimation(TranslateTransform.XProperty, enter);
+        }
+
+        private void OnAnimationEnterCompletition(object sender, EventArgs e)
+        {
+            isAnimationEnterExecuting = false;
+            currentDragon.Visibility = Visibility.Hidden;
+            Rectangle rec = rectangleChildren.ElementAt(MAXCOLUMNS * row + col);
+            if (gameBrain.isPlayer1Turn())
+                rec.Fill = player1.Image;
+            else
+                rec.Fill = player2.Image;
+
+            int winner = gameBrain.CheckForWin();
+            if (winner != 0)
+            {
+                ShowWinner(winner);
+                if (isNetwork)
+                {
+                    networkUtil.SendMove(-1, movePos, true);
+                }
+            }
+            else
+                MakeRotationsVisible();
+
+            ReturnDragon();
         }
 
         private double GetFireAnimationDestination(int element, Point point)
@@ -264,6 +358,42 @@ namespace Pentago
                     destination = (point.X * 2.2) - 22;
                     break;
                 case 5:
+                    destination = (point.X * 2) - 22;
+                    break;
+            }
+
+            return destination;
+        }
+
+        private double GetIceAnimationDestination(int element)
+        {
+            Point point;
+            double destination = 0;
+            while (element > 5)
+            {
+                element -= 6;
+            }
+            Rectangle rec = rectangleChildren.ElementAt(MirrorBoard(element));
+            point = rec.TranslatePoint(new Point(rec.ActualWidth, 0), Board);
+            
+            switch (element)
+            {
+                case 5:
+                    destination = (point.X * 7.0) - 22;
+                    break;
+                case 4:
+                    destination = (point.X * 4.0) - 22;
+                    break;
+                case 3:
+                    destination = (point.X * 3.0) - 22;
+                    break;
+                case 2:
+                    destination = (point.X * 2.5) - 22;
+                    break;
+                case 1:
+                    destination = (point.X * 2.2) - 22;
+                    break;
+                case 0:
                     destination = (point.X * 2.0) - 22;
                     break;
             }
@@ -271,37 +401,33 @@ namespace Pentago
             return destination;
         }
 
-        private double GetIceAnimationDestination(int element, Point point)
+        private int MirrorBoard(int value)
         {
-            double destination = 0;
-            while (element > 5)
-            {
-                element -= 6;
-            }
+            int result = 0;
 
-            switch (element)
+            switch (value)
             {
                 case 0:
-                    destination = (point.X * 7.0) - 22;
+                    result = 5;
                     break;
                 case 1:
-                    destination = (point.X * 4.0) - 22;
+                    result = 4;
                     break;
                 case 2:
-                    destination = (point.X * 3.0) - 22;
+                    result = 3;
                     break;
                 case 3:
-                    destination = (point.X * 2.5) - 22;
+                    result = 2;
                     break;
                 case 4:
-                    destination = (point.X * 2.2) - 22;
+                    result = 1;
                     break;
                 case 5:
-                    destination = (point.X * 2.0) - 22;
+                    result = 0;
                     break;
             }
 
-            return destination;
+            return result;
         }
 
         private void ShowWinner(int winner)
@@ -366,7 +492,7 @@ namespace Pentago
 
         private void RePaintBoard()
         {
-            if (!isAnimationExecuting)
+            if (!isAnimationExecuting && !isAnimationEnterExecuting)
             {
                 int[] tempBoard = gameBrain.GetBoard;
                 var rectangleChildren = Board.Children;
@@ -1569,23 +1695,24 @@ namespace Pentago
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            SoundManager.playSFX(SoundManager.SoundType.Click);
+            //SoundManager.playSFX(SoundManager.SoundType.Click);
 
-            const string message = "Are you sure you want to exit the game?";
-            MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.YesNo);
-            messageWindow.ShowDialog();
+            //const string message = "Are you sure you want to exit the game?";
+            //MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.YesNo);
+            //messageWindow.ShowDialog();
 
-            if (messageWindow.DialogResult == true)
-            {
-                Window mainWindow = new MainMenu();
-                App.Current.MainWindow = mainWindow;
-                mainWindow.Show();
-                if (networkUtil != null)
-                {
-                    networkUtil.stop();
-                }
-                this.Close();
-            }
+            //if (messageWindow.DialogResult == true)
+            //{
+            //    Window mainWindow = new MainMenu();
+            //    App.Current.MainWindow = mainWindow;
+            //    mainWindow.Show();
+            //    if (networkUtil != null)
+            //    {
+            //        networkUtil.stop();
+            //    }
+            //    this.Close();
+            //}
+            Message.IsOpen = !Message.IsOpen;
         }
 
         private void ExitButton_MouseEnter(object sender, MouseEventArgs e)
@@ -1703,15 +1830,33 @@ namespace Pentago
 
 
 
-            double a = Math.Sqrt(((topRight.X - iceGiantArmPivot.X) * (topRight.X - iceGiantArmPivot.X)) + ((topRight.Y - iceGiantArmPivot.Y) * (topRight.Y - iceGiantArmPivot.Y)));
+            double a = Math.Sqrt(((topRight.X - iceGiantArmPivot.X) * (topRight.X - iceGiantArmPivot.X)) + ((topRight.Y + iceGiantArmPivot.Y) * (topRight.Y + iceGiantArmPivot.Y)));
             double b = Math.Sqrt(((iceGiantArmPivot.X - mousePositionRelativeToWindow.X) * (iceGiantArmPivot.X - mousePositionRelativeToWindow.X)) +
                 ((iceGiantArmPivot.Y - mousePositionRelativeToWindow.Y) * (iceGiantArmPivot.Y - mousePositionRelativeToWindow.Y)));
-            double c = Math.Sqrt(((topRight.X - mousePositionRelativeToWindow.X) * (topRight.X - mousePositionRelativeToWindow.X)) + ((topRight.Y - mousePositionRelativeToWindow.Y) * (topRight.Y - mousePositionRelativeToWindow.Y)));
+            double c = Math.Sqrt(((topRight.X - mousePositionRelativeToWindow.X) * (topRight.X - mousePositionRelativeToWindow.X)) + ((topRight.Y + mousePositionRelativeToWindow.Y) * (topRight.Y + mousePositionRelativeToWindow.Y)));
 
             double angle = 0 - Math.Acos((a * a + b * b - c * c) / (2 * a * b)) * (180 / Math.PI);
 
 
-            IceGiant_Arm.RenderTransform = new RotateTransform(angle, 160, 121);
+            IceGiant_Arm.RenderTransform = new RotateTransform(angle - 180, 0, 0);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Window mainWindow = new MainMenu();
+            App.Current.MainWindow = mainWindow;
+            mainWindow.Show();
+            if (networkUtil != null)
+            {
+                networkUtil.stop();
+            }
+            Message.IsOpen = false;
+            this.Hide();
+        }
+
+        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Message.IsOpen = false;
         }
 
         private void Game_MouseMove(object sender, MouseEventArgs e)
@@ -1721,15 +1866,443 @@ namespace Pentago
                 RotateSword(e);
             }
             RotateClub(e);
-            Point mousePositionRelativeToWindow = e.GetPosition(this);
-            TransformGroup t = new TransformGroup();
-            t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + 1, mousePositionRelativeToWindow.Y + 1));
-            Pointer.RenderTransform = t;
+            //Point mousePositionRelativeToWindow = e.GetPosition(this);
+            //TransformGroup t = new TransformGroup();
+            //t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + 1, mousePositionRelativeToWindow.Y + 1));
+            //Pointer.RenderTransform = t;
         }
 
-        private void Pointer_LostFocus(object sender, RoutedEventArgs e)
+        //private void Pointer_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    Pointer.Visibility = Visibility.Hidden;
+        //}
+
+        private void SoudMuteToggle_Click(object sender, MouseButtonEventArgs e)
         {
-            Pointer.Visibility = Visibility.Hidden;
+            SoundToggle_Click(sender, e);
+        }
+
+        private void MusicMuteToggle_Click(object sender, MouseButtonEventArgs e)
+        {
+            MusicToggle_Click(sender, e);
+        }
+
+        public void MusicToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentMusicVol == 0)
+            {
+                restoreMusicVol(unMuteMusicVol);
+                currentMusicVol = unMuteMusicVol;
+                MusicMuteToggle.Source = new BitmapImage(new Uri("pack://application:,,,/GUI/images/Unmute.png", UriKind.Absolute));
+            }
+
+            else if (currentMusicVol > 0)
+            {
+                MusicOn1.Visibility = Visibility.Hidden;
+                MusicOn2.Visibility = Visibility.Hidden;
+                MusicOn3.Visibility = Visibility.Hidden;
+                MusicOn4.Visibility = Visibility.Hidden;
+                MusicOn5.Visibility = Visibility.Hidden;
+                MusicOn6.Visibility = Visibility.Hidden;
+                MusicOff1.Visibility = Visibility.Visible;
+                MusicOff2.Visibility = Visibility.Visible;
+                MusicOff3.Visibility = Visibility.Visible;
+                MusicOff4.Visibility = Visibility.Visible;
+                MusicOff5.Visibility = Visibility.Visible;
+                MusicOff6.Visibility = Visibility.Visible;
+                currentMusicVol = 0;
+                SoundManager.musicVolume = 0;
+                MusicMuteToggle.Source = new BitmapImage(new Uri("pack://application:,,,/GUI/images/MuteLight.png", UriKind.Absolute));
+            }
+        }
+
+        public void SoundToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentSoundVol == 0)
+            {
+                restoreSoundVol(unMuteSoundVol);
+                currentSoundVol = unMuteSoundVol;
+                SoundMuteToggle.Source = new BitmapImage(new Uri("pack://application:,,,/GUI/images/Unmute.png", UriKind.Absolute));
+            }
+
+            else if (currentSoundVol > 0)
+            {
+                SoundOn1.Visibility = Visibility.Hidden;
+                SoundOn2.Visibility = Visibility.Hidden;
+                SoundOn3.Visibility = Visibility.Hidden;
+                SoundOn4.Visibility = Visibility.Hidden;
+                SoundOn5.Visibility = Visibility.Hidden;
+                SoundOn6.Visibility = Visibility.Hidden;
+                SoundOff1.Visibility = Visibility.Visible;
+                SoundOff2.Visibility = Visibility.Visible;
+                SoundOff3.Visibility = Visibility.Visible;
+                SoundOff4.Visibility = Visibility.Visible;
+                SoundOff5.Visibility = Visibility.Visible;
+                SoundOff6.Visibility = Visibility.Visible;
+                currentSoundVol = 0;
+                SoundManager.sfxVolume = 0;
+                SoundMuteToggle.Source = new BitmapImage(new Uri("pack://application:,,,/GUI/images/MuteLight.png", UriKind.Absolute));
+            }
+        }
+        private void restoreMusicVol(int i)
+        {
+            switch (i)
+            {
+                case 1: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Hidden;
+                    MusicOn3.Visibility = Visibility.Hidden;
+                    MusicOn4.Visibility = Visibility.Hidden;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Visible;
+                    MusicOff3.Visibility = Visibility.Visible;
+                    MusicOff4.Visibility = Visibility.Visible;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 2: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Hidden;
+                    MusicOn4.Visibility = Visibility.Hidden;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Visible;
+                    MusicOff4.Visibility = Visibility.Visible;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 3: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Hidden;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Visible;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 4: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Visible;
+                    MusicOn5.Visibility = Visibility.Hidden;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Hidden;
+                    MusicOff5.Visibility = Visibility.Visible;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 5: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Visible;
+                    MusicOn5.Visibility = Visibility.Visible;
+                    MusicOn6.Visibility = Visibility.Hidden;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Hidden;
+                    MusicOff5.Visibility = Visibility.Hidden;
+                    MusicOff6.Visibility = Visibility.Visible;
+                    break;
+                case 6: MusicOn1.Visibility = Visibility.Visible;
+                    MusicOn2.Visibility = Visibility.Visible;
+                    MusicOn3.Visibility = Visibility.Visible;
+                    MusicOn4.Visibility = Visibility.Visible;
+                    MusicOn5.Visibility = Visibility.Visible;
+                    MusicOn6.Visibility = Visibility.Visible;
+                    MusicOff1.Visibility = Visibility.Hidden;
+                    MusicOff2.Visibility = Visibility.Hidden;
+                    MusicOff3.Visibility = Visibility.Hidden;
+                    MusicOff4.Visibility = Visibility.Hidden;
+                    MusicOff5.Visibility = Visibility.Hidden;
+                    MusicOff6.Visibility = Visibility.Hidden;
+                    break;
+            }
+            SoundManager.musicVolume = 16 * i;
+        }
+
+        private void restoreSoundVol(int i)
+        {
+            switch (i)
+            {
+                case 1: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Hidden;
+                    SoundOn3.Visibility = Visibility.Hidden;
+                    SoundOn4.Visibility = Visibility.Hidden;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Visible;
+                    SoundOff3.Visibility = Visibility.Visible;
+                    SoundOff4.Visibility = Visibility.Visible;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 2: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Hidden;
+                    SoundOn4.Visibility = Visibility.Hidden;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Visible;
+                    SoundOff4.Visibility = Visibility.Visible;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 3: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Hidden;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Visible;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 4: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Visible;
+                    SoundOn5.Visibility = Visibility.Hidden;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Hidden;
+                    SoundOff5.Visibility = Visibility.Visible;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 5: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Visible;
+                    SoundOn5.Visibility = Visibility.Visible;
+                    SoundOn6.Visibility = Visibility.Hidden;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Hidden;
+                    SoundOff5.Visibility = Visibility.Hidden;
+                    SoundOff6.Visibility = Visibility.Visible;
+                    break;
+                case 6: SoundOn1.Visibility = Visibility.Visible;
+                    SoundOn2.Visibility = Visibility.Visible;
+                    SoundOn3.Visibility = Visibility.Visible;
+                    SoundOn4.Visibility = Visibility.Visible;
+                    SoundOn5.Visibility = Visibility.Visible;
+                    SoundOn6.Visibility = Visibility.Visible;
+                    SoundOff1.Visibility = Visibility.Hidden;
+                    SoundOff2.Visibility = Visibility.Hidden;
+                    SoundOff3.Visibility = Visibility.Hidden;
+                    SoundOff4.Visibility = Visibility.Hidden;
+                    SoundOff5.Visibility = Visibility.Hidden;
+                    SoundOff6.Visibility = Visibility.Hidden;
+                    break;
+            }
+            SoundManager.sfxVolume = 16 * i;
+        }
+
+        public int unMuteMusicVol = 6;
+        public int currentMusicVol = 6;
+        public int unMuteSoundVol = 6;
+        public int currentSoundVol = 6;
+
+        private void MusicOff1_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 1;
+            unMuteMusicVol = 1;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff2_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 2;
+            unMuteMusicVol = 2;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff3_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 3;
+            unMuteMusicVol = 3;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff4_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 4;
+            unMuteMusicVol = 4;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff5_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 5;
+            unMuteMusicVol = 5;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOff6_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 6;
+            unMuteMusicVol = 6;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn1_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 1;
+            unMuteMusicVol = 1;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn2_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 2;
+            unMuteMusicVol = 2;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn3_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 3;
+            unMuteMusicVol = 3;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn4_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 4;
+            unMuteMusicVol = 4;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn5_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 5;
+            unMuteMusicVol = 5;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void MusicOn6_Click(object sender, RoutedEventArgs e)
+        {
+            currentMusicVol = 6;
+            unMuteMusicVol = 6;
+            restoreMusicVol(currentMusicVol);
+        }
+
+        private void SoundOff1_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 1;
+            unMuteSoundVol = 1;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff2_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 2;
+            unMuteSoundVol = 2;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff3_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 3;
+            unMuteSoundVol = 3;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff4_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 4;
+            unMuteSoundVol = 4;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff5_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 5;
+            unMuteSoundVol = 5;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOff6_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 6;
+            unMuteSoundVol = 6;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn1_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 1;
+            unMuteSoundVol = 1;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn2_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 2;
+            unMuteSoundVol = 2;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn3_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 3;
+            unMuteSoundVol = 3;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn4_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 4;
+            unMuteSoundVol = 4;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn5_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 5;
+            unMuteSoundVol = 5;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void SoundOn6_Click(object sender, RoutedEventArgs e)
+        {
+            currentSoundVol = 6;
+            unMuteSoundVol = 6;
+            restoreSoundVol(currentSoundVol);
+        }
+
+        private void Exit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Yes_Button.Visibility = Visibility.Visible;
+            No_Button.Visibility = Visibility.Visible;
+            ConfirmLabel.Visibility = Visibility.Visible;
+            Exit_Button.Visibility = Visibility.Hidden;
+        }
+
+        private void No_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Yes_Button.Visibility = Visibility.Hidden;
+            No_Button.Visibility = Visibility.Hidden;
+            ConfirmLabel.Visibility = Visibility.Hidden;
+            Exit_Button.Visibility = Visibility.Visible;
         }
     }
 }
