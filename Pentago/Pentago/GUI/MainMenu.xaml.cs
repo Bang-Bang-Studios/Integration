@@ -1729,5 +1729,10 @@ namespace Pentago.GUI
                 messageWindow.ShowDialog();
             }
         }
+
+        private void NewProfileName_KeyDown(object sender, KeyEventArgs e)
+        {
+            SoundManager.playSFX(SoundManager.SoundType.KeyDown);
+        }
     }
 }

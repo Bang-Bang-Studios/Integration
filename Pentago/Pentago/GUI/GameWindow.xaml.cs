@@ -671,7 +671,35 @@ namespace Pentago
                 SoundManager.playSFX(SoundManager.SoundType.Click);
                 if (winner == 0)
                 {
+                    TranslateTransform translate = new TranslateTransform();
+                    DoubleAnimation enter;
+                    Point targetPoint;
+                    userMadeRotation = false;
+                    var element = MAXCOLUMNS * row + col;
+                    Rectangle rec = rectangleChildren.ElementAt(gameBrain.GetComputerMove());
+                    targetPoint = rec.TranslatePoint(new Point(rec.ActualWidth, 0), Board);
+                    if (gameBrain.isPlayer1Turn())
+                    {
+                        fireDragon = true;
+                        currentDragon = fireDragonEntryImages[row];
+                        currentDragon.RenderTransform = translate;
+                        enter = new DoubleAnimation(0, GetFireAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));
+                        //rec.Fill = player1.Image;
+                    }
+                    else
+                    {
+                        fireDragon = false;
+                        currentDragon = iceDragonEntryImages[row];
+                        currentDragon.RenderTransform = translate;
+                        enter = new DoubleAnimation(0, -GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
+                        //rec.Fill = player2.Image;
+                    }
+                    enter.Completed += new EventHandler(OnAnimationEnterComputerCompletition);
+                    isAnimationEnterExecuting = true;
+                    translate.BeginAnimation(TranslateTransform.XProperty, enter);
+
                     //Update GUI player
+                    /*
                     int computerMove = gameBrain.GetComputerMove();
                     Rectangle rec = rectangleChildren.ElementAt(computerMove);
                     rec.Fill = computerPlayer.Image;
@@ -680,6 +708,7 @@ namespace Pentago
                         ShowWinner(winner);
                     else
                         GetComputerRotation();
+                    */ 
                 }
                 else if (winner != 0)
                 {
@@ -689,6 +718,24 @@ namespace Pentago
 
             };
             AIbackgroundWorker.RunWorkerAsync();
+        }
+
+        private void OnAnimationEnterComputerCompletition(object sender, EventArgs e)
+        {
+            isAnimationEnterExecuting = false;
+            currentDragon.Visibility = Visibility.Hidden;
+            Rectangle rec = rectangleChildren.ElementAt(gameBrain.GetComputerMove());
+            if (gameBrain.isPlayer1Turn())
+                rec.Fill = player1.Image;
+            else
+                rec.Fill = computerPlayer.Image;
+            int winner = gameBrain.CheckForWin();
+            if (winner != 0)
+                ShowWinner(winner);
+            else
+                GetComputerRotation();
+
+            ReturnDragon();
         }
 
         private void GetComputerRotation()
