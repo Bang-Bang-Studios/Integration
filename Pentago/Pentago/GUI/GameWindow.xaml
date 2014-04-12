@@ -426,8 +426,14 @@
             <Image Margin="3,0"/>
         </StackPanel>
         <Button x:Name="VikingButton_Sword" Content="" HorizontalAlignment="Left" Height="293" Margin="167,0,0,127" VerticalAlignment="Bottom" Width="199" Panel.ZIndex="-1" Click="VikingButton_Click" Grid.Row="1">
+            <!--<Button.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="sword.Effect" Value="{StaticResource ShadowEffect}" />
+                </Trigger>
+            </Button.Triggers>-->
+            <!--<Setter Property="Effect" Value="{StaticResource ShadowEffect}" />-->
             <Button.Background>
-                <ImageBrush ImageSource="Images/PointSword.png"/>
+                <ImageBrush x:Name="sword" ImageSource="Images/PointSword.png"/>
             </Button.Background>
         </Button>
         <Image HorizontalAlignment="Left" Height="100" Margin="469,-52,0,0" VerticalAlignment="Top" Width="100" Grid.RowSpan="2"/>

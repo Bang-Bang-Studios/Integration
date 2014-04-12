@@ -100,6 +100,7 @@ namespace Pentago.GameCore
         private void InitializeBoard()
         {
             board = new Board();
+            winningPoints = new List<Point>();
         }
 
         public bool PlacePiece(short row, short col)
@@ -439,11 +440,15 @@ namespace Pentago.GameCore
             if (playerAtPiece1 == playerAtPiece2 && playerAtPiece2 == playerAtPiece3 &&
                 playerAtPiece3 == playerAtPiece4 && playerAtPiece4 == playerAtPiece5)
             {
-                //winningPoints.Add(piece1);
-                //winningPoints.Add(piece2);
-                //winningPoints.Add(piece3);
-                //winningPoints.Add(piece4);
-                //winningPoints.Add(piece5);
+                if (winningPoints.Count() > 0)
+                {
+                    winningPoints.Clear();
+                }
+                winningPoints.Add(piece1);
+                winningPoints.Add(piece2);
+                winningPoints.Add(piece3);
+                winningPoints.Add(piece4);
+                winningPoints.Add(piece5);
                 return playerAtPiece1;
             }
             return 0;

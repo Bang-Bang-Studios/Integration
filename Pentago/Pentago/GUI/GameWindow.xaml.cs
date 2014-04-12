@@ -147,6 +147,7 @@ namespace Pentago
             this.Cursor = new Cursor(cur);
 
             InitializeDragonOrigins();
+            MakeDragonsVisble();
         }
 
         private void InitializeDragonOrigins()
@@ -163,7 +164,7 @@ namespace Pentago
             iceDragon3Origin = new Point(fireDragonEntryImages[2].Margin.Left, fireDragonEntryImages[2].Margin.Top);
             iceDragon4Origin = new Point(fireDragonEntryImages[3].Margin.Left, fireDragonEntryImages[3].Margin.Top);
             iceDragon5Origin = new Point(fireDragonEntryImages[4].Margin.Left, fireDragonEntryImages[4].Margin.Top);
-            iceDragon6Origin = new Point(fireDragonEntryImages[5].Margin.Left, fireDragonEntryImages[5].Margin.Top); ;
+            iceDragon6Origin = new Point(fireDragonEntryImages[5].Margin.Left, fireDragonEntryImages[5].Margin.Top);
         }
 
         private List<Rectangle> rectangleChildren = null;
@@ -281,6 +282,19 @@ namespace Pentago
                     ShowWinner(winner);
             }
 
+        }
+
+        private void MakeDragonsVisble()
+        {
+            foreach (Image dragon in fireDragonEntryImages)
+            {
+                dragon.Visibility = Visibility.Visible;
+            }
+
+            foreach (Image dragon in iceDragonEntryImages)
+            {
+                dragon.Visibility = Visibility.Visible;
+            }
         }
 
         private void MakeDragonsVisble(object sender, EventArgs e)
@@ -465,8 +479,17 @@ namespace Pentago
 
             winnerAnnoucement.Text = winnerText;
 
-            TranslateTransform translate = new TranslateTransform();
-            DoubleAnimation exitAttack = new DoubleAnimation();
+            TranslateTransform translate;
+            DoubleAnimation exitAttack;
+            foreach (Point point in gameBrain.GetWinningPoints)
+            {
+                translate = new TranslateTransform();
+                exitAttack = new DoubleAnimation();
+                Rectangle rec = rectangleChildren.ElementAt(MAXCOLUMNS * (short)point.X + (short)point.Y);
+                rec.RenderTransform = translate;
+                exitAttack = new DoubleAnimation(0, fireDragon?3:-1, TimeSpan.FromSeconds(1));
+                //translate.BeginAnimation(TranslateTransform.XProperty, exitAttack);
+            }
             
         }
 
