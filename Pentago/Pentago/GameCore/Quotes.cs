@@ -19,6 +19,7 @@ namespace Pentago.GameCore
             LoadingQuotes = new List<string>();
             VikingQuotes = new List<string>();
             VikingNames = new List<string>();
+            ElderQuotes = new List<string>();
 
             Create();
         }
@@ -28,6 +29,7 @@ namespace Pentago.GameCore
             CreateVikingQuotes();
             CreateLoadingQuotes();
             CreateVikingNames();
+            CreateElderQuotes();
         }
 
         public string Viking
@@ -40,9 +42,7 @@ namespace Pentago.GameCore
                 //    speechCounter = 0;
                 //}
                 Random rand = new Random();
-                speechCounter = rand.Next(VikingQuotes.Count - 1);
-
-                return VikingQuotes[speechCounter];
+                return VikingQuotes[rand.Next(VikingQuotes.Count - 1)];
             }
         }
 
@@ -51,7 +51,7 @@ namespace Pentago.GameCore
             get
             {
                 Random rand = new Random();
-                return LoadingQuotes[rand.Next(LoadingQuotes.Count())];
+                return LoadingQuotes[rand.Next(LoadingQuotes.Count() - 1)];
             }
         }
 
@@ -60,7 +60,20 @@ namespace Pentago.GameCore
             get
             {
                 Random rand = new Random();
-                return VikingNames[rand.Next(VikingNames.Count())];
+                return VikingNames[rand.Next(VikingNames.Count() - 1)];
+            }
+        }
+
+        public string Elder
+        {
+            get
+            {
+                speechCounter++;
+                if (speechCounter > ElderQuotes.Count() - 1)
+                {
+                    speechCounter = 0;
+                }
+                return ElderQuotes[speechCounter];
             }
         }
 
@@ -96,9 +109,15 @@ namespace Pentago.GameCore
             VikingNames.Add("War Lord");
         }
 
+        private void CreateElderQuotes()
+        {
+            ElderQuotes.Add("");
+        }
+
         private int speechCounter = -1;
         private List<string> LoadingQuotes;
         private List<string> VikingQuotes;
         private List<string> VikingNames;
+        private List<string> ElderQuotes;
     }
 }

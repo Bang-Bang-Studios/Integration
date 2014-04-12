@@ -78,7 +78,7 @@ namespace Pentago
         Point iceDragon5Origin;
         Point iceDragon6Origin;
 
-
+        public SolidColorBrush gridOutline = new SolidColorBrush(Color.FromArgb(255, 56, 56, 56));
 
         public GameWindow(GameOptions options)
         {
@@ -572,7 +572,7 @@ namespace Pentago
             for (int i = 0; i < BOARDSIZE; i++)
             {
                 Rectangle rec = new Rectangle();
-                rec.Stroke = Brushes.Gray;
+                rec.Stroke = gridOutline;
                 if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch ||
                                 gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
                 {
