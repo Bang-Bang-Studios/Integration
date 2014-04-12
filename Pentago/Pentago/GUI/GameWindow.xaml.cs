@@ -684,7 +684,6 @@ namespace Pentago
                         currentDragon = fireDragonEntryImages[row];
                         currentDragon.RenderTransform = translate;
                         enter = new DoubleAnimation(0, GetFireAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));
-                        //rec.Fill = player1.Image;
                     }
                     else
                     {
@@ -693,23 +692,10 @@ namespace Pentago
                         currentDragon = iceDragonEntryImages[computerRow];
                         currentDragon.RenderTransform = translate;
                         enter = new DoubleAnimation(0, -GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
-                        //rec.Fill = player2.Image;
                     }
                     enter.Completed += new EventHandler(OnAnimationEnterComputerCompletition);
                     isAnimationEnterExecuting = true;
                     translate.BeginAnimation(TranslateTransform.XProperty, enter);
-
-                    //Update GUI player
-                    /*
-                    int computerMove = gameBrain.GetComputerMove();
-                    Rectangle rec = rectangleChildren.ElementAt(computerMove);
-                    rec.Fill = computerPlayer.Image;
-                    winner = gameBrain.CheckForWin();
-                    if (winner != 0)
-                        ShowWinner(winner);
-                    else
-                        GetComputerRotation();
-                    */ 
                 }
                 else if (winner != 0)
                 {

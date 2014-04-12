@@ -40,7 +40,7 @@ namespace Pentago.GUI
             unMuteSoundVol = SoundManager.sfxVolume / 16;
             currentMusicVol = SoundManager.musicVolume / 16;
             currentSoundVol = SoundManager.sfxVolume / 16;
-            SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Intro.mp3", UriKind.Relative));
+            SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/24.mp3", UriKind.Relative));
             SoundManager.backgroundMusicPlayer.Play();
         }
 
