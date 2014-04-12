@@ -668,14 +668,14 @@ namespace Pentago
 
                 //Console.WriteLine("Good with AI thread.");
                 int winner = gameBrain.CheckForWin();
-                SoundManager.playSFX(SoundManager.SoundType.Click);
+                
                 if (winner == 0)
                 {
                     TranslateTransform translate = new TranslateTransform();
                     DoubleAnimation enter;
                     Point targetPoint;
-                    userMadeRotation = false;
-                    var element = MAXCOLUMNS * row + col;
+                    //userMadeRotation = false;
+                    var element = gameBrain.GetComputerMove();
                     Rectangle rec = rectangleChildren.ElementAt(gameBrain.GetComputerMove());
                     targetPoint = rec.TranslatePoint(new Point(rec.ActualWidth, 0), Board);
                     if (gameBrain.isPlayer1Turn())
@@ -689,7 +689,8 @@ namespace Pentago
                     else
                     {
                         fireDragon = false;
-                        currentDragon = iceDragonEntryImages[row];
+                        int computerRow = gameBrain.GetComputerMove() / 6;
+                        currentDragon = iceDragonEntryImages[computerRow];
                         currentDragon.RenderTransform = translate;
                         enter = new DoubleAnimation(0, -GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
                         //rec.Fill = player2.Image;
@@ -722,6 +723,7 @@ namespace Pentago
 
         private void OnAnimationEnterComputerCompletition(object sender, EventArgs e)
         {
+            SoundManager.playSFX(SoundManager.SoundType.Click);
             isAnimationEnterExecuting = false;
             currentDragon.Visibility = Visibility.Hidden;
             Rectangle rec = rectangleChildren.ElementAt(gameBrain.GetComputerMove());
