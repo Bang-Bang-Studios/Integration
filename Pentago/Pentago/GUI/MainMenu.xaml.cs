@@ -16,6 +16,9 @@ using Pentago.AI;
 using Pentago;
 using Pentago.GUI.Classes;
 using System.Windows.Media.Animation;
+using System.Drawing;
+using System.IO;
+using System.Text.RegularExpressions;
 
 
 namespace Pentago.GUI
@@ -32,16 +35,23 @@ namespace Pentago.GUI
         Window MainMenuWindow;
 
 
-        private Point vikingArmPivot;
-        private Point giantArmPivot;
-        private Point zero;
-        private Point topRight;
+        private System.Windows.Point vikingArmPivot;
+        private System.Windows.Point giantArmPivot;
+        private System.Windows.Point zero;
+        private System.Windows.Point topRight;
 
 
         public int unMuteMusicVol = 6;
         public int currentMusicVol = 6;
         public int unMuteSoundVol = 6;
         public int currentSoundVol = 6;
+
+        private string currentPant = "Base";
+        private string currentArmor = "Base";
+        private string currentBeard = "Base";
+        private string currentPant1 = "Base";
+        private string currentArmor1 = "Base";
+        private string currentBeard1 = "Base";
 
         public MainMenu()
         {
@@ -59,9 +69,12 @@ namespace Pentago.GUI
             MainMenuWindow = this;
 
 
-            vikingArmPivot = new Point(167 + 40, this.Height - 420 + 121);
-            zero = new Point(0, 0);
-            topRight = new Point(Width, 0);
+            vikingArmPivot = new System.Windows.Point(167 + 40, this.Height - 420 + 121);
+            zero = new System.Windows.Point(0, 0);
+            topRight = new System.Windows.Point(Width, 0);
+
+            Stream cur = File.OpenRead("GUI/images/MouseArrow.cur");
+            this.Cursor = new Cursor(cur);
         }
         
         private void QuickMatch_Click(object sender, RoutedEventArgs e)
@@ -131,16 +144,12 @@ namespace Pentago.GUI
             PlayerVsPlayerOff.Visibility = Visibility.Hidden;
             PlayerVsComputerOn.Visibility = Visibility.Hidden;
             ComputerLevel.Visibility = Visibility.Hidden;
-            ComputerHardLevel.Visibility = Visibility.Hidden;
-            ComputerEasyLevel.Visibility = Visibility.Hidden;
             GameDifficultyEasyOn.Visibility = Visibility.Hidden;
             GameDifficultyHardOff.Visibility = Visibility.Hidden;
             Player1MoveFirstOn.Visibility = Visibility.Hidden;
             Player1MoveFirstOff.Visibility = Visibility.Hidden;
             Player2MoveFirstOn.Visibility = Visibility.Hidden;
             Player2MoveFirstOff.Visibility = Visibility.Hidden;
-            ComputerHardLevel.Visibility = Visibility.Hidden;
-            ComputerEasyLevel.Visibility = Visibility.Hidden;
             GameDifficultyEasyOn.Visibility = Visibility.Hidden;
             GameDifficultyHardOn.Visibility = Visibility.Hidden;
             GameDifficultyEasyOff.Visibility = Visibility.Hidden;
@@ -148,6 +157,18 @@ namespace Pentago.GUI
             HighScorePanel.Visibility = Visibility.Hidden;
             StoryModePanel.Visibility = Visibility.Hidden;
             NewProfilePanel.Visibility = Visibility.Hidden;
+            PlayerProfilePanel.Visibility = Visibility.Hidden;
+            GameDifficultyBeginnerOff.Visibility = Visibility.Hidden;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOff.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOff.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOn.Visibility = Visibility.Hidden;
+            GameDifficultyHardOff.Visibility = Visibility.Hidden;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOff.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Visibility = Visibility.Hidden;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -166,9 +187,7 @@ namespace Pentago.GUI
                 else
                     Console.WriteLine("There is something wrong!");
             } else {
-                const string message = "Please, verify names are longer than 1 character and less than 15.";
-                const string caption = "Dragon Horde";
-                //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                const string message = "Please, verify names are alphanumeric, longer than 1 character and less than 15.";
                 MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
                 messageWindow.ShowDialog();
             }
@@ -189,12 +208,17 @@ namespace Pentago.GUI
             Player1NameTextBox.Focus();
             Player2.Content = "Player 2";
             ComputerLevel.Visibility = Visibility.Hidden;
-            ComputerHardLevel.Visibility = Visibility.Hidden;
-            ComputerEasyLevel.Visibility = Visibility.Hidden;
-            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
-            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+            GameDifficultyBeginnerOff.Visibility = Visibility.Hidden;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
             GameDifficultyEasyOff.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOff.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOn.Visibility = Visibility.Hidden;
             GameDifficultyHardOff.Visibility = Visibility.Hidden;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOff.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Visibility = Visibility.Hidden;
             SoundManager.playSFX(SoundManager.SoundType.Click);
         }
 
@@ -210,12 +234,17 @@ namespace Pentago.GUI
             Player1NameTextBox.Focus();
             Player2.Content = "Computer";
             ComputerLevel.Visibility = Visibility.Visible;
-            ComputerHardLevel.Visibility = Visibility.Visible;
-            ComputerEasyLevel.Visibility = Visibility.Visible;
-            GameDifficultyEasyOn.Visibility = Visibility.Visible;
-            GameDifficultyHardOn.Visibility = Visibility.Hidden;
-            GameDifficultyEasyOff.Visibility = Visibility.Hidden;
+            GameDifficultyBeginnerOff.Visibility = Visibility.Visible;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOff.Visibility = Visibility.Visible;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOff.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOn.Visibility = Visibility.Visible;
             GameDifficultyHardOff.Visibility = Visibility.Visible;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOff.Visibility = Visibility.Visible;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Visibility = Visibility.Visible;
             SoundManager.playSFX(SoundManager.SoundType.Click);            
         }
 
@@ -306,6 +335,8 @@ namespace Pentago.GUI
             Player player2 = new Player(player2Name.Trim(), !isPlayer1Active, player2Image, player2ImageHover);
 
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.QuickMatch, player1, player2);
+
+            Window loadingWindow = new LoadingScreen(gameOptions);
             Window gameWindow = new GameWindow(gameOptions);
             App.Current.MainWindow = gameWindow;
             gameWindow.Show();
@@ -363,13 +394,18 @@ namespace Pentago.GUI
             ImageBrush computerPlayerImageHover = new ImageBrush();
             computerPlayerImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePupHover.png", UriKind.Absolute));
 
-            computerAI.Difficulty difficulty = computerAI.Difficulty.Hard;
-            /*
-            if (GameDifficultyEasyOn.Visibility == Visibility.Visible)
+            computerAI.Difficulty difficulty;
+            if (GameDifficultyBeginnerOn.Visibility == Visibility.Visible)
+                difficulty = computerAI.Difficulty.Beginner;
+            else if (GameDifficultyEasyOn.Visibility == Visibility.Visible)
                 difficulty = computerAI.Difficulty.Easy;
+            else if (GameDifficultyMediumOn.Visibility == Visibility.Visible)
+                difficulty = computerAI.Difficulty.Medium;
+            else if (GameDifficultyHardOn.Visibility == Visibility.Visible)
+                difficulty = computerAI.Difficulty.Medium;
             else
                 difficulty = computerAI.Difficulty.Hard;
-            */
+
             computerAI computerPlayer = new computerAI(computerPlayerName.Trim(), !isPlayer1Active, computerPlayerImage, computerPlayerImageHover, difficulty);
             GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.AI, player1, computerPlayer);
             Window gameWindow = new GameWindow(gameOptions);
@@ -470,10 +506,7 @@ namespace Pentago.GUI
             ProfileList.Items.Clear();
             List<ProfileManager.Profile> profiles = profileManager.GetAllProfiles();
             foreach (ProfileManager.Profile profile in profiles)
-            {
-                string name = profile.ProfileName;
-                ProfileList.Items.Add(name);
-            }
+                ProfileList.Items.Add(profile.ProfileName);
         }
 
         private void NewProfile_Click(object sender, RoutedEventArgs e)
@@ -519,17 +552,20 @@ namespace Pentago.GUI
             }
             else
             {
-                networkUtil.Discovered -= new peerDiscoveredHandler(PeerDiscovered);
+                networkUtil.Discovered -= new peerDiscoveredHandler(PeerListChanged);
                 networkUtil.ConnectionRequest -= new peerConnectionRequestHandler(ConnectionRequest);
                 networkUtil.Connected -= new peerConnectedHandler(PeerConnected);
                 networkUtil.Disconnected -= new peerDisconnectedHancler(PeerDisconnected);
+                networkUtil.PlayerRemoved -= new playerRemovedHandler(PeerListChanged);
                 networkUtil.stop();
                 networkUtil = new PentagoNetwork(NameBox.Text);
             }
-            networkUtil.Discovered += new peerDiscoveredHandler(PeerDiscovered);
+            networkUtil.Discovered += new peerDiscoveredHandler(PeerListChanged);
             networkUtil.ConnectionRequest += new peerConnectionRequestHandler(ConnectionRequest);
             networkUtil.Connected += new peerConnectedHandler(PeerConnected);
             networkUtil.Disconnected += new peerDisconnectedHancler(PeerDisconnected);
+            networkUtil.PlayerRemoved += new playerRemovedHandler(PeerListChanged);
+            Searching_for_Opponents.Visibility = Visibility.Visible;
         }
 
         private void PeerConnected(object sender, EventArgs e)
@@ -550,7 +586,7 @@ namespace Pentago.GUI
             }));
         }
 
-        private void PeerDiscovered(object msg, EventArgs e)
+        private void PeerListChanged(object msg, EventArgs e)
         {
             AvailableLobbies.Dispatcher.BeginInvoke(new Action(delegate() { UpdateLobbyList(); }), null);            
         }
@@ -558,8 +594,9 @@ namespace Pentago.GUI
         private void UpdateLobbyList()
         {
             AvailableLobbies.Items.Clear();
-            foreach (PentagoNetwork.peerType p in networkUtil.availablePeers)
+            for (int i = 0; i < networkUtil.availablePeers.Count; i++)
             {
+                PentagoNetwork.peerType p = networkUtil.availablePeers[i];
                 ListBoxItem item = new ListBoxItem();
                 item.Content = p.name;
                 AvailableLobbies.Items.Add(item);
@@ -615,29 +652,15 @@ namespace Pentago.GUI
 
         private void CreateNewProfile_Click(object sender, RoutedEventArgs e)
         {
-            string newProfileName = NewProfileName.Text;
-            if (IsProfileNameValid(newProfileName.Trim()))
-            {
-                if (profileManager.IsProfileValid(newProfileName.Trim()))
-                {
-                    //append to file 
-                    profileManager.CreateNewProfile(newProfileName.Trim());
-                    ExistingProfile_Click(sender, e);
-                }
-                else
-                {
-                    const string message = "This profile name already exists, please create a new one.";
-                    const string caption = "Dragon Horde";
-                    //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
-                    MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
-                    messageWindow.ShowDialog();
-                }
-            }
+            
         }
 
         private bool IsProfileNameValid(string profileName)
         {
-            if (profileName.Trim() == "" || profileName.Trim().Length < 1 || profileName.Trim().Length > 15)
+            profileName = profileName.Trim();
+            Regex regex = new Regex("^[a-zA-Z0-9 ]*$");
+            if (profileName == "" || profileName.Length < 1 ||
+                profileName.Length > 15 || !regex.IsMatch(profileName))
                 return false;
             return true;
         }
@@ -646,12 +669,18 @@ namespace Pentago.GUI
         {
             string player1Name = Player1NameTextBox.Text;
             string player2Name = Player2NameTextBox.Text;
+            player1Name = player1Name.Trim();
+            player2Name = player2Name.Trim();
 
-            if (player1Name.Trim() == "" || player1Name.Trim().Length < 1 || player1Name.Trim().Length > 15)
+            Regex regex = new Regex("^[a-zA-Z0-9 ]*$");
+
+            if (player1Name == "" || player1Name.Length < 1 || 
+                player1Name.Length > 15 || !regex.IsMatch(player1Name))
                 return false;
 
             if (PlayerVsPlayerOn.Visibility == Visibility.Visible)
-                if (player2Name.Trim() == "" || player2Name.Trim().Length < 1 || player2Name.Trim().Length > 15)
+                if (player2Name == "" || player2Name.Length < 1 || 
+                    player2Name.Length > 15 || !regex.IsMatch(player2Name))
                     return false;
 
             return true;
@@ -1105,26 +1134,31 @@ namespace Pentago.GUI
                     BlackArmor.Visibility = Visibility.Hidden;
                     SilverArmor.Visibility = Visibility.Hidden;
                     GoldArmor.Visibility = Visibility.Hidden;
+                    currentArmor = "Base";
                     break;
                 case 2: RedArmor.Visibility = Visibility.Visible;
                     BlackArmor.Visibility = Visibility.Hidden;
                     SilverArmor.Visibility = Visibility.Hidden;
                     GoldArmor.Visibility = Visibility.Hidden;
+                    currentArmor = @"Red.png";
                     break;
                 case 3: RedArmor.Visibility = Visibility.Hidden;
                     BlackArmor.Visibility = Visibility.Visible;
                     SilverArmor.Visibility = Visibility.Hidden;
                     GoldArmor.Visibility = Visibility.Hidden;
+                    currentArmor = @"Black.png";
                     break;
                 case 4: RedArmor.Visibility = Visibility.Hidden;
                     BlackArmor.Visibility = Visibility.Hidden;
                     SilverArmor.Visibility = Visibility.Visible;
                     GoldArmor.Visibility = Visibility.Hidden;
+                    currentArmor = @"Silver.png";
                     break;
                 case 5: RedArmor.Visibility = Visibility.Hidden;
                     BlackArmor.Visibility = Visibility.Hidden;
                     SilverArmor.Visibility = Visibility.Hidden;
                     GoldArmor.Visibility = Visibility.Visible;
+                    currentArmor = @"Gold.png";
                     break;
             }
         }
@@ -1137,26 +1171,31 @@ namespace Pentago.GUI
                     BlackBeard.Visibility = Visibility.Hidden;
                     GrayBeard.Visibility = Visibility.Hidden;
                     BrownBeard.Visibility = Visibility.Hidden;
+                    currentBeard = "Base";
                     break;
                 case 2: RedBeard.Visibility = Visibility.Visible;
                     BlackBeard.Visibility = Visibility.Hidden;
                     GrayBeard.Visibility = Visibility.Hidden;
                     BrownBeard.Visibility = Visibility.Hidden;
+                    currentBeard = @"RedBeard.png";
                     break;
                 case 3: RedBeard.Visibility = Visibility.Hidden;
                     BlackBeard.Visibility = Visibility.Visible;
                     GrayBeard.Visibility = Visibility.Hidden;
                     BrownBeard.Visibility = Visibility.Hidden;
+                    currentBeard = @"BlackBeard.png";
                     break;
                 case 4: RedBeard.Visibility = Visibility.Hidden;
                     BlackBeard.Visibility = Visibility.Hidden;
                     GrayBeard.Visibility = Visibility.Visible;
                     BrownBeard.Visibility = Visibility.Hidden;
+                    currentBeard = @"Gray.png";
                     break;
                 case 5: RedBeard.Visibility = Visibility.Hidden;
                     BlackBeard.Visibility = Visibility.Hidden;
                     GrayBeard.Visibility = Visibility.Hidden;
                     BrownBeard.Visibility = Visibility.Visible;
+                    currentBeard = @"Brown.png";
                     break;
             }
         }
@@ -1171,6 +1210,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Hidden;
                     GoldPants.Visibility = Visibility.Hidden;
                     BrownPants.Visibility = Visibility.Hidden;
+                    currentPant = "Base";
                     break;
                 case 2: RedPants.Visibility = Visibility.Visible;
                     PurplePants.Visibility = Visibility.Hidden;
@@ -1178,6 +1218,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Hidden;
                     GoldPants.Visibility = Visibility.Hidden;
                     BrownPants.Visibility = Visibility.Hidden;
+                    currentPant = @"RedPants.png";                    
                     break;
                 case 3: RedPants.Visibility = Visibility.Hidden;
                     PurplePants.Visibility = Visibility.Visible;
@@ -1185,6 +1226,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Hidden;
                     GoldPants.Visibility = Visibility.Hidden;
                     BrownPants.Visibility = Visibility.Hidden;
+                    currentPant = @"PurplePants.png";
                     break;
                 case 4: RedPants.Visibility = Visibility.Hidden;
                     PurplePants.Visibility = Visibility.Hidden;
@@ -1192,6 +1234,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Hidden;
                     GoldPants.Visibility = Visibility.Hidden;
                     BrownPants.Visibility = Visibility.Hidden;
+                    currentPant = @"PinkPants.png";
                     break;
                 case 5: RedPants.Visibility = Visibility.Hidden;
                     PurplePants.Visibility = Visibility.Hidden;
@@ -1199,6 +1242,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Visible;
                     GoldPants.Visibility = Visibility.Hidden;
                     BrownPants.Visibility = Visibility.Hidden;
+                    currentPant = @"GrayPants.png";
                     break;
                 case 6: RedPants.Visibility = Visibility.Hidden;
                     PurplePants.Visibility = Visibility.Hidden;
@@ -1206,6 +1250,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Hidden;
                     GoldPants.Visibility = Visibility.Visible;
                     BrownPants.Visibility = Visibility.Hidden;
+                    currentPant = @"GoldPants.png";
                     break;
                 case 7: RedPants.Visibility = Visibility.Hidden;
                     PurplePants.Visibility = Visibility.Hidden;
@@ -1213,6 +1258,7 @@ namespace Pentago.GUI
                     GrayPants.Visibility = Visibility.Hidden;
                     GoldPants.Visibility = Visibility.Hidden;
                     BrownPants.Visibility = Visibility.Visible;
+                    currentPant = @"BrownPants.png";
                     break;
             }
         }
@@ -1257,6 +1303,362 @@ namespace Pentago.GUI
             PantsChange(PantsCount);
         }
 
+        private void AvailableLobbies_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
 
+        private void SaveProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+            string newProfileName = NewProfileName.Text;
+            newProfileName = newProfileName.Trim();
+            if (IsProfileNameValid(newProfileName))
+            {
+                if (profileManager.IsProfileValid(newProfileName))
+                {
+                    List<Bitmap> images = new List<Bitmap>();
+                    if (currentArmor1 != "Base")
+                        images.Add(new Bitmap(@"GUI\Images\" + currentArmor1));
+                    if (currentBeard1 != "Base")
+                        images.Add(new Bitmap(@"GUI\Images\" + currentBeard1));
+                    if (currentPant1 != "Base")
+                        images.Add(new Bitmap(@"GUI\Images\" + currentPant1));
+
+                    var target = new Bitmap(@"GUI\Images\Armless.png");
+                    var graphics = Graphics.FromImage(target);
+                    graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+
+                    foreach (Bitmap image in images)
+                        graphics.DrawImage(image, 0, 0);
+
+                    if (!Directory.Exists(@"GUI\Images\CustomVikings"))
+                        Directory.CreateDirectory(@"GUI\Images\CustomVikings");
+                    target.Save(@"GUI\Images\CustomVikings\" + newProfileName + ".png", System.Drawing.Imaging.ImageFormat.Png);
+
+                    //append to file 
+                    profileManager.CreateNewProfile(newProfileName);
+                    const string message = "Your profile has been set up.";
+                    MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
+                    ExistingProfile_Click(sender, e);
+                    messageWindow.ShowDialog();
+                }
+                else
+                {
+                    const string message = "This profile name already exists, please create a new one.";
+                    MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
+                    messageWindow.ShowDialog();
+                }
+            }
+            else
+            {
+                const string message = "Please, verify name is alphanumeric, longer than 1 character and less than 15.";
+                MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
+                messageWindow.ShowDialog();
+            }
+
+        }
+
+        private void Menu_MouseMove(object sender, MouseEventArgs e)
+        {
+            //System.Windows.Point mousePositionRelativeToWindow = e.GetPosition(this);
+            //TransformGroup t = new TransformGroup();
+            //t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + 1, mousePositionRelativeToWindow.Y + 1));
+            //Pointer.RenderTransform = t;
+        }
+
+        private void PlayerProfile_Click(object sender, RoutedEventArgs e)
+        {
+            ReHideMenues();
+            PlayerProfilePanel.Visibility = Visibility.Visible;
+        }
+
+        private void GameDifficultyBeginnerOff_Click(object sender, RoutedEventArgs e)
+        {
+            GameDifficultyBeginnerOff.Visibility = Visibility.Hidden;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Visible;
+
+            GameDifficultyEasyOff.Visibility = Visibility.Visible;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyMediumOff.Visibility = Visibility.Visible;
+            GameDifficultyMediumOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyHardOff.Visibility = Visibility.Visible;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyExpertOff.Visibility = Visibility.Visible;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Text = "Beginner";
+        }
+
+        private void GameDifficultyEasyOff_Click(object sender, RoutedEventArgs e)
+        {
+            GameDifficultyBeginnerOff.Visibility = Visibility.Visible;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyEasyOff.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOn.Visibility = Visibility.Visible;
+
+            GameDifficultyMediumOff.Visibility = Visibility.Visible;
+            GameDifficultyMediumOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyHardOff.Visibility = Visibility.Visible;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyExpertOff.Visibility = Visibility.Visible;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Text = "Easy";
+        }
+
+        private void GameDifficultyMediumOff_Click(object sender, RoutedEventArgs e)
+        {
+            GameDifficultyBeginnerOff.Visibility = Visibility.Visible;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyEasyOff.Visibility = Visibility.Visible;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyMediumOff.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOn.Visibility = Visibility.Visible;
+
+            GameDifficultyHardOff.Visibility = Visibility.Visible;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+
+            GameDifficultyExpertOff.Visibility = Visibility.Visible;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Text = "Medium";
+        }
+
+        private void GameDifficultyHardOff_Click(object sender, RoutedEventArgs e)
+        {
+            GameDifficultyBeginnerOff.Visibility = Visibility.Visible;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOff.Visibility = Visibility.Visible;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOff.Visibility = Visibility.Visible;
+            GameDifficultyMediumOn.Visibility = Visibility.Hidden;
+            GameDifficultyHardOff.Visibility = Visibility.Hidden;
+            GameDifficultyHardOn.Visibility = Visibility.Visible;
+            GameDifficultyExpertOff.Visibility = Visibility.Visible;
+            GameDifficultyExpertOn.Visibility = Visibility.Hidden;
+            DifficultyIndicator.Text = "Hard";
+        }
+
+        private void GameDifficultyExpertOff_Click(object sender, RoutedEventArgs e)
+        {
+            GameDifficultyBeginnerOff.Visibility = Visibility.Visible;
+            GameDifficultyBeginnerOn.Visibility = Visibility.Hidden;
+            GameDifficultyEasyOff.Visibility = Visibility.Visible;
+            GameDifficultyEasyOn.Visibility = Visibility.Hidden;
+            GameDifficultyMediumOff.Visibility = Visibility.Visible;
+            GameDifficultyMediumOn.Visibility = Visibility.Hidden;
+            GameDifficultyHardOff.Visibility = Visibility.Visible;
+            GameDifficultyHardOn.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOff.Visibility = Visibility.Hidden;
+            GameDifficultyExpertOn.Visibility = Visibility.Visible;
+            DifficultyIndicator.Text = "Expert";
+        }
+
+        int BeardCount1 = 1;
+        int ArmorCount1 = 1;
+        int PantsCount1 = 1;
+
+        private void BeardCycleRight1_Click(object sender, RoutedEventArgs e)
+        {
+            BeardCount1++;
+            if (BeardCount1 == 6)
+            {
+                BeardCount1 = 1;
+            }
+            BeardChange1(BeardCount1);
+        }
+
+        private void BeardCycleLeft1_Click(object sender, RoutedEventArgs e)
+        {
+            BeardCount1--;
+            if (BeardCount1 == 0)
+            {
+                BeardCount1 = 5;
+            }
+            BeardChange1(BeardCount1);
+        }
+
+        private void ArmorCycleRight1_Click(object sender, RoutedEventArgs e)
+        {
+            ArmorCount1++;
+            if (ArmorCount1 == 6)
+            {
+                ArmorCount1 = 1;
+            }
+            ArmorChange1(ArmorCount1);
+        }
+
+        private void ArmorCycleLeft1_Click(object sender, RoutedEventArgs e)
+        {
+            ArmorCount1--;
+            if (ArmorCount1 == 0)
+            {
+                ArmorCount1 = 5;
+            }
+            ArmorChange1(ArmorCount1);
+        }
+
+        private void PantsCycleRight1_Click(object sender, RoutedEventArgs e)
+        {
+            PantsCount1++;
+            if (PantsCount1 == 8)
+            {
+                PantsCount1 = 1;
+            }
+            PantsChange1(PantsCount1);
+        }
+
+        private void PantsCycleLeft1_Click(object sender, RoutedEventArgs e)
+        {
+            PantsCount1--;
+            if (PantsCount1 == 0)
+            {
+                PantsCount1 = 7;
+            }
+            PantsChange1(PantsCount1);
+        }
+
+        private void ArmorChange1(int i)
+        {
+            switch (i)
+            {
+                case 1: RedArmor1.Visibility = Visibility.Hidden;
+                    BlackArmor1.Visibility = Visibility.Hidden;
+                    SilverArmor1.Visibility = Visibility.Hidden;
+                    GoldArmor1.Visibility = Visibility.Hidden;
+                    currentArmor1 = "Base";
+                    break;
+                case 2: RedArmor1.Visibility = Visibility.Visible;
+                    BlackArmor1.Visibility = Visibility.Hidden;
+                    SilverArmor1.Visibility = Visibility.Hidden;
+                    GoldArmor1.Visibility = Visibility.Hidden;
+                    currentArmor1 = @"Red.png";
+                    break;
+                case 3: RedArmor1.Visibility = Visibility.Hidden;
+                    BlackArmor1.Visibility = Visibility.Visible;
+                    SilverArmor1.Visibility = Visibility.Hidden;
+                    GoldArmor1.Visibility = Visibility.Hidden;
+                    currentArmor1 = @"Black.png";
+                    break;
+                case 4: RedArmor1.Visibility = Visibility.Hidden;
+                    BlackArmor1.Visibility = Visibility.Hidden;
+                    SilverArmor1.Visibility = Visibility.Visible;
+                    GoldArmor1.Visibility = Visibility.Hidden;
+                    currentArmor1 = @"Silver.png";
+                    break;
+                case 5: RedArmor1.Visibility = Visibility.Hidden;
+                    BlackArmor1.Visibility = Visibility.Hidden;
+                    SilverArmor1.Visibility = Visibility.Hidden;
+                    GoldArmor1.Visibility = Visibility.Visible;
+                    currentArmor1 = @"Gold.png";
+                    break;
+            }
+        }
+
+        private void BeardChange1(int i)
+        {
+            switch (i)
+            {
+                case 1: RedBeard1.Visibility = Visibility.Hidden;
+                    BlackBeard1.Visibility = Visibility.Hidden;
+                    GrayBeard1.Visibility = Visibility.Hidden;
+                    BrownBeard1.Visibility = Visibility.Hidden;
+                    currentBeard1 = "Base";
+                    break;
+                case 2: RedBeard1.Visibility = Visibility.Visible;
+                    BlackBeard1.Visibility = Visibility.Hidden;
+                    GrayBeard1.Visibility = Visibility.Hidden;
+                    BrownBeard1.Visibility = Visibility.Hidden;
+                    currentBeard1 = @"RedBeard.png";
+                    break;
+                case 3: RedBeard1.Visibility = Visibility.Hidden;
+                    BlackBeard1.Visibility = Visibility.Visible;
+                    GrayBeard1.Visibility = Visibility.Hidden;
+                    BrownBeard1.Visibility = Visibility.Hidden;
+                    currentBeard1 = @"BlackBeard.png";
+                    break;
+                case 4: RedBeard1.Visibility = Visibility.Hidden;
+                    BlackBeard1.Visibility = Visibility.Hidden;
+                    GrayBeard1.Visibility = Visibility.Visible;
+                    BrownBeard1.Visibility = Visibility.Hidden;
+                    currentBeard1 = @"Gray.png";
+                    break;
+                case 5: RedBeard1.Visibility = Visibility.Hidden;
+                    BlackBeard1.Visibility = Visibility.Hidden;
+                    GrayBeard1.Visibility = Visibility.Hidden;
+                    BrownBeard1.Visibility = Visibility.Visible;
+                    currentBeard1 = @"Brown.png";
+                    break;
+            }
+        }
+
+        private void PantsChange1(int i)
+        {
+            switch (i)
+            {
+                case 1: RedPants1.Visibility = Visibility.Hidden;
+                    PurplePants1.Visibility = Visibility.Hidden;
+                    PinkPants1.Visibility = Visibility.Hidden;
+                    GrayPants1.Visibility = Visibility.Hidden;
+                    GoldPants1.Visibility = Visibility.Hidden;
+                    BrownPants1.Visibility = Visibility.Hidden;
+                    currentPant1 = "Base";
+                    break;
+                case 2: RedPants1.Visibility = Visibility.Visible;
+                    PurplePants1.Visibility = Visibility.Hidden;
+                    PinkPants1.Visibility = Visibility.Hidden;
+                    GrayPants1.Visibility = Visibility.Hidden;
+                    GoldPants1.Visibility = Visibility.Hidden;
+                    BrownPants1.Visibility = Visibility.Hidden;
+                    currentPant1 = @"RedPants.png";
+                    break;
+                case 3: RedPants1.Visibility = Visibility.Hidden;
+                    PurplePants1.Visibility = Visibility.Visible;
+                    PinkPants1.Visibility = Visibility.Hidden;
+                    GrayPants1.Visibility = Visibility.Hidden;
+                    GoldPants1.Visibility = Visibility.Hidden;
+                    BrownPants1.Visibility = Visibility.Hidden;
+                    currentPant1 = @"PurplePants.png";
+                    break;
+                case 4: RedPants1.Visibility = Visibility.Hidden;
+                    PurplePants1.Visibility = Visibility.Hidden;
+                    PinkPants1.Visibility = Visibility.Visible;
+                    GrayPants1.Visibility = Visibility.Hidden;
+                    GoldPants1.Visibility = Visibility.Hidden;
+                    BrownPants1.Visibility = Visibility.Hidden;
+                    currentPant1 = @"PinkPants.png";
+                    break;
+                case 5: RedPants1.Visibility = Visibility.Hidden;
+                    PurplePants1.Visibility = Visibility.Hidden;
+                    PinkPants1.Visibility = Visibility.Hidden;
+                    GrayPants1.Visibility = Visibility.Visible;
+                    GoldPants1.Visibility = Visibility.Hidden;
+                    BrownPants1.Visibility = Visibility.Hidden;
+                    currentPant1 = @"GrayPants.png";
+                    break;
+                case 6: RedPants1.Visibility = Visibility.Hidden;
+                    PurplePants1.Visibility = Visibility.Hidden;
+                    PinkPants1.Visibility = Visibility.Hidden;
+                    GrayPants1.Visibility = Visibility.Hidden;
+                    GoldPants1.Visibility = Visibility.Visible;
+                    BrownPants1.Visibility = Visibility.Hidden;
+                    currentPant1 = @"GoldPants.png";
+                    break;
+                case 7: RedPants1.Visibility = Visibility.Hidden;
+                    PurplePants1.Visibility = Visibility.Hidden;
+                    PinkPants1.Visibility = Visibility.Hidden;
+                    GrayPants1.Visibility = Visibility.Hidden;
+                    GoldPants1.Visibility = Visibility.Hidden;
+                    BrownPants1.Visibility = Visibility.Visible;
+                    currentPant1 = @"BrownPants.png";
+                    break;
+            }
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace Pentago
 
     public delegate void moveReceivedHandler(object move, EventArgs e);
 
+    public delegate void playerRemovedHandler(object pt, EventArgs e);
+
     public class PentagoNetwork
     {
         public event peerDiscoveredHandler Discovered;
@@ -27,8 +29,9 @@ namespace Pentago
         public event peerConnectedHandler Connected;
         public event peerDisconnectedHancler Disconnected;
         public event moveReceivedHandler MoveReceived;
+        public event playerRemovedHandler PlayerRemoved;
 
-        enum SentDataType {move, privateChat, globalChat, idRequest, idResponse, connectRequest}
+        enum SentDataType {move, privateChat, globalChat, idRequest, idResponse, connectRequest, ping, pingResponse}
 
         //const int PORT_NUMBER = 32458;
         const int PORT_NUMBER = 12345;
@@ -49,9 +52,14 @@ namespace Pentago
 
         public List<peerType> availablePeers {get; private set;}
 
+        private DateTime lastPingTime;
+        private DateTime nextPingTime;
 
         public PentagoNetwork(string playerName)
         {
+            lastPingTime = DateTime.Now;
+            nextPingTime = lastPingTime.AddSeconds(1);
+
             availablePeers = new List<peerType>();
 
             config = new NetPeerConfiguration("Pentago");
@@ -104,6 +112,29 @@ namespace Pentago
         {
             while (peerOn)
             {
+                if (DateTime.Now > nextPingTime)
+                {
+                    for (int i = 0; i < availablePeers.Count; i++) //foreach (peerType p in availablePeers)
+                    {
+                        peerType p = availablePeers[i];
+                        NetOutgoingMessage ping = peer.CreateMessage();
+                        ping.Write((short)SentDataType.ping);
+                        peer.SendUnconnectedMessage(ping, p.address);
+                    }
+                    lastPingTime = DateTime.Now;
+                    nextPingTime = lastPingTime.AddSeconds(1);
+                }
+
+                for (int i = 0; i < availablePeers.Count; i++) //foreach (peerType p in availablePeers)
+                {
+                    peerType p = availablePeers[i];
+                    if (p.lastPing < DateTime.Now.AddSeconds(-2))
+                    {
+                        availablePeers.Remove(p);
+                        PlayerRemoved(p, EventArgs.Empty);
+                    }
+                }
+
                 NetIncomingMessage msg;
                 while ((msg = peer.ReadMessage()) != null)
                 {
@@ -330,6 +361,25 @@ namespace Pentago
                                     ConnectionRequest(msg.ReadString(), EventArgs.Empty);
                                 }
                             }
+                            else if (type == (short)SentDataType.ping)
+                            {
+                                if (peer.Connections.Count == 0)
+                                {
+                                    NetOutgoingMessage resp = peer.CreateMessage();
+                                    resp.Write((short)SentDataType.pingResponse);
+                                    peer.SendUnconnectedMessage(resp, msg.SenderEndPoint);
+                                }
+                            }
+                            else if (type == (short)SentDataType.pingResponse)
+                            {
+                                foreach(peerType p in availablePeers)
+                                {
+                                    if (p.address == msg.SenderEndPoint)
+                                    {
+                                        p.lastPing = DateTime.Now;
+                                    }
+                                }
+                            }
                             break;
                             #endregion
 
@@ -349,6 +399,7 @@ namespace Pentago
                 peerType peerToAdd = new peerType();
                 peerToAdd.address = foundPeerIPEndPoint;
                 peerToAdd.name = foundPeerName;
+                peerToAdd.lastPing = DateTime.Now;
 
                 bool same = foundPeerIPEndPoint == myIPEndPoint;
                 if (!same)
@@ -403,6 +454,7 @@ namespace Pentago
             public System.Net.IPEndPoint address { get; set; }
             public string name { get; set; }
             public peerType() { }
+            public DateTime lastPing { get; set; }
         }
 
         public class moveType

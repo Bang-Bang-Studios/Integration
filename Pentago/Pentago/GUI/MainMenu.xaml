@@ -182,7 +182,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="PlayerProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Player Profile" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="155,357,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="315" BorderThickness="0" MouseEnter="PlayerProfile_MouseEnter" >
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="PlayerProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Player Profile" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="155,357,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="315" BorderThickness="0" MouseEnter="PlayerProfile_MouseEnter" Click="PlayerProfile_Click" >
             <Button.Triggers>
                 <EventTrigger RoutedEvent="Window.Loaded">
                     <BeginStoryboard>
@@ -286,89 +286,146 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" VerticalAlignment="Top" Width="340"  Opacity="1" Panel.ZIndex="-10" Source="/Pentago;component/GUI/Images/Old_Scroll.png" Stretch="Fill" />
-        <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="QuickMatchMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="375" Visibility="Hidden" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
-        <GroupBox Name="MoveGroupBox" Margin="589,260,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="119" Visibility="Hidden" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}">
-            <StackPanel Name="MoveStackPanel" Orientation="Vertical" Width="114" Height="80" Visibility="Hidden">
-                <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 1" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player1" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="101" HorizontalAlignment="Left" Click="Player1_Click" Visibility="Hidden" MouseEnter="Player1_MouseEnter" />
-                <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 2" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player2" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="101" HorizontalAlignment="Left" Click="Player2_Click" Visibility="Hidden" MouseEnter="Player2_MouseEnter" />
+        <Image Style="{StaticResource ScrollFade}" Height="662" HorizontalAlignment="Left" Margin="137,50,0,0" Name="MainMenuScroll" VerticalAlignment="Top" Width="340"  Opacity="1" Panel.ZIndex="-10" Source="Images/FinalScroll.png" Stretch="Fill" />
+        <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="QuickMatchMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="375" Visibility="Hidden" Source="/Pentago;component/GUI/Images/FinalScroll.png" />
+        <GroupBox Name="MoveGroupBox" Margin="589,260,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}" Visibility="Hidden">
+            <StackPanel Name="MoveStackPanel" Orientation="Vertical" Height="80" Margin="14,10,-33,10" Visibility="Hidden">
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 1" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player1" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="159" HorizontalAlignment="Left" Click="Player1_Click" Visibility="Hidden" MouseEnter="Player1_MouseEnter" />
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player 2" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="Player2" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="159" HorizontalAlignment="Left" Click="Player2_Click" Visibility="Hidden" MouseEnter="Player2_MouseEnter" Margin="0,0,-30,0" />
             </StackPanel>
         </GroupBox>
         <TextBox Height="41" HorizontalAlignment="Left" Margin="580,418,0,0" Name="Player1NameTextBox" VerticalAlignment="Top" Width="223" FontFamily="Celtic Garamond the 2nd" FontSize="28" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" KeyDown="Player1NameTextBox_KeyDown"></TextBox>
-        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Battle!" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="30" FontWeight="Bold" Height="47" HorizontalContentAlignment="Center" Margin="639,548,0,0" Name="Battle" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" VerticalAlignment="Top" Width="119" Visibility="Hidden" Click="Battle_Click" MouseEnter="Battle_MouseEnter" HorizontalAlignment="Left" />
+        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Battle!" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="30" FontWeight="Bold" Height="47" HorizontalContentAlignment="Center" Margin="635,597,0,0" Name="Battle" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" VerticalAlignment="Top" Width="119" Visibility="Hidden" Click="Battle_Click" MouseEnter="Battle_MouseEnter" HorizontalAlignment="Left" />
         <TextBlock Height="44" HorizontalAlignment="Left" Margin="607,235,0,0" Name="MoveFirst" Text="Move First?" VerticalAlignment="Top" Width="196" FontFamily="Celtic Garamond the 2nd" FontSize="28" Visibility="Hidden" />
-        <TextBlock FontFamily="Celtic Garamond the 2nd" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="580,372,0,0" Name="Player1Name" Text="Player 1 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" />
-        <TextBlock FontFamily="Celtic Garamond the 2nd" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="589,465,0,0" Name="Player2Name" Text="Player 2 Name" VerticalAlignment="Top" Width="196" Visibility="Hidden" />
+        <TextBlock FontFamily="Celtic Garamond the 2nd" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="580,372,0,0" Name="Player1Name" Text="Player 1 Name" VerticalAlignment="Top" Width="230" Visibility="Hidden" />
+        <TextBlock FontFamily="Celtic Garamond the 2nd" FontSize="28" Height="44" HorizontalAlignment="Left" Margin="589,465,0,0" Name="Player2Name" Text="Player 2 Name" VerticalAlignment="Top" Width="241" Visibility="Hidden" />
         <TextBox Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="28" Height="41" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="580,503,0,0" Name="Player2NameTextBox" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="223" Visibility="Hidden" KeyDown="Player2NameTextBox_KeyDown" />
         <GroupBox Name="PlayerVsGroupBox" Visibility="Hidden" Opacity="1" BorderThickness="0" BorderBrush="{x:Null}" Margin="592,152,0,0" Height="83" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"></GroupBox>
         <StackPanel Name="PlayerVsStackPanel" Orientation="Vertical" Height="80" Margin="589,155,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241" Visibility="Hidden">
-            <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Player" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="PlayerVsPlayer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="208" HorizontalAlignment="Left" Click="PlayerVsPlayer_Click" MouseEnter="PlayerVsPlayer_MouseEnter" Visibility="Hidden" />
-            <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Computer" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" Height="40" HorizontalContentAlignment="Center" Name="PlayerVsComputer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="231" Click="PlayerVsComputer_Click" Visibility="Hidden" MouseEnter="PlayerVsComputer_MouseEnter" />
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Player" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="20" FontWeight="Normal" Height="42" HorizontalContentAlignment="Left" Name="PlayerVsPlayer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="208" HorizontalAlignment="Left" Click="PlayerVsPlayer_Click" MouseEnter="PlayerVsPlayer_MouseEnter" Visibility="Hidden" />
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Player Vs Computer" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="20" FontWeight="Normal" Height="40" HorizontalContentAlignment="Center" Name="PlayerVsComputer" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Width="231" Click="PlayerVsComputer_Click" Visibility="Hidden" MouseEnter="PlayerVsComputer_MouseEnter" />
         </StackPanel>
-        <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="375" Source="/Pentago;component/GUI/Images/Old_Scroll.png" />
-        <TextBlock Height="44" HorizontalAlignment="Left" Margin="585,465,0,0" Name="ComputerLevel" Text="CompStoryMode_Clickuter Level" VerticalAlignment="Top" Width="191" FontFamily="Celtic Garamond the 2nd" FontSize="28" TextAlignment="Center" Visibility="Hidden" />
+        <Image Height="675" HorizontalAlignment="Left" Margin="519,50,0,0" Name="StoryModeMenuScroll" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="375" Source="/Pentago;component/GUI/Images/FinalScroll.png" />
+        <TextBlock Height="44" HorizontalAlignment="Left" Margin="585,465,0,0" Name="ComputerLevel" Text="Difficulty" VerticalAlignment="Top" Width="191" FontFamily="Celtic Garamond the 2nd" FontSize="28" TextAlignment="Center" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,164,0,0" MouseDown="PlayerVsPlayer_Click" Name="PlayerVsPlayerOn" Stretch="Fill" VerticalAlignment="Top" Width="27" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,199,0,0" MouseDown="PlayerVsComputer_Click" Name="PlayerVsComputerOn" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
         <Image HorizontalAlignment="Left" Margin="568,284,0,0" Name="Player1MoveFirstOn" MouseDown="Player1_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" Width="27" Height="28" VerticalAlignment="Top" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,320,0,0" Name="Player2MoveFirstOn" MouseDown="Player2_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
-        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Easy" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" HorizontalContentAlignment="Left" Name="ComputerEasyLevel" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Margin="620,503,0,0" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Click="ComputerEasyLevel_Click" Visibility="Hidden" MouseEnter="ComputerEasyLevel_MouseEnter" />
-        <Button Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Content="Hard" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="26" FontWeight="Normal" HorizontalContentAlignment="Left" Name="ComputerHardLevel" Opacity="1" OpacityMask="Black" OverridesDefaultStyle="False" Panel.ZIndex="0" Margin="729,503,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="38" Click="ComputerHardLevel_Click" Visibility="Hidden" MouseEnter="ComputerHardLevel_MouseEnter" />
-        <Image Height="41" HorizontalAlignment="Left" Margin="580,503,0,0" Name="GameDifficultyEasyOn" MouseDown="ComputerEasyLevel_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
-        <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOn" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/BlueCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,164,0,0" Name="PlayerVsPlayerOff" MouseDown="PlayerVsPlayer_Click" Stretch="Fill" VerticalAlignment="Top" Width="27" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Visibility="Hidden" />
         <Image Height="28" HorizontalAlignment="Left" Margin="568,199,0,0" Name="PlayerVsComputerOff" MouseDown="PlayerVsComputer_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" Panel.ZIndex="0" />
-        <Image Height="28" HorizontalAlignment="Left" Margin="568,284,0,0" MouseDown="Player1_Click" Name="Player1MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" />
-        <Image Height="28" HorizontalAlignment="Left" Margin="568,320,0,0" MouseDown="Player2_Click" Name="Player2MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Visibility="Hidden" Width="27" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,284,0,0" MouseDown="Player1_Click" Name="Player1MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
+        <Image Height="28" HorizontalAlignment="Left" Margin="568,320,0,0" MouseDown="Player2_Click" Name="Player2MoveFirstOff" Panel.ZIndex="0" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="27" Visibility="Hidden" />
         <Image Margin="0,152,18,0" Name="image1" Stretch="Fill" Source="/Pentago;component/GUI/Images/TitleWork.png" HorizontalAlignment="Right" Width="314" Height="307" VerticalAlignment="Top" Panel.ZIndex="-15" />
-        <Image Height="41" HorizontalAlignment="Left" Margin="580,503,0,0" Name="GameDifficultyEasyOff" MouseDown="ComputerEasyLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
-        <Image Height="41" HorizontalAlignment="Left" Margin="684,503,0,0" Name="GameDifficultyHardOff" MouseDown="ComputerHardLevel_Click" Source="/Pentago;component/GUI/Images/GreyCrystal.png" Stretch="Fill" VerticalAlignment="Top" Width="34" Visibility="Hidden" />
         <DockPanel x:Name="StoryModePanel" HorizontalAlignment="Left" Height="675" Margin="519,50,0,0" VerticalAlignment="Top" Width="375" Panel.ZIndex="-15" Visibility="Hidden">
             <DockPanel.Background>
-                <ImageBrush ImageSource="Images/Old_Scroll.png"/>
+                <ImageBrush ImageSource="Images/FinalScroll.png"/>
             </DockPanel.Background>
-            <Button Height="97" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="NewProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="28" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="110" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" IsTabStop="False" RenderTransformOrigin="0.5,0.5" Grid.IsSharedSizeScope="True" Margin="60,110,0,0" Click="NewProfile_Click" >
-                <TextBlock Width="105" Height="87" HorizontalAlignment="Center" FontSize="26"><Run Text="New"/><LineBreak/><Run Text="Profile"/></TextBlock>
+            <Button Height="80" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="NewProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="28" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="110" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" IsTabStop="False" RenderTransformOrigin="0.5,0.5" Grid.IsSharedSizeScope="True" Margin="60,66,0,0" Click="NewProfile_Click" >
+                <TextBlock Width="104" Height="77" HorizontalAlignment="Center" FontSize="26"><Run Text="New"/><LineBreak/><Run Text="Profile"/></TextBlock>
             </Button>
-            <Button Height="97" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="ExistingProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="28" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" Width="130" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" IsTabStop="False" Margin="10,110,0,0" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" Click="ExistingProfile_Click" >
-                <TextBlock Width="125" HorizontalAlignment="Center" FontSize="26" Height="87"><Run Text="Existing"/><LineBreak/><Run Text="Profile"/></TextBlock>
+            <Button Height="80" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="ExistingProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" FontFamily="Celtic Garamond the 2nd" FontSize="28" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" Width="130" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" IsTabStop="False" Margin="10,66,0,0" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" Click="ExistingProfile_Click" >
+                <TextBlock Width="125" HorizontalAlignment="Center" FontSize="26" Height="77"><Run Text="Existing"/><LineBreak/><Run Text="Profile"/></TextBlock>
             </Button>
             <ListBox x:Name="ProfileList" Height="265" Width="236" HorizontalAlignment="Left" Margin="-250,212,0,185" VerticalAlignment="Center" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="32" Visibility="Hidden">
             </ListBox>
             <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="ContineAdventure" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Continue" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" HorizontalAlignment="Left" Width="190" BorderThickness="0" MouseEnter="StoryMode_MouseEnter"  Margin="-230,0,0,120" VerticalAlignment="Bottom" Visibility="Hidden" />
-        </DockPanel>
-        <DockPanel x:Name="NewProfilePanel" HorizontalAlignment="Left" Height="337" LastChildFill="False" Margin="580,260,0,0" VerticalAlignment="Top" Width="235" Visibility="Hidden">
-            <TextBox Height="43" HorizontalAlignment="Left" x:Name="NewProfileName" VerticalAlignment="Top" Width="225" FontFamily="Celtic Garamond the 2nd" FontSize="28" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Visible" KeyDown="Player1NameTextBox_KeyDown" DockPanel.Dock="Top" Margin="10,0,0,0"/>
-            <Image Height="165" HorizontalAlignment="Left" x:Name="Viking" Opacity="1" Panel.ZIndex="-10" Stretch="Fill" VerticalAlignment="Top" Width="148" Visibility="Visible" Source="/Pentago;component/GUI/Images/Viking1.png" DockPanel.Dock="Top" Margin="42,0,0,0" />
-            <Button Height="42" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="CreateNewProfile" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Create Viking" FontFamily="Celtic Garamond the 2nd" FontSize="27" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" DockPanel.Dock="Bottom" Click="CreateNewProfile_Click" />
-            <Button x:Name="ScrollRight" Content="" HorizontalAlignment="Left" Margin="0,5,0,-2" VerticalAlignment="Top" Width="109" Height="65" DockPanel.Dock="Right">
-                <Button.Background>
-                    <ImageBrush ImageSource="Images/ClockWise1.png"/>
-                </Button.Background>
-            </Button>
-            <Button x:Name="ScrollRight_Copy" Content="" HorizontalAlignment="Left" Width="112" DockPanel.Dock="Left" Margin="0,14,0,0" Height="63" VerticalAlignment="Top">
-                <Button.Background>
-                    <ImageBrush ImageSource="Images/CounterClockWise2.png"/>
-                </Button.Background>
-            </Button>
+            <DockPanel x:Name="NewProfilePanel" HorizontalAlignment="Left" Height="677" VerticalAlignment="Top" Width="430" Panel.ZIndex="-15" Visibility="Visible" Margin="-334,20,-31,-30">
+                <TextBox x:Name="NewProfileName" Height="54" Margin="0,114,0,507" Text="Name" VerticalAlignment="Center" Width="228" HorizontalAlignment="Center" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="28" DockPanel.Dock="Top"/>
+                <Image  Height="236" HorizontalAlignment="Left" x:Name="VikingBase1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Base.png" Stretch="Fill" Margin="115,-488,0,0" />
+                <TextBlock x:Name="BeardBlock1" Height="31" Margin="-147,-225,176,183" TextWrapping="Wrap" Text="Beard" VerticalAlignment="Center" HorizontalAlignment="Center" DockPanel.Dock="Top" Width="84" FontFamily="Celtic Garamond the 2nd" FontSize="24" TextAlignment="Center"/>
+                <TextBlock x:Name="ArmorBlock1" Height="31" Margin="-147,-186,176,151" TextWrapping="Wrap" Text="Armor" VerticalAlignment="Center" HorizontalAlignment="Center" Width="84" FontFamily="Celtic Garamond the 2nd" FontSize="24" TextAlignment="Center"/>
+                <TextBlock x:Name="PantsBlock1" Height="31" Margin="-260,-151,176,117" TextWrapping="Wrap" Text="Pants" VerticalAlignment="Center" HorizontalAlignment="Center" Width="84" FontFamily="Celtic Garamond the 2nd" FontSize="24" DockPanel.Dock="Top" TextAlignment="Center"/>
+                <Button x:Name="CreateProfile" Content="Create Viking" Height="31" Margin="-344,-111,101,0" VerticalAlignment="Top" FontFamily="Celtic Garamond the 2nd" FontSize="24" Background="{x:Null}" DockPanel.Dock="Top" Click="SaveProfile_Click"/>
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="RedArmor1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Red.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="GoldArmor1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Gold.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="BlackArmor1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Black.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="SilverArmor1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Silver.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Button  Height="30" HorizontalAlignment="Left" x:Name="BeardCycleRight1" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-157,-225,0,0" Click="BeardCycleRight1_Click" RenderTransformOrigin="0.5,0.5"  >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                            <SkewTransform AngleY="0" AngleX="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/flatArrow.png"/>
+                    </Button.Background>
+                </Button>
+                <Button  Height="30" HorizontalAlignment="Left" x:Name="ArmorCycleRight1" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10" Margin="-157,-186,0,0" Click="ArmorCycleRight1_Click" RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                            <SkewTransform AngleY="0" AngleX="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/flatArrow.png"/>
+                    </Button.Background>
+                </Button>
+                <Button  Height="30" HorizontalAlignment="Left" x:Name="PantsCycleRight1" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-157,-151,0,0" Click="PantsCycleRight1_Click" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                            <SkewTransform AngleY="0" AngleX="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/flatArrow.png"/>
+                    </Button.Background>
+                </Button>
+                <Button  Height="31" HorizontalAlignment="Left" x:Name="ArmroCycleLeft1" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-344,-186,0,0"  Click="ArmorCycleLeft1_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/flatArrow.png"/>
+                    </Button.Background>
+                </Button>
+                <Button  Height="30" HorizontalAlignment="Left" x:Name="BeardCycleLeft1" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10" Margin="-344,-225,0,0" Click="BeardCycleLeft1_Click" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/flatArrow.png"/>
+                    </Button.Background>
+                </Button>
+                <Button  Height="30" HorizontalAlignment="Left" x:Name="PantsCycleLeft1" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-344,-151,0,0" Click="PantsCycleLeft1_Click" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/flatArrow.png"/>
+                    </Button.Background>
+                </Button>
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="RedBeard1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/RedBeard.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="BlackBeard1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/BlackBeard.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="GrayBeard1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Gray.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="BrownBeard1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Brown.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="RedPants1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/RedPants.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="PurplePants1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/PurplePants.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="PinkPants1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/PinkPants.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="GrayPants1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/GrayPants.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="GoldPants1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/GoldPants.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="BrownPants1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/BrownPants.png" Stretch="Fill" Margin="-311,-488,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+                <Image  Height="237" HorizontalAlignment="Left" x:Name="VikingArmSword1" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="10" Source="Images/OverArm.png" Stretch="Fill" Margin="-311,-489,0,0" />
+
+            </DockPanel>
         </DockPanel>
         <DockPanel x:Name="OnlineMenuPanel" LastChildFill="False" Margin="46,-36,356,-98" Visibility="Hidden" VerticalAlignment="Center" Height="934" HorizontalAlignment="Center" Width="848">
             <DockPanel.Background>
                 <ImageBrush ImageSource="Images/RosettaStoneCartoony.png"/>
             </DockPanel.Background>
-            <TextBlock x:Name="OpponentsTag" Margin="115,165,0,0" TextWrapping="Wrap" Text="Opponents" Width="180" Foreground="Silver" FontSize="30" FontWeight="Bold" Height="47" VerticalAlignment="Top" FontFamily="Celtic Garamond the 2nd"/>
-            <ListBox x:Name="AvailableLobbies" Width="305" Height="353" VerticalAlignment="Top" Margin="-230,217,0,0" FontSize="32" Background="{x:Null}" Foreground="Silver" FontWeight="Bold" FontFamily="Celtic Garamond the 2nd"/>
+            <TextBlock x:Name="OpponentsTag" Margin="115,165,0,0" TextWrapping="Wrap" Text="Opponents" Width="195" Foreground="Silver" FontSize="30" FontWeight="Bold" Height="47" VerticalAlignment="Top" FontFamily="Celtic Garamond the 2nd"/>
+            <ListBox x:Name="AvailableLobbies" Width="305" Height="353" VerticalAlignment="Top" Margin="-230,217,0,0" FontSize="32" Background="{x:Null}" Foreground="Silver" FontWeight="Bold" FontFamily="Celtic Garamond the 2nd" SelectionChanged="AvailableLobbies_SelectionChanged"/>
             <Button Content="MainMenu" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="31" FontWeight="Bold" Margin="150,44,0,746" x:Name="QuitToMainMenu"  Width="206" Foreground="Silver" Click="QuitToMainMenu_Click" />
-            <Button Content="Find Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="30" FontWeight="Bold" Margin="-1020,595,0,0" x:Name="FindOpponent"  Width="264" Foreground="Silver" Height="53" VerticalAlignment="Top" Click="FindOpponent_Click" />
-            <Button Content="Challenge Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Margin="-320,595,0,0" x:Name="ChallengeOpponent"  Width="378" Foreground="Silver" Height="53" VerticalAlignment="Top" Click="ChallengeOpponent_Click" HorizontalAlignment="Left" />
-            <TextBox x:Name="NameBox" Height="49" TextWrapping="Wrap" Text="Enter Name" VerticalAlignment="Top" Width="272" Margin="-300,189,0,0" FontSize="32" FontFamily="Celtic Garamond the 2nd" Foreground="Silver" Background="{x:Null}"/>
-            <Button Content="Button" Height="19" VerticalAlignment="Bottom" Width="73" Click="Button_Click" Margin="0,0,0,52" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="AcceptGameText" Height="184" Margin="-400,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" Foreground="Silver" FontFamily="Celtic Garamond the 2nd" FontSize="28" Visibility="Hidden"/>
+            <Button Content="Find Opponents" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="30" FontWeight="Bold" Margin="-1020,595,0,0" x:Name="FindOpponent"  Width="279" Foreground="Silver" Height="53" VerticalAlignment="Top" Click="FindOpponent_Click" />
+            <Button Content="Challenge Opponent" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Margin="-320,595,0,0" x:Name="ChallengeOpponent"  Width="378" Foreground="Silver" Height="53" VerticalAlignment="Top" Click="ChallengeOpponent_Click" HorizontalAlignment="Left" Visibility="Hidden" />
+            <TextBox x:Name="NameBox" Height="49" TextWrapping="Wrap" Text="Enter Name" VerticalAlignment="Top" Width="272" Margin="-350,189,0,0" FontSize="32" FontFamily="Celtic Garamond the 2nd" Foreground="Silver" Background="{x:Null}"/>
+            <TextBlock x:Name="AcceptGameText" Height="184" Margin="-400,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" Foreground="Silver" FontFamily="Celtic Garamond the 2nd" FontSize="22" Visibility="Hidden"/>
             <Button Content="Battle" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Margin="-560,0,0,364" x:Name="AcceptChallenge"  Width="118" Foreground="Silver" Height="65" VerticalAlignment="Bottom" Click="ChallengeAccept_Click" Visibility="Hidden" />
             <Button Content="Refuse" BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Margin="-280,0,0,364" x:Name="DenyChallenge"  Width="128" Foreground="Silver" Height="65" Click="ChallengeDecline_Click" VerticalAlignment="Bottom" Visibility="Hidden" />
+            <Label x:Name="Searching_for_Opponents" Content="Searching for Opponents" Height="31" VerticalAlignment="Top" Margin="-1000,700,0,0" Width="426" Foreground="Silver" FontFamily="Celtic Garamond the 2nd" FontSize="16" Visibility="Hidden"/>
         </DockPanel>
         <DockPanel x:Name="HighScorePanel" HorizontalAlignment="Left" Height="675" Margin="519,50,0,0" VerticalAlignment="Top" Width="375" Panel.ZIndex="-15" Visibility="Hidden">
             <DockPanel.Background>
-                <ImageBrush ImageSource="Images/Old_Scroll.png"/>
+                <ImageBrush ImageSource="Images/FinalScroll.png"/>
             </DockPanel.Background>
             <TextBlock x:Name="ProfileHighScoresBlock" Height="75" TextWrapping="Wrap" Text="Profile HighScore" VerticalAlignment="Top" Margin="40,104,0,0" Width="139" FontSize="25" FontFamily="Celtic Garamond the 2nd"/>
             <TextBlock x:Name="GameHighScoresBlock" Height="75" TextWrapping="Wrap" Text="Game HighScore" VerticalAlignment="Top" Margin="15,104,0,0" Width="141" FontSize="25" FontFamily="Celtic Garamond the 2nd"/>
@@ -379,7 +436,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
         </DockPanel>
         <DockPanel x:Name="OptionsPanel" HorizontalAlignment="Left" Height="675" LastChildFill="False" Margin="519,50,0,0" VerticalAlignment="Top" Width="375" Visibility="Hidden">
             <DockPanel.Background>
-                <ImageBrush ImageSource="Images/Old_Scroll.png"/>
+                <ImageBrush ImageSource="Images/FinalScroll.png"/>
             </DockPanel.Background>
             <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="MusicToggle" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Music" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="125" BorderThickness="0" MouseEnter="StoryMode_MouseEnter" IsTabStop="False" Margin="125,86,0,0" Click="MusicToggle_Click" />
             <Button Height="24" HorizontalAlignment="Left"  x:Name="MusicOff1" Panel.ZIndex="0"   VerticalAlignment="Top" Visibility="Hidden" Width="24" Margin="-170,151,0,0" Click="MusicOff1_Click" >
@@ -504,48 +561,72 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </Button.Background>
             </Button>
         </DockPanel>
-        <DockPanel x:Name="PlayerProfilePanel" HorizontalAlignment="Left" Height="675" Margin="519,48,0,0" VerticalAlignment="Top" Width="426" Panel.ZIndex="-15" Visibility="Visible">
+        <DockPanel x:Name="PlayerProfilePanel" HorizontalAlignment="Left" Height="675" Margin="519,48,0,0" VerticalAlignment="Top" Width="426" Panel.ZIndex="-15" Visibility="Hidden">
             <DockPanel.Background>
-                <ImageBrush ImageSource="Images/Old_Scroll.png"/>
+                <ImageBrush ImageSource="Images/FinalScroll.png"/>
             </DockPanel.Background>
             <TextBox x:Name="ProfileNameEdit" Height="54" Margin="0,114,0,507" TextWrapping="Wrap" Text="Name" VerticalAlignment="Center" Width="228" HorizontalAlignment="Center" Background="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="28" DockPanel.Dock="Top"/>
             <Image  Height="237" HorizontalAlignment="Left" x:Name="VikingBase" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Base.png" Stretch="Fill" Margin="115,-484,0,0" />
             <TextBlock x:Name="BeardBlock" Height="31" Margin="-147,-223,176,183" TextWrapping="Wrap" Text="Beard" VerticalAlignment="Center" HorizontalAlignment="Center" DockPanel.Dock="Top" Width="84" FontFamily="Celtic Garamond the 2nd" FontSize="24" TextAlignment="Center"/>
             <TextBlock x:Name="ArmorBlock" Height="31" Margin="-147,-182,176,151" TextWrapping="Wrap" Text="Armor" VerticalAlignment="Center" HorizontalAlignment="Center" Width="84" FontFamily="Celtic Garamond the 2nd" FontSize="24" TextAlignment="Center"/>
             <TextBlock x:Name="PantsBlock" Height="31" Margin="-260,-147,176,117" TextWrapping="Wrap" Text="Pants" VerticalAlignment="Center" HorizontalAlignment="Center" Width="84" FontFamily="Celtic Garamond the 2nd" FontSize="24" DockPanel.Dock="Top" TextAlignment="Center"/>
-            <Button x:Name="SaveProfile" Content="Save" Height="31" Margin="-260,-106,176,0" VerticalAlignment="Top" FontFamily="Celtic Garamond the 2nd" FontSize="24" Background="{x:Null}" DockPanel.Dock="Top"/>
+            <Button x:Name="SaveProfile" Content="Save" Height="31" Margin="-260,-106,176,0" VerticalAlignment="Top" FontFamily="Celtic Garamond the 2nd" FontSize="24" Background="{x:Null}" DockPanel.Dock="Top" Click="SaveProfile_Click"/>
             <Image  Height="237" HorizontalAlignment="Left" x:Name="RedArmor" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Red.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
             <Image  Height="237" HorizontalAlignment="Left" x:Name="GoldArmor" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Gold.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
             <Image  Height="237" HorizontalAlignment="Left" x:Name="BlackArmor" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Black.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
             <Image  Height="237" HorizontalAlignment="Left" x:Name="SilverArmor" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Silver.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
-            <Button  Height="30" HorizontalAlignment="Left" x:Name="BeardCycleRight" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-157,-219,0,0" Click="BeardCycleRight_Click"  >
+            <Button  Height="30" HorizontalAlignment="Left" x:Name="BeardCycleRight" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-157,-219,0,0" Click="BeardCycleRight_Click" RenderTransformOrigin="0.5,0.5"  >
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                        <SkewTransform AngleY="0" AngleX="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
                 <Button.Background>
-                    <ImageBrush ImageSource="Images/ClockWise1.png"/>
+                    <ImageBrush ImageSource="Images/flatArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  Height="30" HorizontalAlignment="Left" x:Name="ArmorCycleRight" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10" Margin="-157,-182,0,0" Click="ArmorCycleRight_Click">
+            <Button  Height="30" HorizontalAlignment="Left" x:Name="ArmorCycleRight" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10" Margin="-157,-182,0,0" Click="ArmorCycleRight_Click" RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                        <SkewTransform AngleY="0" AngleX="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
                 <Button.Background>
-                    <ImageBrush ImageSource="Images/ClockWise1.png"/>
+                    <ImageBrush ImageSource="Images/flatArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  Height="30" HorizontalAlignment="Left" x:Name="PantsCycleRight" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-157,-146,0,0" Click="PantsCycleRight_Click" >
+            <Button  Height="30" HorizontalAlignment="Left" x:Name="PantsCycleRight" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-157,-146,0,0" Click="PantsCycleRight_Click" RenderTransformOrigin="0.5,0.5" >
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                        <SkewTransform AngleY="0" AngleX="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
                 <Button.Background>
-                    <ImageBrush ImageSource="Images/ClockWise1.png"/>
+                    <ImageBrush ImageSource="Images/flatArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  Height="31" HorizontalAlignment="Left" x:Name="ArmroCycleLeft" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-344,-182,0,0"  Click="ArmorCycleLeft_Click">
                 <Button.Background>
-                    <ImageBrush ImageSource="Images/CounterClockWise2.png"/>
+                    <ImageBrush ImageSource="Images/flatArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  Height="30" HorizontalAlignment="Left" x:Name="BeardCycleLeft" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10" Margin="-344,-219,0,0" Click="BeardCycleLeft_Click" >
                 <Button.Background>
-                    <ImageBrush ImageSource="Images/CounterClockWise2.png"/>
+                    <ImageBrush ImageSource="Images/flatArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  Height="30" HorizontalAlignment="Left" x:Name="PantsCycleLeft" VerticalAlignment="Top" Width="74"  Opacity="1" Panel.ZIndex="-10"  Margin="-344,-146,0,0" Click="PantsCycleLeft_Click" >
                 <Button.Background>
-                    <ImageBrush ImageSource="Images/CounterClockWise2.png"/>
+                    <ImageBrush ImageSource="Images/flatArrow.png"/>
                 </Button.Background>
             </Button>
             <Image  Height="237" HorizontalAlignment="Left" x:Name="RedBeard" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/RedBeard.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
@@ -558,8 +639,60 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
             <Image  Height="237" HorizontalAlignment="Left" x:Name="GrayPants" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/GrayPants.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
             <Image  Height="237" HorizontalAlignment="Left" x:Name="GoldPants" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/GoldPants.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
             <Image  Height="237" HorizontalAlignment="Left" x:Name="BrownPants" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="-10" Source="Images/Brownpants.png" Stretch="Fill" Margin="-311,-484,0,0" DockPanel.Dock="Top" Visibility="Hidden" />
+            <Image  Height="237" HorizontalAlignment="Left" x:Name="VikingArmSword" VerticalAlignment="Top" Width="198"  Opacity="1" Panel.ZIndex="10" Source="Images/OverArm.png" Stretch="Fill" Margin="-311,-484,0,0" />
 
         </DockPanel>
+        <Button Height="40" HorizontalAlignment="Left" Margin="682,503,0,0" x:Name="GameDifficultyMediumOff"  VerticalAlignment="Top" Width="34" Visibility="Hidden" Click="GameDifficultyMediumOff_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="32" HorizontalAlignment="Left" Margin="595,507,0,0" x:Name="GameDifficultyBeginnerOff"   VerticalAlignment="Top" Width="26" Visibility="Hidden" Click="GameDifficultyBeginnerOff_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="48" HorizontalAlignment="Left" Margin="776,496,0,0" x:Name="GameDifficultyExpertOff"  VerticalAlignment="Top" Width="42" Visibility="Hidden" Click="GameDifficultyExpertOff_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="40" HorizontalAlignment="Left" Margin="682,503,0,0" x:Name="GameDifficultyMediumOn"   VerticalAlignment="Top" Width="34" Visibility="Hidden" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="32" HorizontalAlignment="Left" Margin="595,507,0,0" x:Name="GameDifficultyBeginnerOn"   VerticalAlignment="Top" Width="26" Visibility="Hidden" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="48" HorizontalAlignment="Left" Margin="776,496,0,0" x:Name="GameDifficultyExpertOn"  VerticalAlignment="Top" Width="42" Visibility="Hidden"  >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="36" HorizontalAlignment="Left" Margin="635,505,0,0" Name="GameDifficultyEasyOn"  VerticalAlignment="Top" Width="30" Visibility="Hidden"  >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="44" HorizontalAlignment="Left" Margin="731,500,0,0" Name="GameDifficultyHardOn"   VerticalAlignment="Top" Width="38" Visibility="Hidden"  >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/BlueCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="36" HorizontalAlignment="Left" Margin="635,505,0,0" Name="GameDifficultyEasyOff"   VerticalAlignment="Top" Width="30" Visibility="Hidden" Click="GameDifficultyEasyOff_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="44" HorizontalAlignment="Left" Margin="731,500,0,0" Name="GameDifficultyHardOff"  VerticalAlignment="Top" Width="38" Visibility="Hidden" Click="GameDifficultyHardOff_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Images/GreyCrystal.png"/>
+            </Button.Background>
+        </Button>
+        <TextBlock x:Name="DifficultyIndicator" HorizontalAlignment="Left" Height="33" Margin="619,559,0,0" TextWrapping="Wrap" Text="Medium" VerticalAlignment="Top" Width="157" FontFamily="Celtic Garamond the 2nd" FontSize="24" TextAlignment="Center" Visibility="Hidden"/>
         <Grid.Background>
             <ImageBrush ImageSource="Images/MainBack.png" />
         </Grid.Background>

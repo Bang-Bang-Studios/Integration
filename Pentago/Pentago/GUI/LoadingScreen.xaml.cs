@@ -18,9 +18,14 @@ namespace Pentago.GUI
     /// </summary>
     public partial class LoadingScreen : Window
     {
-        public LoadingScreen()
+        public LoadingScreen(GameOptions options)
         {
             InitializeComponent();
+
+            Window gameWindow = new GameWindow(options);
+            gameWindow.Show();
+            this.Hide();
+
         }
     }
 }

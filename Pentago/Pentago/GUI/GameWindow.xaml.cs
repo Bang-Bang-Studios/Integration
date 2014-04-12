@@ -22,6 +22,8 @@ using Pentago.GUI.Classes;
 using System.Threading;
 using System.ComponentModel;
 using System.Windows.Media.Animation;
+using System.IO;
+using System.Windows.Interop;
 
 namespace Pentago
 {
@@ -49,13 +51,20 @@ namespace Pentago
 
         private Point vikingArmPivot;
         private Point zero;
+        private Point topRight;
+        private Point iceGiantArmPivot;
 
         private bool isAnimationExecuting = false;
+
+        private Quotes quotes;
+        bool lockSword = false;
+        bool lockClub = true;
 
         public GameWindow(GameOptions options)
         {
             InitializeComponent();
             CreateChildrenList();
+            quotes = new Quotes();
             SoundManager.backgroundMusicPlayer.Open(new Uri("GUI/Sounds/Gameplay.mp3", UriKind.Relative));
             SoundManager.backgroundMusicPlayer.Play();
             gameOptions = options;
@@ -93,12 +102,27 @@ namespace Pentago
                     break;
             }
             ShowActivePlayer();
-
+            if(File.Exists(@"GUI\Images\CustomVikings\" + player1.Name + ".png"))
+            {
+                System.Drawing.Image img = System.Drawing.Image.FromFile(@"GUI\Images\CustomVikings\" + player1.Name + ".png");
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+                BitmapSource bmpSrc = Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), 
+                    IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                bmp.Dispose();
+                VikingButton.Background = new ImageBrush(bmpSrc);
+            }
             vikingArmPivot = new Point(167 + 40, this.Height - 420 + 121);
             zero = new Point(0, 0);
+            topRight = new Point(Width, 0);
+            iceGiantArmPivot = new Point(Width - 120, Height - 380);
+
+            Stream cur = File.OpenRead("GUI/images/MouseArrow.cur");
+            this.Cursor = new Cursor(cur);
         }
 
         private List<Rectangle> rectangleChildren = null;
+        private List<Image> fireDragonEntryImages;
+        private List<Image> iceDragonEntryImages;
         private void CreateChildrenList()
         {
             rectangleChildren = new List<Rectangle>();
@@ -106,6 +130,20 @@ namespace Pentago
             foreach (Rectangle element in rectangles)
             {
                 rectangleChildren.Add(element);
+            }
+
+            fireDragonEntryImages = new List<Image>();
+            var fireDragons = fireDragonsStackPanel.Children;
+            foreach (Image dragon in fireDragons)
+            {
+                fireDragonEntryImages.Add(dragon);
+            }
+
+            iceDragonEntryImages = new List<Image>();
+            var iceDragons = iceDragonsStackPanel.Children;
+            foreach(Image dragon in iceDragons)
+            {
+                iceDragonEntryImages.Add(dragon);
             }
         }
 
@@ -144,6 +182,7 @@ namespace Pentago
         {
             if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch || player1.ActivePlayer && !isAnimationExecuting)
             {
+                lockSword = true;
                 int rectSize = (int)Board.Width / MAXCOLUMNS;
 
                 Point mousePosition = e.GetPosition(Board);
@@ -164,19 +203,22 @@ namespace Pentago
                     DoubleAnimation enter;
                     Point targetPoint;
                     userMadeRotation = false;
+                    var element = MAXCOLUMNS * row + col;
                     Rectangle rec = rectangleChildren.ElementAt(MAXCOLUMNS * row + col);
                     targetPoint = rec.TranslatePoint(new Point(rec.ActualWidth, 0), Board);
                     if (gameBrain.isPlayer1Turn())
                     {
-                        enter = new DoubleAnimation(0, targetPoint.X, TimeSpan.FromSeconds(1));
+                        fireDragonEntryImages[1].RenderTransform = translate;
+                        enter = new DoubleAnimation(0, GetFireAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));
                         rec.Fill = player1.Image;
                     }
                     else
                     {
-                        enter = new DoubleAnimation(0, -targetPoint.X, TimeSpan.FromSeconds(1));
+                        iceDragonEntryImages[0].RenderTransform = translate;
+                        enter = new DoubleAnimation(0, -GetIceAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));
                         rec.Fill = player2.Image;
                     }
-                    translate.BeginAnimation(TranslateTransform.XProperty, enter);
+                    //translate.BeginAnimation(TranslateTransform.XProperty, enter);
                     RePaintBoard();
                     winner = gameBrain.CheckForWin();
                     if (winner != 0)
@@ -196,6 +238,72 @@ namespace Pentago
 
         }
 
+        private double GetFireAnimationDestination(int element, Point point)
+        {
+            double destination = 0;
+            while (element > 5)
+            {
+                element -= 6;
+            }
+
+            switch (element)
+            {
+                case 0:
+                    destination = (point.X * 7.0) - 22;
+                    break;
+                case 1:
+                    destination = (point.X * 4.0) - 22;
+                    break;
+                case 2:
+                    destination = (point.X * 3.0) - 22;
+                    break;
+                case 3:
+                    destination = (point.X * 2.5) - 22;
+                    break;
+                case 4:
+                    destination = (point.X * 2.2) - 22;
+                    break;
+                case 5:
+                    destination = (point.X * 2.0) - 22;
+                    break;
+            }
+
+            return destination;
+        }
+
+        private double GetIceAnimationDestination(int element, Point point)
+        {
+            double destination = 0;
+            while (element > 5)
+            {
+                element -= 6;
+            }
+
+            switch (element)
+            {
+                case 0:
+                    destination = (point.X * 7.0) - 22;
+                    break;
+                case 1:
+                    destination = (point.X * 4.0) - 22;
+                    break;
+                case 2:
+                    destination = (point.X * 3.0) - 22;
+                    break;
+                case 3:
+                    destination = (point.X * 2.5) - 22;
+                    break;
+                case 4:
+                    destination = (point.X * 2.2) - 22;
+                    break;
+                case 5:
+                    destination = (point.X * 2.0) - 22;
+                    break;
+            }
+
+            return destination;
+        }
+
         private void ShowWinner(int winner)
         {
             string winnerText = "";
@@ -208,9 +316,9 @@ namespace Pentago
                     if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.QuickMatch)
                         winnerText = "Congratulations " + player2.Name + " you have won!";
                     else if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.AI)
-                        winnerText = "The " + computerPlayer.Name + " has won!";
+                        winnerText = "The " + computerPlayer.Name + " has won.";
                     else if (gameOptions._TypeOfGame == GameOptions.TypeOfGame.Network)
-                        winnerText = player2.Name + " has defeated you!";
+                        winnerText = player2.Name + " has defeated you.";
                     break;
                 case 3:
                     winnerText = "It is a tie.";
@@ -230,6 +338,7 @@ namespace Pentago
                 {
                     ActivePlayer.Fill = player1.Image;
                     ActiveTurnText.Text = player1.Name;
+                    lockSword = false;
                 }
                 else
                 {
@@ -244,6 +353,7 @@ namespace Pentago
                 {
                     ActivePlayer.Fill = player1.Image;
                     ActiveTurnText.Text = player1.Name;
+                    lockSword = false;
                 }
                 else
                 {
@@ -1445,11 +1555,11 @@ namespace Pentago
             Window mainWindow = new MainMenu();
             App.Current.MainWindow = mainWindow;
             mainWindow.Show();
-            this.Hide();
             if (networkUtil != null)
             {
                 networkUtil.stop();
             }
+            //this.Hide();
         }
 
         private void Test_Click(object sender, RoutedEventArgs e)
@@ -1470,11 +1580,11 @@ namespace Pentago
                 Window mainWindow = new MainMenu();
                 App.Current.MainWindow = mainWindow;
                 mainWindow.Show();
-                this.Hide();
                 if (networkUtil != null)
                 {
                     networkUtil.stop();
                 }
+                this.Close();
             }
         }
 
@@ -1491,7 +1601,8 @@ namespace Pentago
             {
                 SpeechCounter = 0;
             }
-            BubbleText.Text = VikingSpeechChanger(SpeechCounter);
+            BubbleText.Text = quotes.Viking;
+            //BubbleText.Text = VikingSpeechChanger(SpeechCounter);
             SpeechCounter++;
 
             Storyboard storyboard = new Storyboard();
@@ -1570,7 +1681,7 @@ namespace Pentago
         private void RotateSword(MouseEventArgs e)
         {
             Point mousePositionRelativeToWindow = e.GetPosition(this);
-            Console.WriteLine("Window: " + mousePositionRelativeToWindow.ToString());
+            //Console.WriteLine("Window: " + mousePositionRelativeToWindow.ToString());
 
 
 
@@ -1585,14 +1696,40 @@ namespace Pentago
             VikingButton_Sword.RenderTransform = new RotateTransform(angle - 66, 40, 121);
         }
 
+        private void RotateClub(MouseEventArgs e)
+        {
+            Point mousePositionRelativeToWindow = e.GetPosition(this);
+            //Console.WriteLine("Window: " + mousePositionRelativeToWindow.ToString());
+
+
+
+            double a = Math.Sqrt(((topRight.X - iceGiantArmPivot.X) * (topRight.X - iceGiantArmPivot.X)) + ((topRight.Y - iceGiantArmPivot.Y) * (topRight.Y - iceGiantArmPivot.Y)));
+            double b = Math.Sqrt(((iceGiantArmPivot.X - mousePositionRelativeToWindow.X) * (iceGiantArmPivot.X - mousePositionRelativeToWindow.X)) +
+                ((iceGiantArmPivot.Y - mousePositionRelativeToWindow.Y) * (iceGiantArmPivot.Y - mousePositionRelativeToWindow.Y)));
+            double c = Math.Sqrt(((topRight.X - mousePositionRelativeToWindow.X) * (topRight.X - mousePositionRelativeToWindow.X)) + ((topRight.Y - mousePositionRelativeToWindow.Y) * (topRight.Y - mousePositionRelativeToWindow.Y)));
+
+            double angle = 0 - Math.Acos((a * a + b * b - c * c) / (2 * a * b)) * (180 / Math.PI);
+
+
+            IceGiant_Arm.RenderTransform = new RotateTransform(angle, 160, 121);
+        }
+
         private void Game_MouseMove(object sender, MouseEventArgs e)
         {
-            RotateSword(e);
+            if (!lockSword)
+            {
+                RotateSword(e);
+            }
+            RotateClub(e);
             Point mousePositionRelativeToWindow = e.GetPosition(this);
             TransformGroup t = new TransformGroup();
-            t.Children.Add(new ScaleTransform(-1, 1));
-            t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + Pointer.Width, mousePositionRelativeToWindow.Y));
+            t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + 1, mousePositionRelativeToWindow.Y + 1));
             Pointer.RenderTransform = t;
+        }
+
+        private void Pointer_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Pointer.Visibility = Visibility.Hidden;
         }
     }
 }

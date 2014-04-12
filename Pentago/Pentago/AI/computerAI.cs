@@ -60,8 +60,8 @@ namespace Pentago.AI
                     this._DifficultyLevel = Difficulty.Hard;
                     break;
                 default:
-                    this._MaxTreeDepth = 1;
-                    this._DifficultyLevel = Difficulty.Beginner;
+                    this._MaxTreeDepth = 3;
+                    this._DifficultyLevel = Difficulty.Hard;
                     break;
             }
         }
@@ -83,11 +83,8 @@ namespace Pentago.AI
             alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
             sw.Stop();
             Console.WriteLine("Time taken: " + sw.Elapsed.TotalSeconds + " seconds.");
-            /*
-            Console.WriteLine("_Choice: " + _Choice);
-            Console.WriteLine("_IsClockWise: " + _IsClockWise);
-            Console.WriteLine("_Quad: " + _Quad);
-            */ 
+            Console.WriteLine("Tree max: " + this._MaxTreeDepth);
+            Console.WriteLine("Computer level: " + this._DifficultyLevel);
         }
 
         private double alphaBeta(int[] board, int treeDepth, double alpha, double beta, Hashtable hashTable)

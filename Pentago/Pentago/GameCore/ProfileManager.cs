@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,6 @@ namespace Pentago.GameCore
         private static List<Profile> _Profiles;
         private string  pathToProfiles = "C:\\Users\\Public\\Documents\\Dragon Horde\\profiles.txt";
         private string pathToDirectory = "C:\\Users\\Public\\Documents\\Dragon Horde";
-        private string pathToProfileAvatars = "pack://application:,,,/GUI/images/avatars/";
 
         private ProfileManager()
         {
@@ -33,7 +33,6 @@ namespace Pentago.GameCore
             else
             {
                 File.Create(pathToProfiles);
-                //File.SetAttributes(pathToProfiles, FileAttributes.Hidden);
             }
         }
 
@@ -47,7 +46,7 @@ namespace Pentago.GameCore
                     try
                     {
                         string name = line.Substring(0, line.IndexOf("[&]"));
-                        int campaignProgress = Convert.ToInt32(line.Substring(name.Length + 3));
+                        int campaignProgress = Convert.ToInt32(line.Substring(name.Length + 3, 1));
                         AddProfileToList(new Profile(name, campaignProgress));
                     }
                     catch { }
@@ -86,17 +85,16 @@ namespace Pentago.GameCore
 
         public void CreateNewProfile(string newProfileName)
         {
-            //Initialize everything to zero
             Profile newProfile = new Profile(newProfileName, 0);
             string[] profileParser = new string[_Profiles.Count + 1];
 
-            string profileLineConvention = newProfileName + "[&]";
-            profileLineConvention += 0;
+            string profileLineConvention = newProfile.ProfileName + "[&]";
+            profileLineConvention += 0 + "[&]";
             profileParser[0] = profileLineConvention;
             for (int i = 0; i < _Profiles.Count; i++)
             {
                 profileLineConvention = _Profiles[i].ProfileName + "[&]";
-                profileLineConvention += _Profiles[i].CampaignProgress;
+                profileLineConvention += _Profiles[i].CampaignProgress + "[&]";
                 profileParser[i + 1] = profileLineConvention;
             }
 
@@ -117,27 +115,6 @@ namespace Pentago.GameCore
 
         }
 
-        public List<ImageBrush> GetPlayerAvatar(string profileName)
-        {
-            List<ImageBrush> customProfileAvatar = new List<ImageBrush>(); 
-            Profile profile = SearchProfile(profileName);
-            if (profile != null)
-            {
-                ImageBrush avatarBeard = new ImageBrush();
-                avatarBeard.ImageSource = new BitmapImage(new Uri(pathToProfileAvatars + profile.AvatarBeard, UriKind.Absolute));
-                customProfileAvatar.Add(avatarBeard);
-
-                ImageBrush armorBeard = new ImageBrush();
-                armorBeard.ImageSource = new BitmapImage(new Uri(pathToProfileAvatars + profile.AvatarArmor, UriKind.Absolute));
-                customProfileAvatar.Add(armorBeard);
-
-                ImageBrush vikingBeard = new ImageBrush();
-                vikingBeard.ImageSource = new BitmapImage(new Uri(pathToProfileAvatars + profile.AvatarViking, UriKind.Absolute));
-                customProfileAvatar.Add(vikingBeard);
-            }
-            return customProfileAvatar;
-        }
-
         private Profile SearchProfile(string profileName)
         {
             foreach (Profile profile in _Profiles)
@@ -148,17 +125,10 @@ namespace Pentago.GameCore
             return null;
         }
 
-        /// <summary> Profile
-        /// Private nested class to encapsulate 
-        /// attributes of a profile
-        /// </summary>
         public class Profile
         {
             private string _profileName;
             private int _profileCampaignProgress;
-            private string _avatarBeard;
-            private string _avatarArmor;
-            private string _avatarViking;
 
             public Profile(string pofileName, int profileCampaignProgress)
             {
@@ -175,21 +145,6 @@ namespace Pentago.GameCore
             public int CampaignProgress
             {
                 get { return this._profileCampaignProgress; }
-            }
-
-            public string AvatarBeard
-            {
-                get { return this._avatarBeard; }
-            }
-
-            public string AvatarArmor
-            {
-                get { return this._avatarArmor; }
-            }
-
-            public string AvatarViking
-            {
-                get { return this._avatarViking; }
             }
 
             public void incrementCampaignProgress()

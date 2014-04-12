@@ -84,5 +84,13 @@ namespace Pentago.GUI
             DialogResult = false;
         }
 
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point mousePositionRelativeToWindow = e.GetPosition(this);
+            TransformGroup t = new TransformGroup();
+            t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + 1, mousePositionRelativeToWindow.Y + 1));
+            Pointer.RenderTransform = t;
+        }
+
     }
 }
