@@ -1659,5 +1659,12 @@ namespace Pentago.GUI
                     break;
             }
         }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReHideMenues();
+            Help help = new Help();
+            help.Show();
+        }
     }
 }

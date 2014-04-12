@@ -151,8 +151,19 @@ namespace Pentago
 
         private void InitializeDragonOrigins()
         {
-            fireDragon1Origin = new Point(fireDragonEntryImages[0].Margin.Left, fireDragonEntryImages[0].Margin.Top);//fireDragonEntryImages[0].TranslatePoint(new Point(fireDragonEntryImages[0].ActualWidth, 0), this);
-            //new Point(fireDragonEntryImages[0].Margin.Left, fireDragonEntryImages[0].Margin.Top);
+            fireDragon1Origin = new Point(fireDragonEntryImages[0].Margin.Left, fireDragonEntryImages[0].Margin.Top);
+            fireDragon2Origin = new Point(fireDragonEntryImages[1].Margin.Left, fireDragonEntryImages[1].Margin.Top);
+            fireDragon3Origin = new Point(fireDragonEntryImages[2].Margin.Left, fireDragonEntryImages[2].Margin.Top);
+            fireDragon4Origin = new Point(fireDragonEntryImages[3].Margin.Left, fireDragonEntryImages[3].Margin.Top);
+            fireDragon5Origin = new Point(fireDragonEntryImages[4].Margin.Left, fireDragonEntryImages[4].Margin.Top);
+            fireDragon6Origin = new Point(fireDragonEntryImages[5].Margin.Left, fireDragonEntryImages[5].Margin.Top);
+
+            iceDragon1Origin = new Point(fireDragonEntryImages[0].Margin.Left, fireDragonEntryImages[0].Margin.Top);
+            iceDragon2Origin = new Point(fireDragonEntryImages[1].Margin.Left, fireDragonEntryImages[1].Margin.Top);
+            iceDragon3Origin = new Point(fireDragonEntryImages[2].Margin.Left, fireDragonEntryImages[2].Margin.Top);
+            iceDragon4Origin = new Point(fireDragonEntryImages[3].Margin.Left, fireDragonEntryImages[3].Margin.Top);
+            iceDragon5Origin = new Point(fireDragonEntryImages[4].Margin.Left, fireDragonEntryImages[4].Margin.Top);
+            iceDragon6Origin = new Point(fireDragonEntryImages[5].Margin.Left, fireDragonEntryImages[5].Margin.Top); ;
         }
 
         private List<Rectangle> rectangleChildren = null;
@@ -288,23 +299,22 @@ namespace Pentago
         private void ReturnDragon()
         {
             TranslateTransform translate = new TranslateTransform();
-            Point targetPoint;
-            DoubleAnimation enter;
+            DoubleAnimation exit;
             var element = MAXCOLUMNS * row + col;
             Rectangle rec = rectangleChildren.ElementAt(MAXCOLUMNS * row + col);
-            targetPoint = currentDragon.TranslatePoint(new Point(currentDragon.ActualWidth, 0), Board);
+            currentDragon.RenderTransform = translate;
 
             if (fireDragon)
             {
-                enter = new DoubleAnimation(0, -GetFireAnimationDestination(element, targetPoint), TimeSpan.FromSeconds(1));               
+                exit = new DoubleAnimation(0, -GetFireAnimationDestination(element, new Point(-1, 0)), TimeSpan.FromSeconds(1));               
             }
             else
             {
-                enter = new DoubleAnimation(0, GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
+                exit = new DoubleAnimation(0, GetIceAnimationDestination(element), TimeSpan.FromSeconds(1));
             }
-            enter.Completed += new EventHandler(MakeDragonsVisble);
+            exit.Completed += new EventHandler(MakeDragonsVisble);
 
-            enter.BeginAnimation(TranslateTransform.XProperty, enter);
+            exit.BeginAnimation(TranslateTransform.XProperty, exit);
         }
 
         private void OnAnimationEnterCompletition(object sender, EventArgs e)
@@ -454,6 +464,10 @@ namespace Pentago
             }
 
             winnerAnnoucement.Text = winnerText;
+
+            TranslateTransform translate = new TranslateTransform();
+            DoubleAnimation exitAttack = new DoubleAnimation();
+            
         }
 
         private void ShowActivePlayer()
@@ -555,8 +569,6 @@ namespace Pentago
                     else
                         rec.Fill = Brushes.Transparent;
                 }
-                rec.Width = 83;
-                rec.Height = 83;
                 Board.Children.Add(rec);
             }
             CreateChildrenList();
@@ -1733,7 +1745,7 @@ namespace Pentago
             SpeechCounter++;
 
             Storyboard storyboard = new Storyboard();
-            TimeSpan duration = new TimeSpan(0, 0, 15);
+            TimeSpan duration = new TimeSpan(0, 0, 8);
 
             DoubleAnimation fade = new DoubleAnimation();
 
@@ -1837,8 +1849,10 @@ namespace Pentago
 
             double angle = 0 - Math.Acos((a * a + b * b - c * c) / (2 * a * b)) * (180 / Math.PI);
 
-
-            IceGiant_Arm.RenderTransform = new RotateTransform(angle - 180, 0, 0);
+            TransformGroup tran = new TransformGroup();
+            tran.Children.Add(new RotateTransform (angle, 0,0));
+            tran.Children.Add(new ScaleTransform(-1, 0));
+            IceGiant_Arm.RenderTransform =  new RotateTransform(angle - 180, 100, 0);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -1865,7 +1879,8 @@ namespace Pentago
             {
                 RotateSword(e);
             }
-            RotateClub(e);
+            //RotateClub(e);
+
             //Point mousePositionRelativeToWindow = e.GetPosition(this);
             //TransformGroup t = new TransformGroup();
             //t.Children.Add(new TranslateTransform(mousePositionRelativeToWindow.X + 1, mousePositionRelativeToWindow.Y + 1));

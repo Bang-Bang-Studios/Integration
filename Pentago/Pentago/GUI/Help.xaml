@@ -1,0 +1,65 @@
+﻿<Window x:Class="Pentago.GUI.Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Help" Height="900" Width="1440">
+    <Window.Background>
+        <ImageBrush ImageSource="/Pentago;component/GUI/Images/ParchmentBack.jpg"/>
+    </Window.Background>
+    <Grid>
+        <Grid.Resources>
+            <DropShadowEffect x:Key="ShadowEffect" Color="#CEF6F5" Direction="325" Opacity="0.5" ShadowDepth="5" />
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="TextElement.Foreground" Value="#A9F5F2"/>
+                        <Setter Property="Effect" Value="{StaticResource ShadowEffect}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Image x:Name="HelpImage" Height="506" Margin="0,0,92,188" VerticalAlignment="Bottom" Source="/Pentago;component/GUI/Images/Help1.png" HorizontalAlignment="Right" Width="806"/>
+        <Image x:Name="Elder" HorizontalAlignment="Left" Height="450" Margin="42,0,0,62" VerticalAlignment="Bottom" Width="334" Source="/Pentago;component/GUI/Images/Elder.png"/>
+        <Image x:Name="HelpBubble" HorizontalAlignment="Left" Height="311" Margin="136,0,0,453" VerticalAlignment="Bottom" Width="368" Source="/Pentago;component/GUI/Images/SpeechBubble.png" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <TextBlock x:Name="HelpTextBlock" HorizontalAlignment="Left" Height="141" Margin="198,0,0,566" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Bottom" Width="228" FontFamily="/Pentago;component/#Celtic Garamond the 2nd" FontSize="16"/>
+        <Button x:Name="HelpLeft"  HorizontalAlignment="Right" Margin="0,0,514,80" Width="148" Height="52" VerticalAlignment="Bottom" Click="HelpLeft_Click" Visibility="Hidden">
+            <Button.Background>
+                <ImageBrush ImageSource="/Pentago;component/GUI/Images/flatArrow.png"/>
+            </Button.Background>
+        </Button>
+        <Button x:Name="HelpRight" Margin="0,0,279,78" RenderTransformOrigin="0.5,0.5" Height="52" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="148" Click="HelpRight_Click">
+            <Button.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.LayoutTransform>
+            <Button.Background>
+                <ImageBrush ImageSource="/Pentago;component/GUI/Images/flatArrow.png"/>
+            </Button.Background>
+        </Button>
+        <Button Height="48" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="ExitHelp" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Exit Help" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="1067,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="223" BorderThickness="0" MouseEnter="ExitHelp_MouseEnter" Click="ExitHelp_Click" />
+
+    </Grid>
+</Window>

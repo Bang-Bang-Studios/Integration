@@ -260,7 +260,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
                 </EventTrigger>
             </Button.Triggers>
         </Button>
-        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Quit" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Quit" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,536,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" Click="Quit_Click" MouseEnter="Quit_MouseEnter" >
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" Name="Quit" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "Quit" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,595,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" Click="Quit_Click" MouseEnter="Quit_MouseEnter" >
             <Button.Triggers>
                 <EventTrigger RoutedEvent="Window.Loaded">
                     <BeginStoryboard>
@@ -693,6 +693,7 @@ Title="Menu" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" Wind
             </Button.Background>
         </Button>
         <TextBlock x:Name="DifficultyIndicator" HorizontalAlignment="Left" Height="33" Margin="619,559,0,0" TextWrapping="Wrap" Text="Medium" VerticalAlignment="Top" Width="157" FontFamily="Celtic Garamond the 2nd" FontSize="24" TextAlignment="Center" Visibility="Hidden"/>
+        <Button Height="47" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" x:Name="HelpButton" Opacity="1" Panel.ZIndex="0" ContentStringFormat="" Content= "How to Play" FontFamily="Celtic Garamond the 2nd" FontSize="32" FontWeight="Bold" Background="{x:Null}" OpacityMask="Black" OverridesDefaultStyle="False" Margin="137,543,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="333" BorderThickness="0" MouseEnter="GameOptionsButton_MouseEnter" Click="HelpButton_Click" />
         <Grid.Background>
             <ImageBrush ImageSource="Images/MainBack.png" />
         </Grid.Background>

@@ -435,12 +435,22 @@ namespace Pentago.GameCore
             int playerAtPiece4 = board.GetPlayer((short)piece4.X, (short)piece4.Y);
             int playerAtPiece5 = board.GetPlayer((short)piece5.X, (short)piece5.Y);
 
+
             if (playerAtPiece1 == playerAtPiece2 && playerAtPiece2 == playerAtPiece3 &&
                 playerAtPiece3 == playerAtPiece4 && playerAtPiece4 == playerAtPiece5)
             {
+                //winningPoints.Add(piece1);
+                //winningPoints.Add(piece2);
+                //winningPoints.Add(piece3);
+                //winningPoints.Add(piece4);
+                //winningPoints.Add(piece5);
                 return playerAtPiece1;
             }
             return 0;
         }
+
+        public List<Point> GetWinningPoints { get { return winningPoints; } }
+
+        private List<Point> winningPoints;
     }
 }

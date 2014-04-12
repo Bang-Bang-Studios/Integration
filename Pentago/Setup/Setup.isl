@@ -342,6 +342,7 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{0E43F4B7-F2C4-4EC0-AD8A-5868A8C816CF}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InstallFont.exe</td><td>{A005D2AB-53EC-4025-B5E2-1BC30A909A21}</td><td>INSTALLDIR</td><td>2</td><td/><td>installfont.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Pentago.Content_Files</td><td>{ADA33310-CB54-4AEB-88EA-E60E53C65526}</td><td>INSTALLDIR</td><td>2</td><td/><td>pentago.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Pentago.Primary_output</td><td>{CF746A4D-9E59-40E7-B2C9-5B03667E30CA}</td><td>INSTALLDIR</td><td>2</td><td/><td>pentago.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
@@ -1053,7 +1054,6 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1177,6 +1177,7 @@
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>bangba_1_bang_bang_studios</td><td>ProgramMenuFolder</td><td>BANGBA~1|Bang Bang Studios</td><td/><td>1</td><td/></row>
+		<row><td>dragon_1_dragon_horde</td><td>bangba_1_bang_bang_studios</td><td>DRAGON~1|Dragon Horde</td><td/><td>1</td><td/></row>
 		<row><td>setup</td><td>bangba_1_bang_bang_studios</td><td>Setup</td><td/><td>1</td><td/></row>
 	</table>
 
@@ -1870,6 +1871,7 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>InstallFont.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Pentago.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>Pentago.Primary_output</td></row>
 	</table>
@@ -1886,6 +1888,8 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>celtg___.ttf</td><td>ISX_DEFAULTCOMPONENT1</td><td>CELTG___.TTF</td><td>0</td><td/><td/><td/><td>1</td><td>K:\Integration 4-10\Pentago\Pentago\CELTG___.TTF</td><td>1</td><td/></row>
+		<row><td>installfont.exe</td><td>InstallFont.exe</td><td>INSTAL~1.EXE|InstallFont.exe</td><td>0</td><td/><td/><td/><td>1</td><td>K:\Integration 4-10\InstallFont.exe</td><td>1</td><td/></row>
 		<row><td>pentago.content_files</td><td>Pentago.Content_Files</td><td>Pentago.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;Pentago&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>pentago.primary_output</td><td>Pentago.Primary_output</td><td>Pentago.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;Pentago&gt;|Built</td><td>3</td><td/></row>
 	</table>
@@ -1898,6 +1902,7 @@
 	<table name="Font">
 		<col key="yes" def="s72">File_</col>
 		<col def="S128">FontTitle</col>
+		<row><td>celtg___.ttf</td><td/></row>
 	</table>
 
 	<table name="ISAssistantTag">
@@ -2032,6 +2037,7 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_3732CA9F_F443_4045_994B_A65E82940F6F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InstallFont.exe</td><td/><td/><td>_D4AF71E5_9B75_4882_AE86_3AC1F9C85CE2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Pentago.Content_Files</td><td/><td/><td>_F368BB89_4103_4EE5_B9F3_391FF99C9004_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Pentago.Primary_output</td><td/><td/><td>_583570E9_18E7_4444_B6E1_713D903541AF_FILTER</td><td/><td/><td/><td/></row>
 	</table>
@@ -3465,6 +3471,7 @@
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>295889196</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>295889196</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>295840172</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch InstallFont.exe</td><td>0</td><td/><td>1646426126</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>295889196</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>295889196</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>295889196</td></row>
@@ -3865,6 +3872,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
+		<row><td>InstallFont.exe_9CF38E9E7CB9499F826AAA339AAE33E9.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -3997,7 +4005,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{3392BC5B-B5DB-40DD-B6B9-58D2138E5C20}</td></row>
 		<row><td>ISUSSignature</td><td>{8E0C3D0E-81A9-4F48-8A8D-E9114058B841}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewAppFiles,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewFileExtensions</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewAppFiles,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewFileExtensions,viewCustomActions</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4455,6 +4463,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="i2">InstallMode</col>
 		<row><td>FileKey1</td><td>Pentago.Primary_output</td><td/><td>bangba_1_bang_bang_studios</td><td>2</td></row>
 		<row><td>FileKey2</td><td>Pentago.Primary_output</td><td/><td>setup</td><td>2</td></row>
+		<row><td>FileKey3</td><td>InstallFont.exe</td><td/><td>dragon_1_dragon_horde</td><td>2</td></row>
+		<row><td>InstallFont.exe</td><td>InstallFont.exe</td><td/><td>dragon_1_dragon_horde</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4540,6 +4550,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>InstallFont.exe</td><td>dragon_1_dragon_horde</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>InstallFont.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>InstallFont.exe_9CF38E9E7CB9499F826AAA339AAE33E9.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>NewShortcut1</td><td>DesktopFolder</td><td>##ID_STRING4##</td><td>Pentago.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 

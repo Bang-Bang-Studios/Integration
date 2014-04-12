@@ -34,11 +34,14 @@ namespace Pentago.GameCore
         {
             get
             {
-                speechCounter++;
-                if (speechCounter > VikingQuotes.Count() - 1)
-                {
-                    speechCounter = 0;
-                }
+                //speechCounter++;
+                //if (speechCounter > VikingQuotes.Count() - 1)
+                //{
+                //    speechCounter = 0;
+                //}
+                Random rand = new Random();
+                speechCounter = rand.Next(VikingQuotes.Count - 1);
+
                 return VikingQuotes[speechCounter];
             }
         }
@@ -63,7 +66,7 @@ namespace Pentago.GameCore
 
         private void CreateVikingQuotes()
         {
-            VikingQuotes.Add("horgis borgis njord");
+            //VikingQuotes.Add("horgis borgis njord");
             VikingQuotes.Add("Ice giants are nothing to dragon fire");
             VikingQuotes.Add("What are your orders Warlord?");
             VikingQuotes.Add("Your dragons are restless");
@@ -76,7 +79,7 @@ namespace Pentago.GameCore
             VikingQuotes.Add("Sometime's I wear my wife's clothing when she isn't home");
             VikingQuotes.Add("It is a great honor to defend the world from a icy death");
             VikingQuotes.Add("Ice giant heart's are as cold as they are dark");
-            VikingQuotes.Add("I once defeated 3 ice giants only using my dagger and an ill tempered bunny");
+            VikingQuotes.Add("I once defeated 3 ice giants using only my dagger and an ill tempered bunny");
             VikingQuotes.Add("You truly are our greatest strategist!");
             VikingQuotes.Add("I'm going to poke you back with my sword if you don't stop that");
             VikingQuotes.Add("YOLO. Yodeling on Large Oxen");
