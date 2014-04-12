@@ -115,7 +115,7 @@ namespace Pentago.GameCore
 
         }
 
-        private Profile SearchProfile(string profileName)
+        public Profile SearchProfile(string profileName)
         {
             foreach (Profile profile in _Profiles)
             {

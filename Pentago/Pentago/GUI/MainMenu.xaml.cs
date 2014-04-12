@@ -1666,5 +1666,59 @@ namespace Pentago.GUI
             Help help = new Help();
             help.Show();
         }
+
+        private void ContineAdventure_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string profileName = ProfileList.SelectedValue.ToString().Trim();
+                if (profileName != "")
+                {
+                    Pentago.GameCore.ProfileManager.Profile playerProfile = profileManager.SearchProfile(profileName);
+                    string player1Name = playerProfile.ProfileName;
+
+                    bool isPlayer1Active = true;
+
+                    ImageBrush player1Image = new ImageBrush();
+                    player1Image.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPup.png", UriKind.Absolute));
+                    ImageBrush player1ImageHover = new ImageBrush();
+                    player1ImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/RedPupHover.png", UriKind.Absolute));
+
+                    string computerPlayerName = "Computer";
+                    ImageBrush computerPlayerImage = new ImageBrush();
+                    computerPlayerImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePup.png", UriKind.Absolute));
+
+                    ImageBrush computerPlayerImageHover = new ImageBrush();
+                    computerPlayerImageHover.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GUI/images/BluePupHover.png", UriKind.Absolute));
+
+
+                    computerAI.Difficulty difficulty;
+                    if (playerProfile.CampaignProgress == 0)
+                        difficulty = computerAI.Difficulty.Beginner;
+                    else if (playerProfile.CampaignProgress == 1)
+                        difficulty = computerAI.Difficulty.Easy;
+                    else if (playerProfile.CampaignProgress == 2)
+                        difficulty = computerAI.Difficulty.Medium;
+                    else if (playerProfile.CampaignProgress == 3)
+                        difficulty = computerAI.Difficulty.Medium;
+                    else
+                        difficulty = computerAI.Difficulty.Hard;
+                    Player player1 = new Player(player1Name.Trim(), isPlayer1Active, player1Image, player1ImageHover);
+                    computerAI computerPlayer = new computerAI(computerPlayerName.Trim(), !isPlayer1Active, computerPlayerImage, computerPlayerImageHover, difficulty);
+
+                    GameOptions gameOptions = new GameOptions(GameOptions.TypeOfGame.AI, player1, computerPlayer);
+                    Window mapWindow = new MapWindow(gameOptions);
+                    App.Current.MainWindow = mapWindow;
+                    mapWindow.Show();
+                    this.Hide();
+                }
+            }
+            catch 
+            {
+                const string message = "Please, select a profile.";
+                MessageWindow messageWindow = new MessageWindow(message, MessageBoxButton.OK);
+                messageWindow.ShowDialog();
+            }
+        }
     }
 }

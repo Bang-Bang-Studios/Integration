@@ -204,7 +204,7 @@
                 <Label x:Name="ConfirmLabel" Content="Are you sure?" Canvas.Left="224" Canvas.Top="591" Foreground="#FF0A8CB2" FontFamily="Celtic Garamond the 2nd" FontSize="36" Width="290" Visibility="Hidden"/>
             </Canvas>
         </Popup>
-        <UniformGrid Name="Board" MouseDown="Board_MouseDown" Height="500" Width="500" Margin="470,180,470,200" Panel.ZIndex="9999" Background="{x:Null}" MouseLeave="Board_MouseLeave" MouseMove="Board_MouseMove" Grid.Row="1">
+        <UniformGrid Name="Board" MouseDown="Board_MouseDown" Height="500" Width="500" Panel.ZIndex="9999" Background="{x:Null}" MouseLeave="Board_MouseLeave" MouseMove="Board_MouseMove" Grid.Row="1">
             <UniformGrid.Resources>
                 <Style TargetType="{x:Type Rectangle}" >
                     <Setter Property="Stroke" Value="Gray" />
