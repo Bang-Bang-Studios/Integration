@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Pentago.GameCore;
 
 namespace Pentago.GUI
 {
@@ -21,8 +22,23 @@ namespace Pentago.GUI
         public Help()
         {
             InitializeComponent();
+            quotes = new Quotes();
+            helpImageChange = 1;
         }
-        private int helpImageChange = 1;
+
+        Quotes quotes;
+        private int helpImagecounter;
+        private int helpImageChange
+        {
+            get
+            {
+                return helpImagecounter;
+            }
+            set
+            {
+                helpImagecounter = value; quotes.speechCounter = value;
+            }
+        }
 
         private void HelpRight_Click(object sender, RoutedEventArgs e)
         {

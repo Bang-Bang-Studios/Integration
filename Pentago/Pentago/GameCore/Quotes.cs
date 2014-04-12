@@ -68,14 +68,11 @@ namespace Pentago.GameCore
         {
             get
             {
-                speechCounter++;
-                if (speechCounter > ElderQuotes.Count() - 1)
-                {
-                    speechCounter = 0;
-                }
                 return ElderQuotes[speechCounter];
             }
         }
+
+        public int speechCounter { get; set; }
 
         private void CreateVikingQuotes()
         {
@@ -111,10 +108,16 @@ namespace Pentago.GameCore
 
         private void CreateElderQuotes()
         {
-            ElderQuotes.Add("");
+            ElderQuotes.Add("This is test #1");
+            ElderQuotes.Add("This is test #2");
+            ElderQuotes.Add("This is test #3");
+            ElderQuotes.Add("This is test #4");
+            ElderQuotes.Add("This is test #5");
+            ElderQuotes.Add("This is test #6");
+            ElderQuotes.Add("This is test #7");
+            ElderQuotes.Add("This is test #8");
         }
 
-        private int speechCounter = -1;
         private List<string> LoadingQuotes;
         private List<string> VikingQuotes;
         private List<string> VikingNames;
