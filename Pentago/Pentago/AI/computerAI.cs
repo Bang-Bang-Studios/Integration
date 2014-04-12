@@ -74,17 +74,54 @@ namespace Pentago.AI
 
         public void MakeAIMove(Board board)
         {
+            int enemyPieceCount = 0;
+            int computerCount = 0;
             for (int i = 0; i < BOARDSIZE; i++)
+            {
                 this._TempBoard[i] = board.GetPlayer(i);
+                if (this._TempBoard[i] == 1)
+                    enemyPieceCount++;
+                if (this._TempBoard[i] == 2)
+                    computerCount++;
+            }
 
-            Hashtable hashTable = new Hashtable();
+            Stopwatch sw = null;
             Thread.Sleep(1000);
-            Stopwatch sw = Stopwatch.StartNew();
-            alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
-            sw.Stop();
-            Console.WriteLine("Time taken: " + sw.Elapsed.TotalSeconds + " seconds.");
-            Console.WriteLine("Tree max: " + this._MaxTreeDepth);
-            Console.WriteLine("Computer level: " + this._DifficultyLevel);
+
+            if (this._DifficultyLevel == Difficulty.Hard && enemyPieceCount == 1 && computerCount == 0)
+            {
+                this._IsClockWise = true;
+                this._Quad = (short)1;
+                if (this._TempBoard[7] == 1)
+                    this._Choice = 28;
+                else if (this._TempBoard[10] == 1)
+                    this._Choice = 25;
+                else if (this._TempBoard[25] == 1)
+                    this._Choice = 10;
+                else if (this._TempBoard[28] == 1)
+                    this._Choice = 7;
+                else
+                {
+                    sw = Stopwatch.StartNew();
+                    Hashtable hashTable = new Hashtable();
+                    alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
+                    sw.Stop();
+                    Console.WriteLine("Time taken: " + sw.Elapsed.TotalSeconds + " seconds.");
+                    Console.WriteLine("Tree max: " + this._MaxTreeDepth);
+                    Console.WriteLine("Computer level: " + this._DifficultyLevel);
+                }
+
+            }
+            else
+            {
+                sw = Stopwatch.StartNew();
+                Hashtable hashTable = new Hashtable();
+                alphaBeta(this._TempBoard, 0, double.NegativeInfinity, double.PositiveInfinity, hashTable);
+                sw.Stop();
+                Console.WriteLine("Time taken: " + sw.Elapsed.TotalSeconds + " seconds.");
+                Console.WriteLine("Tree max: " + this._MaxTreeDepth);
+                Console.WriteLine("Computer level: " + this._DifficultyLevel);
+            }
         }
 
         private double alphaBeta(int[] board, int treeDepth, double alpha, double beta, Hashtable hashTable)
@@ -304,10 +341,12 @@ namespace Pentago.AI
             else if (checkWinner == 2)
                 newScore = 999999;
             else
+            {
                 if (this._MaxTreeDepth == 3)
                     newScore = -CheckForPiecesLines(board, 1, 2);
                 else
                     newScore = CheckForPiecesLines(board, 2, 1);
+            }
             return newScore;
         }
 
@@ -405,46 +444,46 @@ namespace Pentago.AI
             int countPiece = 0;
 
             if (board[24] == piece && board[19] == piece && (board[14] != enemy))
-                countPiece += 2;
-            if (board[24] == piece && board[19] == piece && board[14] == piece && (board[9] != enemy))
                 countPiece += 4;
+            if (board[24] == piece && board[19] == piece && board[14] == piece && (board[9] != enemy))
+                countPiece += 8;
 
             if (board[19] == piece && board[14] == piece && (board[9] != enemy))
-                countPiece += 2;
-            if (board[19] == piece && board[14] == piece && board[9] == piece && (board[4] != enemy))
                 countPiece += 4;
+            if (board[19] == piece && board[14] == piece && board[9] == piece && (board[4] != enemy))
+                countPiece += 8;
 
             if (board[14] == piece && board[9] == piece && (board[4] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
 
             if (board[30] == piece && board[25] == piece && (board[10] != enemy))
-                countPiece += 2;
-            if (board[30] == piece && board[25] == piece && board[10] == piece && (board[15] != enemy))
                 countPiece += 4;
+            if (board[30] == piece && board[25] == piece && board[10] == piece && (board[15] != enemy))
+                countPiece += 8;
 
             if (board[25] == piece && board[10] == piece && (board[15] != enemy))
-                countPiece += 2;
-            if (board[25] == piece && board[10] == piece && board[15] == piece && (board[10] != enemy))
                 countPiece += 4;
+            if (board[25] == piece && board[10] == piece && board[15] == piece && (board[10] != enemy))
+                countPiece += 8;
 
             if (board[10] == piece && board[15] == piece && (board[10] != enemy))
-                countPiece += 2;
-            if (board[10] == piece && board[15] == piece && board[10] == piece && (board[5] != enemy))
                 countPiece += 4;
+            if (board[10] == piece && board[15] == piece && board[10] == piece && (board[5] != enemy))
+                countPiece += 8;
 
             if (board[31] == piece && board[26] == piece && (board[21] != enemy))
-                countPiece += 2;
-            if (board[31] == piece && board[26] == piece && board[21] == piece && (board[9] != enemy))
                 countPiece += 4;
+            if (board[31] == piece && board[26] == piece && board[21] == piece && (board[9] != enemy))
+                countPiece += 8;
 
             if (board[26] == piece && board[21] == piece && (board[16] != enemy))
-                countPiece += 2;
-            if (board[26] == piece && board[21] == piece && board[16] == piece && (board[11] != enemy))
                 countPiece += 4;
+            if (board[26] == piece && board[21] == piece && board[16] == piece && (board[11] != enemy))
+                countPiece += 8;
 
             if (board[21] == piece && board[16] == piece && (board[11] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
             return countPiece;
         }
@@ -454,46 +493,46 @@ namespace Pentago.AI
             int countPiece = 0;
 
             if (board[1] == piece && board[8] == piece && (board[15] != enemy))
-                countPiece += 2;
-            if (board[1] == piece && board[8] == piece && board[15] == piece && (board[22] != enemy))
                 countPiece += 4;
+            if (board[1] == piece && board[8] == piece && board[15] == piece && (board[22] != enemy))
+                countPiece += 8;
 
             if (board[8] == piece && board[15] == piece && (board[22] != enemy))
-                countPiece += 2;
-            if (board[8] == piece && board[15] == piece && board[22] == piece && (board[29] != enemy))
                 countPiece += 4;
+            if (board[8] == piece && board[15] == piece && board[22] == piece && (board[29] != enemy))
+                countPiece += 8;
 
             if (board[15] == piece && board[22] == piece && (board[29] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
 
             if (board[0] == piece && board[7] == piece && (board[14] != enemy))
-                countPiece += 2;
-            if (board[0] == piece && board[7] == piece && board[14] == piece && (board[21] != enemy))
                 countPiece += 4;
+            if (board[0] == piece && board[7] == piece && board[14] == piece && (board[21] != enemy))
+                countPiece += 8;
 
             if (board[7] == piece && board[14] == piece && (board[21] != enemy))
-                countPiece += 2;
-            if (board[7] == piece && board[14] == piece && board[21] == piece && (board[28] != enemy))
                 countPiece += 4;
+            if (board[7] == piece && board[14] == piece && board[21] == piece && (board[28] != enemy))
+                countPiece += 8;
 
             if (board[14] == piece && board[21] == piece && (board[28] != enemy))
-                countPiece += 2;
-            if (board[14] == piece && board[21] == piece && board[28] == piece && (board[35] != enemy))
                 countPiece += 4;
+            if (board[14] == piece && board[21] == piece && board[28] == piece && (board[35] != enemy))
+                countPiece += 8;
 
             if (board[6] == piece && board[13] == piece && (board[20] != enemy))
-                countPiece += 2;
-            if (board[6] == piece && board[13] == piece && board[20] == piece && (board[27] != enemy))
                 countPiece += 4;
+            if (board[6] == piece && board[13] == piece && board[20] == piece && (board[27] != enemy))
+                countPiece += 8;
 
             if (board[13] == piece && board[20] == piece && (board[27] != enemy))
-                countPiece += 2;
-            if (board[13] == piece && board[20] == piece && board[27] == piece && (board[34] != enemy))
                 countPiece += 4;
+            if (board[13] == piece && board[20] == piece && board[27] == piece && (board[34] != enemy))
+                countPiece += 8;
 
             if (board[20] == piece && board[27] == piece && (board[34] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
             return countPiece;
         }
@@ -503,46 +542,46 @@ namespace Pentago.AI
             int countPiece = 0;
 
             if (board[29] == piece && board[22] == piece && (board[15] != enemy))
-                countPiece += 2;
-            if (board[29] == piece && board[22] == piece && board[15] == piece && (board[8] != enemy))
                 countPiece += 4;
+            if (board[29] == piece && board[22] == piece && board[15] == piece && (board[8] != enemy))
+                countPiece += 8;
 
             if (board[22] == piece && board[15] == piece && (board[8] != enemy))
-                countPiece += 2;
-            if (board[22] == piece && board[15] == piece && board[8] == piece && (board[1] != enemy))
                 countPiece += 4;
+            if (board[22] == piece && board[15] == piece && board[8] == piece && (board[1] != enemy))
+                countPiece += 8;
 
             if (board[15] == piece && board[8] == piece && (board[1] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
 
             if (board[35] == piece && board[28] == piece && (board[21] != enemy))
-                countPiece += 2;
-            if (board[35] == piece && board[28] == piece && board[21] == piece && (board[14] != enemy))
                 countPiece += 4;
+            if (board[35] == piece && board[28] == piece && board[21] == piece && (board[14] != enemy))
+                countPiece += 8;
 
             if (board[28] == piece && board[21] == piece && (board[14] != enemy))
-                countPiece += 2;
-            if (board[28] == piece && board[21] == piece && board[14] == piece && (board[7] != enemy))
                 countPiece += 4;
+            if (board[28] == piece && board[21] == piece && board[14] == piece && (board[7] != enemy))
+                countPiece += 8;
 
             if (board[21] == piece && board[14] == piece && (board[7] != enemy))
-                countPiece += 2;
-            if (board[21] == piece && board[14] == piece && board[7] == piece && (board[0] != enemy))
                 countPiece += 4;
+            if (board[21] == piece && board[14] == piece && board[7] == piece && (board[0] != enemy))
+                countPiece += 8;
 
             if (board[34] == piece && board[27] == piece && (board[20] != enemy))
-                countPiece += 2;
-            if (board[34] == piece && board[27] == piece && board[20] == piece && (board[13] != enemy))
                 countPiece += 4;
+            if (board[34] == piece && board[27] == piece && board[20] == piece && (board[13] != enemy))
+                countPiece += 8;
 
             if (board[27] == piece && board[20] == piece && (board[13] != enemy))
-                countPiece += 2;
-            if (board[27] == piece && board[20] == piece && board[13] == piece && (board[6] != enemy))
                 countPiece += 4;
+            if (board[27] == piece && board[20] == piece && board[13] == piece && (board[6] != enemy))
+                countPiece += 8;
 
             if (board[20] == piece && board[13] == piece && (board[6] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
             return countPiece;
         }
@@ -552,46 +591,46 @@ namespace Pentago.AI
             int countPiece = 0;
 
             if (board[4] == piece && board[9] == piece && (board[14] != enemy))
-                countPiece += 2;
-            if (board[4] == piece && board[9] == piece && board[14] == piece && (board[19] != enemy))
                 countPiece += 4;
+            if (board[4] == piece && board[9] == piece && board[14] == piece && (board[19] != enemy))
+                countPiece += 8;
 
             if (board[9] == piece && board[14] == piece && (board[19] != enemy))
-                countPiece += 2;
-            if (board[9] == piece && board[14] == piece && board[19] == piece && (board[24] != enemy))
                 countPiece += 4;
+            if (board[9] == piece && board[14] == piece && board[19] == piece && (board[24] != enemy))
+                countPiece += 8;
 
             if (board[14] == piece && board[19] == piece && (board[24] != enemy))
-                countPiece += 2;
+                countPiece += 4;
 
 
             if (board[5] == piece && board[10] == piece && (board[15] != enemy))
-                countPiece += 2;
-            if (board[5] == piece && board[10] == piece && board[15] == piece && (board[20] != enemy))
                 countPiece += 4;
+            if (board[5] == piece && board[10] == piece && board[15] == piece && (board[20] != enemy))
+                countPiece += 8;
 
             if (board[10] == piece && board[15] == piece && (board[20] != enemy))
-                countPiece += 2;
-            if (board[10] == piece && board[15] == piece && board[20] == piece && (board[25] != enemy))
                 countPiece += 4;
+            if (board[10] == piece && board[15] == piece && board[20] == piece && (board[25] != enemy))
+                countPiece += 8;
 
             if (board[15] == piece && board[20] == piece && (board[25] != enemy))
-                countPiece += 2;
-            if (board[15] == piece && board[20] == piece && board[25] == piece && (board[30] != enemy))
                 countPiece += 4;
+            if (board[15] == piece && board[20] == piece && board[25] == piece && (board[30] != enemy))
+                countPiece += 8;
 
             if (board[11] == piece && board[16] == piece && (board[21] != enemy))
-                countPiece += 2;
-            if (board[11] == piece && board[16] == piece && board[21] == piece && (board[26] != enemy))
                 countPiece += 4;
+            if (board[11] == piece && board[16] == piece && board[21] == piece && (board[26] != enemy))
+                countPiece += 8;
 
             if (board[16] == piece && board[21] == piece && (board[26] != enemy))
-                countPiece += 2;
-            if (board[16] == piece && board[21] == piece && board[26] == piece && (board[31] != enemy))
                 countPiece += 4;
+            if (board[16] == piece && board[21] == piece && board[26] == piece && (board[31] != enemy))
+                countPiece += 8;
 
             if (board[21] == piece && board[26] == piece && (board[31] != enemy))
-                countPiece += 2;
+                countPiece += 8;
 
             return countPiece;
         }
