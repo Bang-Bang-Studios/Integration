@@ -3,12 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 Title="MapWindow" Height="800" Width="1250" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" WindowState="Maximized"  AllowsTransparency="True" AllowDrop="True" Background="{x:Null}" Name="MapWin">
     <Grid>
-        <Button Content="Go Back" BorderThickness="0" BorderBrush="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="36" FontWeight="Bold" Height="79" Margin="1022,32,50,689" Name="GoBackButton"  Width="178" Panel.ZIndex="100" RenderTransformOrigin="3.287,-2.7" Click="GoBackButton_Click" >
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/MainBack.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="371*"/>
+        </Grid.RowDefinitions>
+        <Button Content="Go Back" BorderThickness="0" BorderBrush="{x:Null}" FontFamily="Celtic Garamond the 2nd" FontSize="36" FontWeight="Bold" Margin="0,32,50,0" Name="GoBackButton" Panel.ZIndex="100" RenderTransformOrigin="3.287,-2.7" Click="GoBackButton_Click" Grid.RowSpan="2" MouseEnter="GoBackButton_MouseEnter" Height="79" VerticalAlignment="Top" HorizontalAlignment="Right" Width="178" >
             <Button.Background>
                 <ImageBrush ImageSource="Images/PauseScroll.png"/>
             </Button.Background>
         </Button>
-        <TextBox x:Name="ProfileName" Margin="95,0,0,70" Text="" FontFamily="Celtic Garamond the 2nd" FontSize="30" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="343" VerticalAlignment="Bottom" Grid.Row="1" />
+
+        <Image x:Name="VikingImage" Height="293" Margin="0,0,0,-78"  Width="199" Panel.ZIndex="-1" Grid.Row="1" Source="Images/Armless.png" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

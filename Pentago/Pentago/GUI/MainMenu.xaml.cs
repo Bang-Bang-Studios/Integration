@@ -493,10 +493,14 @@ namespace Pentago.GUI
                 ReHideMenues();
                 StoryModePanel.Visibility = Visibility.Visible;
                 NewProfilePanel.Visibility = Visibility.Hidden;
-                LoadProfilesList();
                 ProfileList.Visibility = Visibility.Visible;
                 ContineAdventure.Visibility = Visibility.Visible;
-                
+                LoadProfilesList();
+                try
+                {
+                    ProfileList.SelectedIndex = 0;
+                }
+                catch { } 
             }
         }
 
@@ -528,6 +532,11 @@ namespace Pentago.GUI
             ProfileList.Visibility = Visibility.Visible;
             ContineAdventure.Visibility = Visibility.Visible;
             LoadProfilesList();
+            try
+            {
+                ProfileList.SelectedIndex = 0;
+            }
+            catch { } 
             
         }
 
